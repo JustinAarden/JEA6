@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="org.neo4j.3rdparty.javax.ws.rs:jsr311-api:1.1.2.r612" type="repository">
+    <properties maven-id="org.neo4j.3rdparty.javax.ws.rs:jsr311-api:1.1.2.r612" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/jsr311-api-1.1.2.r612.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
