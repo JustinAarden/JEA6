@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-ear" name="kwetter">
+  <artifact type="exploded-war" name="kwetter">
     <output-path>$PROJECT_DIR$/out/artifacts/kwetter</output-path>
     <root id="root">
       <element id="directory" name="lib">
@@ -8,8 +8,12 @@
         </element>
         <element id="library" level="project" name="Java EE 6-Java EE 6" />
       </element>
-      <element id="jpa-descriptors" facet="untitled/jpa/JPA" />
       <element id="javaee-facet-resources" facet="untitled/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="jpa-descriptors" facet="untitled/jpa/JPA" />
+        </element>
+      </element>
     </root>
   </artifact>
 </component>
