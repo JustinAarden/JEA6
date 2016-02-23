@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-ejb" name="Kwetter:EJB exploded">
+    <output-path>$PROJECT_DIR$/classes/artifacts/Kwetter_EJB_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="Kwetter/ejb/EJB" />
+      <element id="module-output" name="Kwetter" />
+      <element id="javaee-facet-resources" facet="Kwetter/web/Web" />
+      <element id="artifact" artifact-name="Web Rest Exploded" />
+    </root>
+  </artifact>
+</component>

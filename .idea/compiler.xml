@@ -24,6 +24,13 @@
         <processorPath useClasspath="true" />
         <module name="untitled" />
       </profile>
+      <profile default="false" name="Annotation profile for Kwetter" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="Kwetter" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="Kwetter" target="1.6" />

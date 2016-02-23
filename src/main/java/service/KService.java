@@ -6,16 +6,19 @@ import dao.UserDAOCollectionImpl;
 import dao.UserDao;
 import domain.User;
 
+import javax.faces.bean.ApplicationScoped;
 import java.util.List;
 
 
+@ApplicationScoped
 
 
 public class KService {
 
+    //@Inject
     private UserDao userdao;
 
-    private final static  KService instance = new KService();
+    private final static KService instance = new KService();
     private KService(){userdao = new UserDAOCollectionImpl();}
 
     public static KService instance() {

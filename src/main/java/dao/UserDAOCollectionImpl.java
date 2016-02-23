@@ -2,8 +2,11 @@ package dao;
 
 import domain.Tweet;
 import domain.User;
+import rest.ChangeTweet;
+
 import javax.faces.bean.ApplicationScoped;
 import javax.ejb.Stateless;
+import javax.interceptor.Interceptors;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,10 +22,10 @@ public class UserDAOCollectionImpl implements UserDao {
     }
 
     public void initUsers() {
-        User u1 = new User("Hans", "http", "geboren 1", 1L);
+        User u1 = new User("Ruud", "http", "geboren 1", 1L);
         User u2 = new User("Frank", "httpF", "geboren 2", 2L);
-        User u3 = new User("Tom", "httpT", "geboren 3", 3L);
-        User u4 = new User("Sjaak", "httpS", "geboren 4", 4L);
+        User u3 = new User("Lol", "httpT", "geboren 3", 3L);
+        User u4 = new User("Justin", "httpS", "geboren 4", 4L);
         addFollower(u1, u2);
         addFollower(u1, u3);
         addFollower(u1, u4);
@@ -49,6 +52,7 @@ public class UserDAOCollectionImpl implements UserDao {
         return users.size();
     }
 
+    @Interceptors(ChangeTweet.class)
     @Override
     public void create(User user) {
         users.add(user);

@@ -6,6 +6,10 @@
         <element id="directory" name="classes">
           <element id="module-output" name="Kwetter" />
         </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Jersey-2.2" />
+          <element id="library" level="project" name="Maven: org.projectlombok:lombok:1.16.6" />
+        </element>
       </element>
       <element id="javaee-facet-resources" facet="Kwetter/web/Web" />
     </root>

@@ -5,28 +5,30 @@ import domain.Tweet;
 import domain.User;
 import service.KService;
 
-import javax.faces.bean.RequestScoped;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
+import java.util.Date;
 import java.util.List;
 
 
 @Path("/rest")
-@RequestScoped
+//@RequestScoped
 public class KwetterResource {
 
     @Context
     private UriInfo context;
 
 
+   // @Inject
+   // KService kwetterService;
     final KService kwetterService = KService.instance();
-    /**
-     * Creates a new instance of KwetterResource
-     */
+
+//WAAROM WERKT INJECT NIET?? Error occurred during deployment: Exception while loading the app : EJB Container initialization error. intellIj
     public KwetterResource() {
     }
+
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -36,27 +38,29 @@ public class KwetterResource {
     }
 
     @GET
-    @Path("test")
-    public String getString(){
-        return kwetterService.find(1L).toString();
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("api/count")
+    public int count() {
+        return kwetterService.count();
     }
 
-
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("api/{userID}")
+    public User findUser(@PathParam("userID") Long id) {
+        return kwetterService.find(id);
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("api/{userID}")
-    public String addTweet(Tweet tweet, @PathParam("userID") Long userID) {
-        Boolean succes;
-        String message = "";
-        
-        tweet.setId(kwetterService.nextTweetID());
-        succes = kwetterService.find(userID).addTweet(tweet);
-        if (!succes) {
-            message = "Error adding tweet";
-        }
+    @Path("addtweet/{user1}/{message}")
+    public User testMethod(@PathParam("user1") Long id, @PathParam("message") String message)  {
+        Date date;
+        User user = kwetterService.find(id);
+        user.addTweet(new Tweet(message, new Date(),"test" ,kwetterService.nextTweetID()));
+        return kwetterService.find(id);
+   }
 
-        return String.format("{\"succes\":\"%b\",\"message\":\"%s\"}", succes, message);
-    }
+
 }
