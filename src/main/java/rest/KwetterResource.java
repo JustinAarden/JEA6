@@ -1,5 +1,5 @@
 
-package service.rest;
+package rest;
 
 import domain.Tweet;
 import domain.User;
