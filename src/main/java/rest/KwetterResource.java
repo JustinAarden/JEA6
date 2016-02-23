@@ -13,7 +13,7 @@ import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
 
-@Path("")
+@Path("/rest")
 @RequestScoped
 public class KwetterResource {
 
@@ -35,6 +35,14 @@ public class KwetterResource {
     public List<User> findAllUsers() {
         return kwetterService.findAll();
     }
+
+    @GET
+    @Path("test")
+    public String getString(){
+        return "testrest";
+    }
+
+
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)

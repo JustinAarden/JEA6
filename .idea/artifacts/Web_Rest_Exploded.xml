@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="Web Rest Exploded">
+    <output-path>$PROJECT_DIR$/classes/artifacts/Web_Rest_Exploded</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="Kwetter" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="Kwetter/web/Web" />
+    </root>
+  </artifact>
+</component>
