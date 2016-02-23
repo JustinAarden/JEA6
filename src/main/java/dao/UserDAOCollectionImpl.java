@@ -18,7 +18,7 @@ public class UserDAOCollectionImpl implements UserDao {
         initUsers();
     }
 
-    private void initUsers() {
+    public void initUsers() {
         User u1 = new User("Hans", "http", "geboren 1", 1L);
         User u2 = new User("Frank", "httpF", "geboren 2", 2L);
         User u3 = new User("Tom", "httpT", "geboren 3", 3L);
@@ -36,6 +36,7 @@ public class UserDAOCollectionImpl implements UserDao {
         u1.addTweet(t1);
         u1.addTweet(t2);
         u1.addTweet(t3);
+
 
         this.create(u1);
         this.create(u2);

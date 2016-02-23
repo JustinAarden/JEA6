@@ -21,8 +21,7 @@ public class KwetterResource {
     private UriInfo context;
 
 
-    KService kwetterService;
-
+    final KService kwetterService = KService.instance();
     /**
      * Creates a new instance of KwetterResource
      */
@@ -39,12 +38,12 @@ public class KwetterResource {
     @GET
     @Path("test")
     public String getString(){
-        return "testrest";
+        return kwetterService.find(1L).toString();
     }
 
 
 
-    @POST
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("api/{userID}")

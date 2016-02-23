@@ -2,25 +2,28 @@
 
 package service;
 
+import dao.UserDAOCollectionImpl;
 import dao.UserDao;
 import domain.User;
 
-import javax.ejb.Stateless;
 import java.util.List;
 
 
 
-@Stateless
+
 public class KService {
 
+    private UserDao userdao;
 
-    private UserDao userDAO;
+    private final static  KService instance = new KService();
+    private KService(){userdao = new UserDAOCollectionImpl();}
 
-    public KService() {
+    public static KService instance() {
+        return instance;
     }
 
     public void create(User user) {
-        userDAO.create(user);
+        userdao.create(user);
     }
 
     public void edit(User user) {
@@ -28,23 +31,23 @@ public class KService {
     }
 
     public void remove(User user) {
-        userDAO.remove(user);
+        userdao.remove(user);
     }
 
     public List<User> findAll() {
-        return userDAO.findAll();
+        return userdao.findAll();
     }
 
     public User find(Object id) {
-        return userDAO.find((Long)id);
+        return userdao.find((Long)id);
     }
 
     public int count() {
-        return userDAO.count();
+        return userdao.count();
     }
 
     public Long nextTweetID(){
-        return userDAO.nextTweetID();
+        return userdao.nextTweetID();
     }
 
 }

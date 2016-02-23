@@ -1,5 +1,7 @@
 package domain;
 
+import lombok.Setter;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
@@ -7,6 +9,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 @XmlRootElement
+@Setter
 public class User {
 
     private static final long serialVersionUID = 1L;
@@ -50,10 +53,10 @@ public class User {
         this.bio = bio;
     }
 
-    @XmlElement(required = true)
-    public String getName() {
-        return name;
-    }
+//    @XmlElement(required = true)
+//    public String getName() {
+//        return name;
+//    }
 
     public void setName(String name) {
         this.name = name;

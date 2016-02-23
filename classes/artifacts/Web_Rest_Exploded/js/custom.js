@@ -37,12 +37,12 @@
     app.factory("userFactory", ['$http', function ($http) {
         var dataFactory = {};
         dataFactory.getUsers = function () {
-            return $http.get("http://localhost:8080/Kwetter-EE-Backend/rest/api");
+            return $http.get("http://localhost:8080/resources/rest/api/");
         };
         dataFactory.addTweet = function (tweet) {
             return $http({
                 method: "POST",
-                url: "http://localhost:8080/Kwetter-EE-Backend/rest/api/" + params.id,
+                url: "http://localhost:8080/resources/rest/api/" + params.id,
                 headers: {"Content-Type": "application/json"},
                 data: tweet
             });
@@ -90,7 +90,7 @@
             var user = getUserByName($scope.users, $scope.name);
             if (user != null) {
                 $scope.error = false;
-                window.location.href = "loggedin.html?id=" + user.id;
+                window.location.href = "main.html?id=" + user.id;
             } else {
                 $scope.error = true;
             }
