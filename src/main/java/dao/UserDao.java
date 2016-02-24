@@ -1,9 +1,11 @@
 package dao;
 
 import domain.User;
+
 import java.util.List;
 
 public interface UserDao {
+
 
     int count();
 
@@ -15,7 +17,12 @@ public interface UserDao {
 
     User find(Long id);
 
+    User find(String name);
+
     void remove(User user);
 
     Long nextTweetID();
+
+    void addFollower(User userToFollow, User follower);
+
 }

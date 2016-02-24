@@ -14,7 +14,7 @@ public class UserTests {
 
     @Test
     public void newUsers(){
-        User u4 = new User("Justin", "httpS", "geboren 4", 4L);
+        User u4 = new User("Justin", "httpS", "geboren 4");
         users.add(u4);
 
         Assert.assertFalse(users.isEmpty());

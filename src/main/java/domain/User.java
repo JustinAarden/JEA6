@@ -1,28 +1,41 @@
 package domain;
 
-import lombok.Setter;
-
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
 @XmlRootElement
-@Setter
-public class User {
+@Entity
+@NamedQueries({
+        @NamedQuery(name = "User.count",
+                query = "select count(user) from User user"),
+        @NamedQuery(name = "User.findAll",
+                query = "select user from User user"),
+        @NamedQuery(name = "User.findID",
+                query = "select User from User user where user.id =:id"),
+        @NamedQuery(name = "User.findName",
+                query = "select User from User user where user.name =:name")
+})
+public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    private static long nextID = 0L;
 
-    private Long id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id; //AI
     private String name;
     private String web;
-    private String image = "http://www.dravenstales.ch/wp-content/uploads/2011/02/fb_storm.jpg";
+    private String image = "http://i.imgur.com/SxKJEWo.png";
     private String bio;
     private String location = "Nederland";
 
     private Collection<Long> following = new ArrayList();
     private Collection<Long> followers = new ArrayList();
+    @OneToMany(cascade = CascadeType.PERSIST)
     private Collection<Tweet> tweets = new ArrayList();
 
     public User() {
@@ -30,14 +43,22 @@ public class User {
 
     public User(String naam) {
         this.name = naam;
+        //this.id = User.nextID++;
+        //only used for UserDAOCollectionImpl JPA uses @GeneratedValue
     }
 
-    public User(String naam, String web, String bio, Long id) {
+    public User(String naam, String web, String bio) {
         this.name = naam;
         this.web = web;
         this.bio = bio;
-        this.id = id;
+        //this.id = User.nextID++;
+        //only used for UserDAOCollectionImpl JPA uses @GeneratedValue
     }
+
+
+
+
+
 
     @XmlElement(required = true)
     public Long getId() {
@@ -132,7 +153,7 @@ public class User {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the name fields are not set
+
         if (!(object instanceof User)) {
             return false;
         }
@@ -144,5 +165,6 @@ public class User {
     public String toString() {
         return "twitter.domain.User[naam=" + name + "]";
     }
+
 
 }

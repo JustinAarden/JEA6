@@ -1,17 +1,24 @@
 package domain;
 
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 import java.util.Date;
 
 @XmlRootElement
-public class Tweet {
+@Entity
+public class Tweet implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    private static long nextID = 0L;
 
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String tweetText;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "dateField")
     private Date date;
     private String postedFrom;
 
@@ -20,15 +27,17 @@ public class Tweet {
 
     public Tweet(String tweet) {
         this.tweetText = tweet;
+        //this.id = User.nextID++;
+        //only used for UserDAOCollectionImpl JPA uses @GeneratedValue
     }
 
-    public Tweet(String tweetText, Date datum, String vanaf, Long id) {
-        setTweetText(tweetText);
-        setDatum(datum);
-        setVanaf(vanaf);
-        setId(id);
+    public Tweet(String tweetText, Date datum, String vanaf) {
+        this.tweetText = tweetText;
+        this.date = datum;
+        this.postedFrom = vanaf;
+        //this.id = Tweet.nextID++;
+        //only used for UserDAOCollectionImpl, JPA uses @GeneratedValue
     }
-
     @XmlElement(required = true)
     public Long getId() {
         return id;

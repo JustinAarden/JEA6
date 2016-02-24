@@ -1,16 +1,17 @@
+/*
 package dao;
 
 import domain.Tweet;
 import domain.User;
-import rest.ChangeTweet;
 
-import javax.faces.bean.ApplicationScoped;
+import javax.ejb.Local;
 import javax.ejb.Stateless;
-import javax.interceptor.Interceptors;
+import javax.faces.bean.ApplicationScoped;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Local(UserDao.class)
 @ApplicationScoped
 @Stateless
 public class UserDAOCollectionImpl implements UserDao {
@@ -22,10 +23,10 @@ public class UserDAOCollectionImpl implements UserDao {
     }
 
     public void initUsers() {
-        User u1 = new User("Ruud", "http", "geboren 1", 1L);
-        User u2 = new User("Frank", "httpF", "geboren 2", 2L);
-        User u3 = new User("Lol", "httpT", "geboren 3", 3L);
-        User u4 = new User("Justin", "httpS", "geboren 4", 4L);
+        User u1 = new User("Justin", "http", "1-2-1234", 1L);
+        User u2 = new User("User2", "httpF", "1-2-1235", 2L);
+        User u3 = new User("User3", "httpT", "1-2-1236", 3L);
+        User u4 = new User("User4", "httpS", "1-2-1237", 4L);
         addFollower(u1, u2);
         addFollower(u1, u3);
         addFollower(u1, u4);
@@ -33,12 +34,12 @@ public class UserDAOCollectionImpl implements UserDao {
         addFollower(u3, u1);
         addFollower(u4, u1);
 
-        Tweet t1 = new Tweet("Hallo", new Date(), "PC", 1L);
-        Tweet t2 = new Tweet("Hallo again", new Date(), "PC", 2L);
-        Tweet t3 = new Tweet("Hallo where are you", new Date(), "PC", 3L);
+        Tweet t1 = new Tweet("Test kwetter", new Date(), "Internet", 1L);
+        Tweet t2 = new Tweet("Kwettertje qwertyuio", new Date(), "Mobile", 2L);
+        Tweet t3 = new Tweet("Dit is een kwetter van gebruiker 2", new Date(), "GET", 3L);
         u1.addTweet(t1);
         u1.addTweet(t2);
-        u1.addTweet(t3);
+        u2.addTweet(t3);
 
 
         this.create(u1);
@@ -52,7 +53,7 @@ public class UserDAOCollectionImpl implements UserDao {
         return users.size();
     }
 
-    @Interceptors(ChangeTweet.class)
+
     @Override
     public void create(User user) {
         users.add(user);
@@ -97,4 +98,4 @@ public class UserDAOCollectionImpl implements UserDao {
         userToFollow.addFollower(follower.getId());
         follower.addFollowing(userToFollow.getId());
     }
-}
+}*/

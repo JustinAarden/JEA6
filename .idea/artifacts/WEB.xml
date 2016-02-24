@@ -1,10 +1,11 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="Web Rest Exploded">
-    <output-path>$PROJECT_DIR$/classes/artifacts/Web_Rest_Exploded</output-path>
+  <artifact type="exploded-war" name="WEB">
+    <output-path>$PROJECT_DIR$/classes/artifacts/WEB</output-path>
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="Kwetter" />
+          <element id="jpa-descriptors" facet="Kwetter/jpa/JPA" />
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="Jersey-2.2" />
@@ -12,6 +13,7 @@
         </element>
       </element>
       <element id="javaee-facet-resources" facet="Kwetter/web/Web" />
+      <element id="javaee-facet-resources" facet="Kwetter/ejb/EJB" />
     </root>
   </artifact>
 </component>

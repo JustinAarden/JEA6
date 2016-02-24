@@ -1,32 +1,26 @@
-/*
 package dao;
-
-*/
-/**
- * Created by Justin on 22-2-2016.
- *//*
 
 
 import domain.Tweet;
 import domain.User;
-import domain.Role;
-import java.util.Date;
-import java.util.List;
+
 import javax.annotation.PostConstruct;
+import javax.ejb.Local;
 import javax.ejb.Stateless;
-import javax.enterprise.inject.Alternative;
+import javax.faces.bean.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.Date;
+import java.util.List;
 
 
-@Alternative
+@Local(UserDao.class)
+@ApplicationScoped
 @Stateless
 public class UserDAO_JPAImpl implements UserDao {
 
-    private Role user = new Role("user_role");
-    private Role admin = new Role("admin_role");
 
     @PersistenceContext
     private EntityManager em;
@@ -60,14 +54,6 @@ public class UserDAO_JPAImpl implements UserDao {
         u1.addTweet(t2);
         u1.addTweet(t3);
 
-        em.persist(user);
-        em.persist(admin);
-
-        u1.addGroup(user);
-        u1.addGroup(admin);
-        u2.addGroup(user);
-        u3.addGroup(user);
-        u4.addGroup(user);
 
         this.edit(u1);
         this.edit(u2);
@@ -104,7 +90,7 @@ public class UserDAO_JPAImpl implements UserDao {
         return (User) q.getSingleResult();
     }
 
-    @Override
+   @Override
     public User find(String name) {
         Query q = em.createNamedQuery("User.findName");
         q.setParameter("name", name);
@@ -115,7 +101,7 @@ public class UserDAO_JPAImpl implements UserDao {
         }
     }
 
-    @Override
+
     public void remove(Tweet tweetToRemove) {
         User user = null;
         for (User u : findAll()) {
@@ -128,7 +114,7 @@ public class UserDAO_JPAImpl implements UserDao {
             }
         }
         if (user != null) {
-            user.removeTweet(tweetToRemove);
+           // user.removeTweet(tweetToRemove);
         }
         em.remove(em.find(Tweet.class, tweetToRemove.getId()));
     }
@@ -138,7 +124,7 @@ public class UserDAO_JPAImpl implements UserDao {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
+  @Override
     public void addFollower(User userToFollow, User follower) {
         userToFollow.addFollower(follower.getId());
         follower.addFollowing(userToFollow.getId());
@@ -159,4 +145,6 @@ public class UserDAO_JPAImpl implements UserDao {
         return nextID;
     }
 
-}*/
+
+
+}

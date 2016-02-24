@@ -3,27 +3,28 @@ package rest;
 
 import domain.Tweet;
 import domain.User;
+import interceptors.Tweetinterceptor;
 import service.KService;
 
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriInfo;
 import java.util.Date;
 import java.util.List;
 
 
 @Path("/rest")
 //@RequestScoped
+@Stateless
 public class KwetterResource {
 
-    @Context
-    private UriInfo context;
 
 
-   // @Inject
-   // KService kwetterService;
-    final KService kwetterService = KService.instance();
+   @Inject
+    KService kwetterService;
+    //final KService kwetterService = KService.instance();
 
 //WAAROM WERKT INJECT NIET?? Error occurred during deployment: Exception while loading the app : EJB Container initialization error. intellIj
     public KwetterResource() {
@@ -51,14 +52,15 @@ public class KwetterResource {
         return kwetterService.find(id);
     }
 
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("addtweet/{user1}/{message}")
+    @Interceptors(Tweetinterceptor.class)
     public User testMethod(@PathParam("user1") Long id, @PathParam("message") String message)  {
-        Date date;
         User user = kwetterService.find(id);
-        user.addTweet(new Tweet(message, new Date(),"test" ,kwetterService.nextTweetID()));
+        user.addTweet(new Tweet(message, new Date(),"REST-API"));
         return kwetterService.find(id);
    }
 

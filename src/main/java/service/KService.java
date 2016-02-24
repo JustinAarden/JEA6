@@ -2,28 +2,29 @@
 
 package service;
 
-import dao.UserDAOCollectionImpl;
 import dao.UserDao;
 import domain.User;
 
+import javax.ejb.Stateless;
 import javax.faces.bean.ApplicationScoped;
+import javax.inject.Inject;
 import java.util.List;
 
 
 @ApplicationScoped
-
+@Stateless
 
 public class KService {
 
-    //@Inject
+    @Inject
     private UserDao userdao;
 
-    private final static KService instance = new KService();
-    private KService(){userdao = new UserDAOCollectionImpl();}
+    //private final static KService instance = new KService();
+    //private KService(){userdao = new UserDAOCollectionImpl();}
 
-    public static KService instance() {
-        return instance;
-    }
+    //public static KService instance() {
+/*        return instance;
+    }*/
 
     public void create(User user) {
         userdao.create(user);
