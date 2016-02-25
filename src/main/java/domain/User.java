@@ -1,5 +1,6 @@
 package domain;
 
+import javax.management.relation.Role;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -7,6 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @XmlRootElement
 @Entity
@@ -25,7 +27,7 @@ public class User implements Serializable {
     private static final long serialVersionUID = 1L;
     private static long nextID = 0L;
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue//(strategy = GenerationType.IDENTITY)
     private Long id; //AI
     private String name;
     private String web;
@@ -33,36 +35,48 @@ public class User implements Serializable {
     private String bio;
     private String location = "Nederland";
 
-    private Collection<Long> following = new ArrayList();
-    private Collection<Long> followers = new ArrayList();
-    @OneToMany(cascade = CascadeType.PERSIST)
-    private Collection<Tweet> tweets = new ArrayList();
+    private List<Long> following = new ArrayList();
+    private List<Long> followers = new ArrayList();
+
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Tweet> tweets = new ArrayList();
 
     public User() {
     }
 
     public User(String naam) {
         this.name = naam;
-        //this.id = User.nextID++;
-        //only used for UserDAOCollectionImpl JPA uses @GeneratedValue
-    }
+   }
 
     public User(String naam, String web, String bio) {
         this.name = naam;
         this.web = web;
-        this.bio = bio;
-        //this.id = User.nextID++;
-        //only used for UserDAOCollectionImpl JPA uses @GeneratedValue
-    }
+        this.bio = bio;}
 
 
 
-
-
+    /*
+    *
+    * Getters and setters
+    *
+    *===================SECTION=================
+    *
+    *====================USER===================
+    * */
 
     @XmlElement(required = true)
     public Long getId() {
         return id;
+    }
+
+    @XmlElement(required = true)
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @XmlElement(required = true)
@@ -72,15 +86,6 @@ public class User implements Serializable {
 
     public void setBio(String bio) {
         this.bio = bio;
-    }
-
-//    @XmlElement(required = true)
-//    public String getName() {
-//        return name;
-//    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     @XmlElement(required = true)
@@ -101,19 +106,18 @@ public class User implements Serializable {
         this.image = image;
     }
 
-    @XmlElement(required = true)
-    public Collection<Long> getFollowing() {
-        return Collections.unmodifiableCollection(following);
-    }
 
-    @XmlElement(required = true)
-    public Collection<Long> getFollowers() {
-        return Collections.unmodifiableCollection(followers);
-    }
 
-    public void setFollowing(Collection<Long> following) {
-        this.following = following;
-    }
+
+
+        /*
+    *
+    * Getters and setters
+    *
+    *===================SECTION=================
+    *
+    *====================Tweets===================
+    * */
 
     @XmlElement(required = true)
     public Collection<Tweet> getTweets() {
@@ -128,8 +132,21 @@ public class User implements Serializable {
         this.location = location;
     }
 
-    public void setTweets(Collection<Tweet> tweets) {
+    public void setTweets(List<Tweet> tweets) {
         this.tweets = tweets;
+    }
+
+
+
+
+    /*
+    *===================SECTION=================
+    *
+    *==================FOLLOWERS================
+    *
+    * */
+    public void setFollowing(List<Long> following) {
+        this.following = following;
     }
 
     public Boolean addFollowing(Long following) {
@@ -140,9 +157,24 @@ public class User implements Serializable {
         return this.followers.add(follower);
     }
 
+    @XmlElement(required = true)
+    public Collection<Long> getFollowing() {
+        return Collections.unmodifiableCollection(following);
+    }
+
+    @XmlElement(required = true)
+    public Collection<Long> getFollowers() {
+        return Collections.unmodifiableCollection(followers);
+    }
+
     public Boolean addTweet(Tweet tweet) {
         return this.tweets.add(tweet);
     }
+
+
+
+    /*=====================================================================================================
+    * =====================================================================================================*/
 
     @Override
     public int hashCode() {
@@ -153,7 +185,6 @@ public class User implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-
         if (!(object instanceof User)) {
             return false;
         }
@@ -161,10 +192,13 @@ public class User implements Serializable {
         return this.hashCode() == other.hashCode();
     }
 
+
     @Override
     public String toString() {
         return "twitter.domain.User[naam=" + name + "]";
     }
 
-
+    public void removeTweet(Tweet tweet) {
+        tweets.remove(tweet);
+    }
 }

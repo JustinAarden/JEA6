@@ -9,12 +9,10 @@ import java.util.Date;
 @XmlRootElement
 @Entity
 public class Tweet implements Serializable {
-
     private static final long serialVersionUID = 1L;
     private static long nextID = 0L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue
     private Long id;
     private String tweetText;
     @Temporal(TemporalType.TIMESTAMP)
@@ -38,13 +36,10 @@ public class Tweet implements Serializable {
         //this.id = Tweet.nextID++;
         //only used for UserDAOCollectionImpl, JPA uses @GeneratedValue
     }
+
     @XmlElement(required = true)
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id){
-        this.id = id;
     }
 
     @XmlElement(required = true)
@@ -94,5 +89,4 @@ public class Tweet implements Serializable {
     public String toString() {
         return "twitter.domain.Tweet[id=" + date.toString() + "]";
     }
-
 }

@@ -75,7 +75,6 @@
                 return getUserById($scope.users, id);
             };
         }
-        ;
         loadData();
     }]);
     app.controller("Kwetter_home", ['$scope', 'userFactory', function ($scope, userFactory) {

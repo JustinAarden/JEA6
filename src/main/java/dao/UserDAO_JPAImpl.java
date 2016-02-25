@@ -30,29 +30,23 @@ public class UserDAO_JPAImpl implements UserDao {
 
     @PostConstruct
     private void initUsers() {
-        User u1 = new User("Hans", "http", "geboren 1");
-        User u2 = new User("Frank", "httpF", "geboren 2");
-        User u3 = new User("Tom", "httpT", "geboren 3");
-        User u4 = new User("Sjaak", "httpS", "geboren 4");
 
+        User u1 = new User("Justin", "http://justinaarden.nl", "1-1-1111");
         this.create(u1);
+        User u2 = new User("User2", "no-website", "2-2-2222");
         this.create(u2);
+        User u3 = new User("User3", "no-website", "3-3-3333");
         this.create(u3);
+        User u4 = new User("User4", "no-website", "4-4-4444");
         this.create(u4);
 
-        addFollower(u1, u2);
-        addFollower(u1, u3);
-        addFollower(u1, u4);
-        addFollower(u2, u1);
-        addFollower(u3, u1);
-        addFollower(u4, u1);
 
-        Tweet t1 = new Tweet("Hallo", new Date(), "PC");
-        Tweet t2 = new Tweet("Hallo again", new Date(), "PC");
-        Tweet t3 = new Tweet("Hallo where are you", new Date(), "PC");
+        Tweet t1 = new Tweet("first tweet of user 1", new Date(), "PC");
         u1.addTweet(t1);
+        Tweet t2 = new Tweet("second tweet of user 1", new Date(), "PC");
         u1.addTweet(t2);
-        u1.addTweet(t3);
+        Tweet t3 = new Tweet("This is a tweet created by user 3", new Date(), "PC");
+        u3.addTweet(t3);
 
 
         this.edit(u1);
@@ -114,7 +108,7 @@ public class UserDAO_JPAImpl implements UserDao {
             }
         }
         if (user != null) {
-           // user.removeTweet(tweetToRemove);
+           //user.removeTweet(tweetToRemove);
         }
         em.remove(em.find(Tweet.class, tweetToRemove.getId()));
     }
@@ -124,7 +118,7 @@ public class UserDAO_JPAImpl implements UserDao {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-  @Override
+    @Override
     public void addFollower(User userToFollow, User follower) {
         userToFollow.addFollower(follower.getId());
         follower.addFollowing(userToFollow.getId());
