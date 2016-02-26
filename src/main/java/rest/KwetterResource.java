@@ -52,6 +52,13 @@ public class KwetterResource {
         return kwetterService.find(id);
     }
 
+/*    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("getuseronname/{username}")
+    public User findOnName(@PathParam("username") String name) {
+        User user = new User();
+        return kwetterService.fin(id);
+    }*/
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -60,7 +67,7 @@ public class KwetterResource {
     public String addFollower(@PathParam("user1") Long id, @PathParam("user2") Long id2)  {
         User user = kwetterService.find(id);
         User user2 = kwetterService.find(id2);
-        if(user.getName() !=null && user2.getName() != null){
+        if(user.getName() !=null || user2.getName() != null){
             if(user.getFollowing().contains(user2.getId())){
                 return "Already following that user!";
             }else if(user.getId().equals(user2.getId())){
@@ -74,16 +81,6 @@ public class KwetterResource {
         }
 
         return user.getName() + " ==>   Followed:   ==>   " + user2.getName() +     System.lineSeparator() + " And is already Following" + user.getFollowing()+  System.lineSeparator() + " And is followed by" + user.getFollowers();
-    }
-
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path("gettweets/{user}")
-    public String getTweets(@PathParam("user") Long id)  {
-        User user = kwetterService.find(id);
-        return user.getName() + " ==> Tweeted ==>";
     }
 
 

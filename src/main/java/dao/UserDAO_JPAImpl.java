@@ -96,6 +96,7 @@ public class UserDAO_JPAImpl implements UserDao {
     }
 
 
+    //TODO FIX REMOVE TWEET!!!
     public void remove(Tweet tweetToRemove) {
         User user = null;
         for (User u : findAll()) {

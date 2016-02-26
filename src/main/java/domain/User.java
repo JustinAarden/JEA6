@@ -31,7 +31,7 @@ public class User implements Serializable {
     private Long id; //AI
     private String name;
     private String web;
-    private String image = "http://i.imgur.com/SxKJEWo.png";
+    private String image = "http://www.dravenstales.ch/wp-content/uploads/2011/02/fb_storm.jpg";
     private String bio;
     private String location = "Nederland";
 
