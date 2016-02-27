@@ -9,7 +9,7 @@
  */
 package batch;
 
-import javax.batch.api.chunk.AbstractItemReader;
+import javax.batch.api.chunk.ItemReader;
 import javax.enterprise.context.Dependent;
 import javax.inject.Named;
 import java.io.BufferedReader;
@@ -18,8 +18,8 @@ import java.io.InputStreamReader;
 import java.io.Serializable;
 
 @Dependent
-@Named("kwetterInputReader")
-public class kwetterInputReader extends AbstractItemReader {
+@Named//("kwetterInputReader")
+public class kwetterInputReader implements ItemReader {
 
     private BufferedReader reader;
 
@@ -28,9 +28,14 @@ public class kwetterInputReader extends AbstractItemReader {
         reader = new BufferedReader(
                 new InputStreamReader(
                         this
-                        .getClass()
-                        .getClassLoader()
-                        .getResourceAsStream("META-INF/input.json")));
+                                .getClass()
+                                .getClassLoader()
+                                .getResourceAsStream("META-INF/input.json"))); //Get the JSON file out of Resources/META-INF
+    }
+
+    @Override
+    public void close() throws Exception {
+
     }
 
     @Override
@@ -40,6 +45,11 @@ public class kwetterInputReader extends AbstractItemReader {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+        return null;
+    }
+
+    @Override
+    public Serializable checkpointInfo() throws Exception {
         return null;
     }
 }

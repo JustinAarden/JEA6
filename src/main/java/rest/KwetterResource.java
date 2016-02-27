@@ -25,8 +25,7 @@ public class KwetterResource {
 
 
 
-   @Inject
-    KService kwetterService;
+   @Inject KService kwetterService;
     //final KService kwetterService = KService.instance();
 
 //WAAROM WERKT INJECT NIET?? Error occurred during deployment: Exception while loading the app : EJB Container initialization error. intellIj

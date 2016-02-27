@@ -13,23 +13,23 @@ import domain.Tweet;
 import domain.User;
 import service.KService;
 
-import javax.batch.api.chunk.AbstractItemWriter;
+import javax.batch.api.chunk.ItemWriter;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.Serializable;
 import java.util.List;
+
 @Dependent
-@Named("kwetterJsonWriter")
-public class kwetterJsonWriter extends AbstractItemWriter {
+@Named//("kwetterJsonWriter")
+public class kwetterJsonWriter implements ItemWriter {
 
     @Inject
     KService kwetterService;
 
     @Override
     public void writeItems(List list) {
-        //System.out.println("writeItems: " + list);
         for (Object resultArray : list) {
-            //System.out.println(Arrays.deepToString((Object[])resultArray));
             Tweet tweet = (Tweet) ((Object[]) resultArray)[0];
             String name = (String) ((Object[]) resultArray)[1];
             if (tweet == null || name == null) {
@@ -37,11 +37,26 @@ public class kwetterJsonWriter extends AbstractItemWriter {
             }
             User user = kwetterService.find(name);
             if (user == null) {
-                user = new User(name, "http://localhost:8080", "No bio");
+                user = new User(name, "http://inputofbatch/no-website", "Batchtesting - No bio"); //Create a user if user doesn't exit
                 kwetterService.create(user);
             }
             user.addTweet(tweet);
             kwetterService.edit(user);
         }
+    }
+
+    @Override
+    public void open(Serializable serializable) throws Exception {
+
+    }
+
+    @Override
+    public void close() throws Exception {
+
+    }
+
+    @Override
+    public Serializable checkpointInfo() throws Exception {
+        return null;
     }
 }

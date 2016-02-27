@@ -1,6 +1,5 @@
 package domain;
 
-import javax.management.relation.Role;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -35,7 +34,9 @@ public class User implements Serializable {
     private String bio;
     private String location = "Nederland";
 
+    @SuppressWarnings("JpaAttributeTypeInspection")
     private List<Long> following = new ArrayList();
+    @SuppressWarnings("JpaAttributeTypeInspection")
     private List<Long> followers = new ArrayList();
 
 
