@@ -31,13 +31,13 @@ public class UserDAO_JPAImpl implements UserDao {
     @PostConstruct
     private void initUsers() {
 
-        User u1 = new User("Justin", "http://justinaarden.nl", "1-1-1111");
+        User u1 = new User("Frank", "http://justinaarden.nl", "1-1-1111");
         this.create(u1);
-        User u2 = new User("User2", "no-website", "2-2-2222");
+        User u2 = new User("Hans", "no-website", "2-2-2222");
         this.create(u2);
-        User u3 = new User("User3", "no-website", "3-3-3333");
+        User u3 = new User("Sjaak", "no-website", "3-3-3333");
         this.create(u3);
-        User u4 = new User("User4", "no-website", "4-4-4444");
+        User u4 = new User("Tom", "no-website", "4-4-4444");
         this.create(u4);
 
 

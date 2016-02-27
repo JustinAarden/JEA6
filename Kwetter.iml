@@ -18,7 +18,7 @@
     <facet type="ejb" name="EJB">
       <configuration>
         <descriptors>
-          <deploymentDescriptor name="ejb-jar.xml" url="file://$MODULE_DIR$/META-INF/ejb-jar.xml" />
+          <deploymentDescriptor name="ejb-jar.xml" url="file://$MODULE_DIR$/src/main/resources/META-INF/ejb-jar.xml" />
         </descriptors>
         <ejbRoots>
           <root url="file://$MODULE_DIR$/src/main/java" />
@@ -36,11 +36,11 @@
           <factory-entry name="org.hibernate.tutorial.jpa" />
           <factory-entry name="pu1" />
         </datasource-mapping>
-        <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/META-INF/persistence.xml" />
+        <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/main/resources/META-INF/persistence.xml" />
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
@@ -71,7 +71,22 @@
     <orderEntry type="library" name="Maven: org.projectlombok:lombok:1.16.6" level="project" />
     <orderEntry type="library" name="Maven: javax.ejb:ejb-api:3.0" level="project" />
     <orderEntry type="library" name="Maven: javax.inject:javax.inject:1" level="project" />
-    <orderEntry type="library" name="Maven: org.example.mvnearplg:ejb:ejb:1.0" level="project" />
-    <orderEntry type="library" name="Maven: org.example.mvnearplg:web:war:1.0" level="project" />
+    <orderEntry type="library" name="Maven: javax.batch:javax.batch-api:1.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.openjpa:openjpa:2.4.0" level="project" />
+    <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.4" level="project" />
+    <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />
+    <orderEntry type="library" name="Maven: net.sourceforge.serp:serp:1.15.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.geronimo.specs:geronimo-jta_1.1_spec:1.1.1" level="project" />
+    <orderEntry type="library" name="Maven: commons-pool:commons-pool:1.5.4" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.xbean:xbean-asm5-shaded:3.17" level="project" />
+    <orderEntry type="library" name="Maven: javax.xml.stream:stax-api:1.0-2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.geronimo.specs:geronimo-jpa_2.0_spec:1.1" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.openjpa:openjpa-jest:2.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.openjpa:openjpa-kernel:2.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.openjpa:openjpa-lib:2.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.openjpa:openjpa-persistence:2.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.openjpa:openjpa-persistence-jdbc:2.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.openjpa:openjpa-jdbc:2.4.0" level="project" />
   </component>
 </module>

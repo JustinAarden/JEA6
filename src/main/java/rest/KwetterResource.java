@@ -6,6 +6,8 @@ import domain.User;
 import interceptors.Tweetinterceptor;
 import service.KService;
 
+import javax.batch.operations.JobOperator;
+import javax.batch.runtime.BatchRuntime;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
@@ -13,6 +15,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 
 @Path("/rest")
@@ -67,6 +70,8 @@ public class KwetterResource {
     public String addFollower(@PathParam("user1") Long id, @PathParam("user2") Long id2)  {
         User user = kwetterService.find(id);
         User user2 = kwetterService.find(id2);
+        String followers = "";
+        String following ="";
         if(user.getName() !=null || user2.getName() != null){
             if(user.getFollowing().contains(user2.getId())){
                 return "Already following that user!";
@@ -80,11 +85,31 @@ public class KwetterResource {
             return "Either User 1 or User 2 doesn't exist!";
         }
 
-        return user.getName() + " ==>   Followed:   ==>   " + user2.getName() +     System.lineSeparator() + " And is already Following" + user.getFollowing()+  System.lineSeparator() + " And is followed by" + user.getFollowers();
+        for (Long forId : user.getFollowers())
+        {
+            followers += kwetterService.find(forId).getName();
+
+        }
+        for (Long forId : user.getFollowing())
+        {
+            following += kwetterService.find(forId).getName();
+
+        }
+
+
+        return user.getName() + " ==>   Followed:   ==>   " + user2.getName() +     System.lineSeparator() + " And is already Following  " +  following +  System.lineSeparator() + " And is followed by  " +  followers;
     }
 
 
-
+    @GET
+    @Path("api/startBatch")
+    @Produces(MediaType.TEXT_PLAIN)
+    //@RolesAllowed("admin_role")
+    public String startBatch() {
+        JobOperator jo = BatchRuntime.getJobOperator();
+        long jid = jo.start("kwetterJson", new Properties());
+        return "Job submitted: " + jid;
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

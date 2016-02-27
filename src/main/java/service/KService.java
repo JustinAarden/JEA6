@@ -19,24 +19,23 @@ public class KService {
     @Inject
     private UserDao userdao;
 
-    //private final static KService instance = new KService();
-    //private KService(){userdao = new UserDAOCollectionImpl();}
 
-    //public static KService instance() {
-/*        return instance;
-    }*/
+    public KService() {
+    }
 
     public void create(User user) {
         userdao.create(user);
     }
 
     public void edit(User user) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        userdao.edit(user);
     }
 
     public void remove(User user) {
         userdao.remove(user);
     }
+
+
 
     public List<User> findAll() {
         return userdao.findAll();
@@ -46,6 +45,10 @@ public class KService {
         return userdao.find((Long)id);
     }
 
+    public User find(String name){
+        return userdao.find(name);
+    }
+
     public int count() {
         return userdao.count();
     }
@@ -53,5 +56,4 @@ public class KService {
     public Long nextTweetID(){
         return userdao.nextTweetID();
     }
-
 }
