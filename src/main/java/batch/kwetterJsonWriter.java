@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Justin Aarden. info@justinaarden.nl.
+ */
+
 package batch;
 
 /**
@@ -20,7 +24,7 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
 
-@Dependent
+@Dependent //http://docs.oracle.com/javaee/6/api/javax/enterprise/context/Dependent.html
 @Named//("kwetterJsonWriter")
 public class kwetterJsonWriter implements ItemWriter {
 
@@ -45,6 +49,11 @@ public class kwetterJsonWriter implements ItemWriter {
         }
     }
 
+    /*
+    * ===========================NiET NODIG=========================
+    *
+    * */
+
     @Override
     public void open(Serializable serializable) throws Exception {
 
@@ -59,4 +68,59 @@ public class kwetterJsonWriter implements ItemWriter {
     public Serializable checkpointInfo() throws Exception {
         return null;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

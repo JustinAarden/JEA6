@@ -1,21 +1,30 @@
 
+/*
+ * Copyright (c) Justin Aarden. info@justinaarden.nl.
+ */
+
 package rest;
 
 import domain.Tweet;
 import domain.User;
-import interceptors.Tweetinterceptor;
 import service.KService;
 
 import javax.batch.operations.JobOperator;
 import javax.batch.runtime.BatchRuntime;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.interceptor.Interceptors;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 @Path("/rest")
@@ -26,9 +35,9 @@ public class KwetterResource {
 
 
    @Inject KService kwetterService;
-    //final KService kwetterService = KService.instance();
 
-//WAAROM WERKT INJECT NIET?? Error occurred during deployment: Exception while loading the app : EJB Container initialization error. intellIj
+
+
     public KwetterResource() {
     }
 
@@ -54,13 +63,11 @@ public class KwetterResource {
         return kwetterService.find(id);
     }
 
-/*    @GET
+ @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("getuseronname/{username}")
-    public User findOnName(@PathParam("username") String name) {
-        User user = new User();
-        return kwetterService.fin(id);
-    }*/
+    public User findOnName(@PathParam("username") String name){return kwetterService.find(name);}
+
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -100,8 +107,55 @@ public class KwetterResource {
     }
 
 
+    @POST
+    @Path("api/login")
+
+    public Response login(
+            @FormParam("username") String username,
+            @FormParam("password") String password,
+            @Context HttpServletRequest request) {
+        try {
+            request.getSession(); //make sure a session has started
+            request.login(username, password);
+        } catch (Exception ex) {
+            Logger.getLogger(KwetterResource.class.getName()).log(Level.SEVERE, null, ex);
+            return Response.serverError().entity(ex.getLocalizedMessage()).build();
+        }
+        return Response.ok("loggedin.html?id=" + kwetterService.find(username).getId()).build();
+    }
+
     @GET
-    @Path("api/startBatch")
+    @Path("api/logout")
+    //@RolesAllowed({"user_role", "admin_role"})
+    public Response logout(@Context HttpServletRequest request) {
+        try {
+            request.logout();
+            request.getSession().invalidate();
+        } catch (ServletException ex) {
+            Logger.getLogger(KwetterResource.class.getName()).log(Level.SEVERE, null, ex);
+            return Response.serverError().entity(ex.getLocalizedMessage()).build();
+        }
+        return Response.ok("logged out").build();
+    }
+
+    @GET
+    @Path("api/isLoggedIn/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response isLoggedIn(@PathParam("id") Long id, @Context HttpServletRequest request) {
+        String username = request.getRemoteUser();
+        if (username == null) {
+            return Response.serverError().entity("{\"message\":\"No user is logged in\"}").build();
+        }
+        User user = kwetterService.find(username);
+        if (Objects.equals(user.getId(), id)) {
+            return Response.ok("{\"message\":\"Ok\"}").build();
+        } else {
+            return Response.serverError().entity("{\"message\":\"Other user is logged in\",\"id\":\"" + user.getId() + "\"}").build();
+        }
+    }
+
+    @GET
+    @Path("api/startbatch")
     @Produces(MediaType.TEXT_PLAIN)
     //@RolesAllowed("admin_role")
     public String startBatch() {
@@ -114,7 +168,6 @@ public class KwetterResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("addtweet/{user1}/{message}")
-    @Interceptors(Tweetinterceptor.class)
     public User testMethod(@PathParam("user1") Long id, @PathParam("message") String message)  {
         User user = kwetterService.find(id);
         user.addTweet(new Tweet(message, new Date(),"REST-API"));

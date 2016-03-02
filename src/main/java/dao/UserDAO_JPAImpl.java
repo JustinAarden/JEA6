@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Justin Aarden. info@justinaarden.nl.
+ */
+
 package dao;
 
 
@@ -7,7 +11,6 @@ import domain.User;
 import javax.annotation.PostConstruct;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
-import javax.faces.bean.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -17,7 +20,7 @@ import java.util.List;
 
 
 @Local(UserDao.class)
-@ApplicationScoped
+//@ApplicationScoped
 @Stateless
 public class UserDAO_JPAImpl implements UserDao {
 

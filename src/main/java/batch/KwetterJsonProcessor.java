@@ -25,31 +25,31 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-@Dependent
-@Named("kwetterJsonProcessor")
-public class kwetterJsonProcessor implements ItemProcessor {
 
-    SimpleDateFormat format = new SimpleDateFormat("M/dd/yy");
+@Dependent//http://docs.oracle.com/javaee/6/api/javax/enterprise/context/Dependent.html
+@Named//("kwetterJsonProcessor")
+public class kwetterJsonProcessor implements ItemProcessor {
 
     @Override
     public Object[] processItem(Object t) {
-        //System.out.println("processItem: " + t);
-
+        //http://stackoverflow.com/questions/199718/can-you-instantiate-an-object-instance-from-json-in-net
+        //^ This tutorial is based on a .net application, but it's very similar to java.
         String username = "";
         String tweetText = "";
         Date date = new Date();
         String postedFrom = "";
 
         String json = (String) t;
-        while (!json.startsWith("{") & json.length() > 0) {
+        while (!json.startsWith("{") & json.length() > 0) { //Every new json line starts with {
             json = json.substring(1, json.length());
         }
-        while (!json.endsWith("}") & json.length() > 0) {
+        while (!json.endsWith("}") & json.length() > 0) { //Every json line ends with }
             json = json.substring(0, json.length() - 1);
         }
-        if (json.indexOf("}") <= json.indexOf("{")) {
+        if (json.indexOf("}") <= json.indexOf("{")) { //When the index of } is bigger then {  the json string is complete ie. {someJsonstuffinhere}
             return new Object[]{null, null};
         }
+
 
         JsonParserFactory factory = Json.createParserFactory(null);
         JsonParser parser = factory.createParser(new StringReader(json));

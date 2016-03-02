@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Justin Aarden. info@justinaarden.nl.
+ */
+
 package domain;
 
 import javax.persistence.*;
@@ -196,7 +200,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "twitter.domain.User[naam=" + name + "]";
+        return "kwetter.domain.User[naam=" + name + "]";
     }
 
     public void removeTweet(Tweet tweet) {

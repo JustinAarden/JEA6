@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArquillianContainersManager">
+    <container containerId="container.arquillian.manual" name="Manual container configuration">
+      <exist-library name="Arquillian JUnit:Release" level="project" />
+      <exist-library name="com.google.inject.extensions:guice-jndi:2.0" level="project" />
+      <exist-library name="Jersey-2.2" level="project" />
+      <exist-library name="Maven: aopalliance:aopalliance:1.0" level="project" />
+      <exist-library name="Maven: com.google.guava:guava:16.0.1" level="project" />
+      <exist-library name="Maven: com.google.inject:guice:4.0" level="project" />
+      <exist-library name="Maven: com.sun.faces:jsf-api:2.0.3-b05" level="project" />
+      <exist-library name="Maven: com.sun.mail:javax.mail:1.5.0" level="project" />
+      <exist-library name="Maven: commons-collections:commons-collections:3.2.1" level="project" />
+      <exist-library name="Maven: commons-lang:commons-lang:2.4" level="project" />
+      <exist-library name="Maven: commons-pool:commons-pool:1.5.4" level="project" />
+      <exist-library name="Maven: javax.activation:activation:1.1" level="project" />
+      <exist-library name="Maven: javax.annotation:javax.annotation-api:1.2" level="project" />
+      <exist-library name="Maven: javax.batch:javax.batch-api:1.0.1" level="project" />
+      <exist-library name="Maven: javax.ejb:ejb-api:3.0" level="project" />
+      <exist-library name="Maven: javax.el:javax.el-api:3.0.0" level="project" />
+      <exist-library name="Maven: javax.enterprise:cdi-api:2.0-EDR1" level="project" />
+      <exist-library name="Maven: javax.inject:javax.inject:1" level="project" />
+      <exist-library name="Maven: javax.interceptor:javax.interceptor-api:1.2" level="project" />
+      <exist-library name="Maven: javax.jws:jsr181-api:1.0-MR1" level="project" />
+      <exist-library name="Maven: javax.mail:mail:1.4.2" level="project" />
+      <exist-library name="Maven: javax.servlet:jstl:1.2" level="project" />
+      <exist-library name="Maven: javax.validation:validation-api:1.0.0.GA" level="project" />
+      <exist-library name="Maven: javax.xml.stream:stax-api:1.0-2" level="project" />
+      <exist-library name="Maven: javax.xml:jaxrpc-api:1.1" level="project" />
+      <exist-library name="Maven: javax:javaee-api:7.0" level="project" />
+      <exist-library name="Maven: junit:junit:4.8.1" level="project" />
+      <exist-library name="Maven: net.sourceforge.serp:serp:1.15.1" level="project" />
+      <exist-library name="Maven: org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1" level="project" />
+      <exist-library name="Maven: org.apache.geronimo.specs:geronimo-jpa_2.0_spec:1.1" level="project" />
+      <exist-library name="Maven: org.apache.geronimo.specs:geronimo-jta_1.1_spec:1.1.1" level="project" />
+      <exist-library name="Maven: org.apache.openjpa:openjpa-jdbc:2.4.0" level="project" />
+      <exist-library name="Maven: org.apache.openjpa:openjpa-jest:2.4.0" level="project" />
+      <exist-library name="Maven: org.apache.openjpa:openjpa-kernel:2.4.0" level="project" />
+      <exist-library name="Maven: org.apache.openjpa:openjpa-lib:2.4.0" level="project" />
+      <exist-library name="Maven: org.apache.openjpa:openjpa-persistence-jdbc:2.4.0" level="project" />
+      <exist-library name="Maven: org.apache.openjpa:openjpa-persistence:2.4.0" level="project" />
+      <exist-library name="Maven: org.apache.openjpa:openjpa:2.4.0" level="project" />
+      <exist-library name="Maven: org.apache.xbean:xbean-asm5-shaded:3.17" level="project" />
+      <exist-library name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.0.Final" level="project" />
+      <exist-library name="Maven: org.jboss.resteasy:jaxrs-api:2.1.0.GA" level="project" />
+      <exist-library name="Maven: org.jboss.spec.javax.annotation:jboss-annotations-api_1.1_spec:1.0.0.Final" level="project" />
+      <exist-library name="Maven: org.jboss.spec.javax.ejb:jboss-ejb-api_3.1_spec:1.0.0.Final" level="project" />
+      <exist-library name="Maven: org.jboss.spec.javax.el:jboss-el-api_2.2_spec:1.0.0.Final" level="project" />
+      <exist-library name="Maven: org.jboss.spec.javax.enterprise.deploy:jboss-jad-api_1.2_spec:1.0.0.Final" level="project" />
+      <exist-library name="Maven: org.jboss.spec.javax.interceptor:jboss-interceptors-api_1.1_spec:1.0.0.Final" level="project" />
+      <exist-library name="Maven: org.jboss.spec.javax.jms:jboss-jms-api_1.1_spec:1.0.0.Final" level="project" />
+      <exist-library name="Maven: org.jboss.spec.javax.resource:jboss-connector-api_1.5_spec:1.0.0.Final" level="project" />
+      <exist-library name="Maven: org.jboss.spec.javax.security.auth.message:jboss-jaspi-api_1.0_spec:1.0.0.Final" level="project" />
+      <exist-library name="Maven: org.jboss.spec.javax.security.jacc:jboss-jacc-api_1.4_spec:1.0.0.Final" level="project" />
+      <exist-library name="Maven: org.jboss.spec.javax.servlet.jsp:jboss-jsp-api_2.2_spec:1.0.0.Final" level="project" />
+      <exist-library name="Maven: org.jboss.spec.javax.servlet:jboss-servlet-api_3.0_spec:1.0.0.Final" level="project" />
+      <exist-library name="Maven: org.jboss.spec.javax.transaction:jboss-transaction-api_1.1_spec:1.0.0.Final" level="project" />
+      <exist-library name="Maven: org.jboss.spec.javax.xml.bind:jboss-jaxb-api_2.2_spec:1.0.0.Final" level="project" />
+      <exist-library name="Maven: org.jboss.spec.javax.xml.registry:jboss-jaxr-api_1.0_spec:1.0.0.Final" level="project" />
+      <exist-library name="Maven: org.jboss.spec.javax.xml.rpc:jboss-jaxrpc-api_1.1_spec:1.0.0.Final" level="project" />
+      <exist-library name="Maven: org.jboss.spec.javax.xml.soap:jboss-saaj-api_1.3_spec:1.0.0.Final" level="project" />
+      <exist-library name="Maven: org.jboss.spec.javax.xml.ws:jboss-jaxws-api_2.2_spec:1.0.0.Final" level="project" />
+      <exist-library name="Maven: org.projectlombok:lombok:1.16.6" level="project" />
+      <exist-library name="Maven: stax:stax-api:1.0.1" level="project" />
+    </container>
+  </component>
+</project>

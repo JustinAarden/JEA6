@@ -2,10 +2,7 @@
  * Copyright (c) Justin Aarden. info@justinaarden.nl.
  */
 
-/**
- * Created by Justin on 27-2-2016.
- */
-; //This JavaScript file will use $resource instead of $http, except for that they are the same
+;
 (function () {
     function getUserById(users, id) {
         for (i in users) {
@@ -28,6 +25,7 @@
     var params = {};
     if (location.search != undefined) {
         var parts = location.search.substring(1).split('&');
+
         for (var i = 0; i < parts.length; i++) {
             var nv = parts[i].split('=');
             if (!nv[0])
@@ -38,46 +36,65 @@
         alert("location.search isn't supported in your webbrowser, this will result in errors");
     }
 
-    var app = angular.module('Kwetter', ['ngResource']);
-    app.factory("userFactory", ['$resource', '$http', function ($resource, $http) {
-        $http.defaults.withCredentials = true;
-        return $resource("http://localhost:8080/resources/rest/api/:id", {});
+    var app = angular.module('Kwetter', []);
+    app.factory("userFactory", ['$http', function ($http) {
+        var dataFactory = {};
+        dataFactory.getUsers = function () {
+            return $http.get("http://localhost:8080/resources/rest/api");
+        };
+        dataFactory.addTweet = function (tweet) {
+            return $http({
+            method: "GET",
+                url: "http://localhost:8080/resources/rest/addtweet/" + params.id+"/"+ tweet.tweetText
+            });
+        };
+        return dataFactory;
     }]);
     app.controller("Kwetter_profile", ['$scope', 'userFactory', function ($scope, userFactory) {
-        userFactory.query(function (data) {
-            console.log("Loaded users");
-            console.log(data);
-            $scope.users = data;
-            $scope.currentUser = getUserById($scope.users, params.id);
-        });
+        function getUsers() {
+            userFactory.getUsers()
+                .success(function (users) {
+                    console.log("Loaded users");
+                    console.log(users);
+                    $scope.users = users;
+                    $scope.currentUser = getUserById($scope.users, params.id);
+                })
+                .error(function (error) {
+                    console.log("Error getting users:");
+                    console.log(error);
+                });
+        }
+        getUsers();
         $scope.s1_switch = "tweets"; //(options are: tweets, following and followers)
         //this is needed because we've get users by id on profile.html
         $scope.getUserById = function (id) {
             return getUserById($scope.users, id);
         };
     }]);
+
     app.controller("Kwetter_home", ['$scope', 'userFactory', function ($scope, userFactory) {
-        userFactory.query(function (data) {
-            console.log("Loaded users");
-            console.log(data);
-            $scope.users = data;
-        });
+        function getUsers() {
+            userFactory.getUsers()
+                .success(function (users) {
+                    console.log("Loaded users");
+                    console.log(users);
+                    $scope.users = users;
+                })
+                .error(function (error) {
+                    console.log("Error getting users:");
+                    console.log(error);
+                });
+        }
+        getUsers();
+
         $scope.submitLogin = function () {
-            $.ajax({
-                type: "POST",
-                url: "http://localhost:8080/resources/rest/api/login",
-                data: {
-                    username: $("input[id='name']").val(),
-                    password: $("input[id='password']").val()
-                }, xhrFields: {
-                    withCredentials: true
-                }
-            }).success(function (data) {
-                location.href = data;
-            }).error(function (data) {
-                console.log("error");
-                alert(data.responseText);
-            });
+            var user = getUserByName($scope.users, $scope.name);
+            if (user != null) {
+                $scope.error = false;
+                window.location.href = "main.html?id=" + user.id;
+            } else {
+                $scope.error = true;
+            }
         };
         $scope.getUsernames = function () {
             var usernames = [];
@@ -86,82 +103,68 @@
                     usernames.push($scope.users[i].name);
             }
             return usernames;
-        };
+        }
     }]);
+
     app.controller("Kwetter_loggedin", ['$scope', 'userFactory', function ($scope, userFactory) {
-        $.ajax({
-            type: "GET",
-            url: "http://localhost:8080/resources/rest/api/isLoggedIn/" + params.id,
-            xhrFields: {
-                withCredentials: true
-            }
-        }).success(function (data) {
-            console.log("logged in success");
-            console.log(data);
-        }).error(function (data) {
-            console.log("logged in error");
-            if(data.responseJSON){
-                alert(data.responseJSON.message);
-                if(data.responseJSON.id){
-                    location.href = "?id=" + data.responseJSON.id;
-                } else {
-                    location.href = "index.html";
-                }
-            }
-        });
         function getUsers() {
-            userFactory.query(function (data) {
-                console.log("Loaded users");
-                console.log(data);
-                $scope.users = data;
-                $scope.currentUser = getUserById($scope.users, params.id);
-                $scope.getMyTweetsAndFromFollowedAccounts = function () {
-                    var timeline = [];
-                    for (i in $scope.currentUser.tweets) {
-                        timeline.push($scope.currentUser.tweets[i]);
-                    }
-                    for (i in $scope.currentUser.following) {
-                        var user = getUserById($scope.users, $scope.currentUser.following[i]);
-                        for (j in user.tweets) {
-                            timeline.push(user.tweets[j]);
+            userFactory.getUsers()
+                .success(function (users) {
+                    console.log("Loaded users");
+                    console.log(users);
+                    $scope.users = users;
+                    $scope.currentUser = getUserById($scope.users, params.id);
+
+                    $scope.getMyTweetsAndFromFollowedAccounts = function () {
+                        var timeline = [];
+                        for (i in $scope.currentUser.tweets) {
+                            timeline.push($scope.currentUser.tweets[i]);
                         }
-                    }
-                    timeline.sort(function (a, b) {
-                        return a.id == b.id ? 0 : a.id < b.id ? 1 : -1;
-                    });
-                    return timeline;
-                };
-            });
+                        for (i in $scope.currentUser.following) {
+                            var user = getUserById($scope.users, $scope.currentUser.following[i]);
+                            for (j in user.tweets) {
+                                timeline.push(user.tweets[j]);
+                            }
+                        }
+                        timeline.sort(function (a, b) {
+                            return a.id == b.id ? 0 : a.id < b.id ? 1 : -1;
+                        });
+                        return timeline;
+                    };
+                })
+                .error(function (error) {
+                    console.log("Error getting users:");
+                    console.log(error);
+                });
         }
         getUsers();
+
         //this is needed because we've data-ng-src="{{getUserById(followedUserID).image}}" in line 105 on loggedin.html
         $scope.getUserById = function (id) {
             return getUserById($scope.users, id);
         };
+
         $scope.logout = function () {
-            $.ajax({
-                type: "GET",
-                url: "http://localhost:8080/resources/rest/api/logout",
-                xhrFields: {
-                    withCredentials: true
-                }
-            }).success(function () {
-                location.href = "index.html";
-            }).error(function (data) {
-                console.log("error");
-                alert(data.responseText);
-            });
+            location.href = "index.html";
         };
+
         $scope.submitTweet = function () {
             var tweet = {
                 tweetText: $scope.tweetText,
                 datum: new Date().toJSON(), //JavaEE understands this format while consuming JSON
                 vanaf: "web"
             };
-            userFactory.save({id: params.id}, tweet).$promise.finally(function () {
-                getUsers();
-            });
+            userFactory.addTweet(tweet)
+                .success(function (success) {
+                    console.log("Added tweet");
+                    console.log(success);
+                    getUsers();
+                })
+                .error(function (error) {
+                    console.log("error adding tweet");
+                    console.log(error);
+                })
             $scope.tweetText = "";
-        };
+        }
     }]);
 }());
