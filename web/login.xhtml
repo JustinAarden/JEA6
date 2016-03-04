@@ -10,7 +10,20 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 <f:view>
-    <h:outputLabel value="Hello, world"/>
-    <h2>Welcome #{k)}</h2>
+    <h1>Login</h1>
+
+    <h:form>
+    <h:outputText value="Username" />
+    <h:inputText id="userName" value="#{UserBean.userName}" />
+    <h:commandButton value="Login" action="#{UserBean.CheckValidUser}" />
+    </h:form>
+    <h4>Password not needed</h4>
+    <h:outputLabel value="#{UserBean.result}"/>
+
+
+    <h3>Users</h3>
+    <p>
+        #{UserBean.allUsers}
+    </p>
 </f:view>
 </html>

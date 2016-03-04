@@ -38,57 +38,25 @@ and open the template in the editor.
     <div class="container">
         <div class="navbar-header">
             <a class="navbar-brand" href="../">Kwetter</a>
-            <button data-target="#navbar-main" data-toggle="collapse" type="button" class="navbar-toggle">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
         </div>
         <div id="navbar-main" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-
-                <li>
-                    <a href="../help/">Help</a>
-                </li>
-                <li>
-                    <a href="http://news.bootswatch.com">Blog</a>
-                </li>
-                <li class="dropdown">
-                    <a id="download" href="#" data-toggle="dropdown" class="dropdown-toggle">Cerulean <span class="caret"></span></a>
-                    <ul aria-labelledby="download" class="dropdown-menu">
-                        <li><a href="http://jsfiddle.net/bootswatch/9y480qo5/">Open Sandbox</a></li>
-                        <li class="divider"></li>
-                        <li><a href="./bootstrap.min.css">bootstrap.min.css</a></li>
-                        <li><a href="./bootstrap.css">bootstrap.css</a></li>
-                        <li class="divider"></li>
-                        <li><a href="./variables.less">variables.less</a></li>
-                        <li><a href="./bootswatch.less">bootswatch.less</a></li>
-                        <li class="divider"></li>
-                        <li><a href="./_variables.scss">_variables.scss</a></li>
-                        <li><a href="./_bootswatch.scss">_bootswatch.scss</a></li>
-                    </ul>
-                </li>
-            </ul>
 
             <ul class="nav navbar-nav navbar-right">
-                <li><a target="_blank" href="http://builtwithbootstrap.com/">Built With Bootstrap</a></li>
-                <li><a target="_blank" href="https://wrapbootstrap.com/?ref=bsw">WrapBootstrap</a></li>
                 <li class="dropdown">
-                    <a id="themes" href="#" data-toggle="dropdown" class="dropdown-toggle">User <span class="caret"></span></a>
-                    <ul aria-labelledby="themes" class="dropdown-menu">
-                        <li><a href="../default/">Logout</a></li>
-                    </ul>
+                    <a id="themes" href="#" data-toggle="dropdown" class="dropdown-toggle">Not logged in yet<span class="caret"></span></a>
                 </li>
             </ul>
 
         </div>
     </div>
 </div>
-<div class="container">
-
-    <div class="wrapper">
-        <div class="first">Login</div>
-        <div class="second">
+<div class="container" style="margin-top: 150px;">
+    <div class="col-md-6 center-block">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Login</h3>
+        </div>
+        <div class="panel-body">
             <form role='form' data-ng-submit="submitLogin()">
                 <div class='form-group'>
                     <label for='name'>Name</label>
@@ -100,15 +68,17 @@ and open the template in the editor.
             </form>
         </div>
     </div>
-
-    <div class="wrapper">
-        <div class="first">Usernames:</div>
-        <div class="second">
-            <ul class="list-group">
-                <li class="list-group-item" data-ng-repeat="username in getUsernames() track by username">
-                    {{username}}
-                </li>
-            </ul>
+    </div>
+    <div class="col-md-6 center-block">
+        <div class="panel panel-default">
+            <div class="panel-heading">Usernames:</div>
+            <div class="panel-body">
+                <ul class="list-group">
+                    <li class="list-group-item" data-ng-repeat="username in getUsernames() track by username">
+                        {{username}}
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>

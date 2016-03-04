@@ -121,7 +121,7 @@ public class KwetterResource {
             Logger.getLogger(KwetterResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.serverError().entity(ex.getLocalizedMessage()).build();
         }
-        return Response.ok("loggedin.html?id=" + kwetterService.find(username).getId()).build();
+        return Response.ok("main.html?id=" + kwetterService.find(username).getId()).build();
     }
 
     @GET

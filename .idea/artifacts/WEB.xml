@@ -10,6 +10,8 @@
         <element id="directory" name="lib">
           <element id="library" level="project" name="Jersey-2.2" />
           <element id="library" level="project" name="Maven: org.projectlombok:lombok:1.16.6" />
+          <element id="library" level="project" name="Maven: org.primefaces:primefaces:5.3" />
+          <element id="library" level="project" name="Maven: org.primefaces.themes:bootstrap:1.0.10" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="Kwetter/web/Web" />

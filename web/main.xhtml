@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) Justin Aarden. info@justinaarden.nl.
+  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+
+</h:head>
+    <h:body>
+    <h1><h:outputText value="#{UserBean.findUserOnID(param['id'])}" />  </h1>
+#{TweetBean.getTweetCol()}
+<div class="container">
+<div class="col-md-6">
+
+    <h:outputText value="#{TweetBean.id}"/>
+    <h:form>
+        <h:outputText value="Username" />
+        <h:inputText id="tweetText" value="#{TweetBean.tweetText}" />
+        <h:commandButton value="addTweet" action="#{TweetBean.addTweet}" />
+    </h:form>
+
+
+    <p:dataTable  var="t" value="#{TweetBean.tweetcol}" styleClass="table table-hover">
+
+        <p:column headerText="Datum">
+            <h:outputText value="#{t.datum}" />
+        </p:column>
+
+        <p:column headerText="Tweet">
+            <h:outputText value="#{t.tweetText}" />
+        </p:column>
+
+
+    </p:dataTable>
+</div>
+</div>
+    </h:body>
+</html>
