@@ -4,96 +4,62 @@
 
 package controller;
 
-/**
- * Created by Justin on 2-3-2016.
- */
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 import domain.User;
 import service.KService;
 
-import javax.enterprise.context.RequestScoped;
-import javax.faces.context.FacesContext;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
-import javax.inject.Named;
-import java.io.IOException;
+import java.util.ArrayList;
 
-
-
-@Named(value="UserBean")
-@RequestScoped
+/**
+ * Created by Justin on 4-3-2016.
+ */
+@ManagedBean(name = "UserBean")
+@ViewScoped
 public class UserBean {
-
-    private String result;
-    private User user;
-    private String userName;
-
-
-
-    Long id;
     @Inject
     KService kwetterService;
-    //private String subContent = "tweets";
 
-    public User getUser() {
-        return user;
+    private User user;
+
+
+
+    private ArrayList<User> followers = new ArrayList<>();
+
+    private ArrayList<User> following = new ArrayList<>();
+
+    public ArrayList<User> getFollowing() {
+        return following;
     }
-
-    public String getResult(){
-        return result;
+    public ArrayList<User> getFollowers() {
+        return followers;
     }
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-
-
-    public String findUserOnID(Long id){
-        User user = kwetterService.find(id);
-        userName = user.getName();
-                return userName;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public void CheckValidUser(){
-        User user = kwetterService.find(userName);
-
-        if(user != null){
-
-            try {
-                goToMainPageByUserID(user.getId());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            //result = "This is a existing user";
-        }
-        else{
-            result = "This user doesn't exist";
+    public void setFollowers() {
+        for (Long forId : user.getFollowers()) {
+            followers.add(kwetterService.find(forId));
         }
 
+    }
+    public void setFollowing() {
+        for (Long forId : user.getFollowing())
+        {
+            following.add(kwetterService.find(forId));
 
-
-
+        }
     }
 
-    public void goToMainPageByUserID(Long id) throws IOException {
-        FacesContext.getCurrentInstance().getExternalContext().redirect("main.xhtml?id=" + id);
 
+    public void init(Long id){
+        user = new User();
+        user = kwetterService.find(id);
+        if(!user.getFollowing().isEmpty()){
+            setFollowing();
+        }
+        if(!user.getFollowers().isEmpty()){
+            setFollowers();
+        }
     }
-
-
-
 
 
 }

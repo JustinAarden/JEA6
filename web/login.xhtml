@@ -14,16 +14,16 @@
 
     <h:form>
     <h:outputText value="Username" />
-    <h:inputText id="userName" value="#{UserBean.userName}" />
-    <h:commandButton value="Login" action="#{UserBean.CheckValidUser}" />
-    </h:form>
+    <h:inputText id="userName" value="#{LoginBean.userName}" />
+    <h:commandButton value="Login" action="#{LoginBean.CheckValidUser}" />
+</h:form>
     <h4>Password not needed</h4>
-    <h:outputLabel value="#{UserBean.result}"/>
+    <h:outputLabel value="#{LoginBean.result}"/>
 
 
     <h3>Users</h3>
     <p>
-        #{UserBean.allUsers}
+        #{LoginBean.allUsers}
     </p>
 </f:view>
 </html>
