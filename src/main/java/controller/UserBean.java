@@ -25,6 +25,7 @@ public class UserBean {
 
 
 
+
     private ArrayList<User> followers = new ArrayList<>();
 
     private ArrayList<User> following = new ArrayList<>();
@@ -55,6 +56,7 @@ public class UserBean {
         user = kwetterService.find(id);
         if(!user.getFollowing().isEmpty()){
             setFollowing();
+
         }
         if(!user.getFollowers().isEmpty()){
             setFollowers();
