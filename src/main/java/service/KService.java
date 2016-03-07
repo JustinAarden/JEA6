@@ -49,7 +49,7 @@ public class KService {
      */
     public void remove(User user) {
         userdao.remove(user);
-    } //TODO not implemented correctly
+    } //TODO not implemented correctly, no priority atm
 
     /**
      *
@@ -61,6 +61,7 @@ public class KService {
 
     /**
      *
+     * This method finds the user on his or her ID
      * @param id
      * @return
      */
@@ -69,7 +70,7 @@ public class KService {
     }
 
     /**
-     *
+     *This method finds the user based on the username
      * @param name
      * @return
      */
@@ -79,6 +80,7 @@ public class KService {
 
     /**
      *
+     * This method counts the total users
      * @return
      */
     public int count() {
@@ -87,6 +89,7 @@ public class KService {
 
     /**
      *
+     * Still not used
      * @return
      */
     public Long nextTweetID(){

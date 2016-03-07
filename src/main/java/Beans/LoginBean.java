@@ -2,7 +2,7 @@
  * Copyright (c) Justin Aarden. info@justinaarden.nl.
  */
 
-package controller;
+package Beans;
 
 /**
  * Created by Justin on 2-3-2016.

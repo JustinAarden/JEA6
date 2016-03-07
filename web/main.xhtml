@@ -17,6 +17,10 @@
     #{UserBean.init(param['id'])}
 </h:head>
     <h:body>
+
+        <f:facet name="last">
+            <h:outputStylesheet name="css/bootstrap.css" />
+        </f:facet>
     <h1><h:outputText value="#{LoginBean.findUserOnID(param['id'])}" />  </h1>
 
         <div class="ui-grid-row">
@@ -59,7 +63,9 @@
                             <h:outputText value="Name:" />
                             <h:outputText value="#{follower.name}" />
                             <h:outputText value="Profile" />
-                            <h:link value="?id=#{follower.id}" outcome="?id=#{follower.id}" />
+                            <h:form>
+                            <h:commandLink value="?id=#{follower.id}" >test</h:commandLink>
+                            </h:form>
                         </p:panelGrid>
 
 

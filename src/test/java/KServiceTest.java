@@ -32,6 +32,8 @@ public class KServiceTest {
     User user1;
     User user2;
 
+
+
     Tweet tweet1;
     Tweet tweet2;
 
@@ -60,23 +62,24 @@ public class KServiceTest {
         Mockito.verify(userDao, Mockito.times(1)).edit(user1);
     }
 
-    @Test
-    public void testRemove() throws Exception {
-
-    }
 
     @Test
     public void testFindAll() throws Exception {
 
-    }
 
-    @Test
-    public void testFind() throws Exception {
+
 
     }
 
     @Test
-    public void testFind1() throws Exception {
+    public void testFind() throws Exception { // find on id
+        kwetterService.find(1L);
+        // h
+        Mockito.verify(userDao, Mockito.times(1)).find(1L);
+    }
+
+    @Test
+    public void testFind1() throws Exception { //find on username
 
     }
 

@@ -2,7 +2,7 @@
  * Copyright (c) Justin Aarden. info@justinaarden.nl.
  */
 
-package controller;
+package Beans;
 
 import domain.User;
 import service.KService;

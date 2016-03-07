@@ -2,7 +2,7 @@
  * Copyright (c) Justin Aarden. info@justinaarden.nl.
  */
 
-package controller;
+package Beans;
 
 import domain.Tweet;
 import domain.User;
@@ -14,9 +14,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 
 /**
  * Created by Justin on 3-3-2016.
@@ -35,6 +33,7 @@ public class TweetBean implements Serializable {
     private ArrayList<Tweet> tweetcol = new ArrayList<>();
     private Long userId;
     private  String tweetText;
+    private String latestTweet;
 
 
  /*   private String get = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get( "id" ).replaceAll("\\s+","");
@@ -88,12 +87,31 @@ public void addTweet(){
         FacesContext.getCurrentInstance().getExternalContext().redirect("main.xhtml?id=" + id +"&success=1");
 
     }
+
+    public void gotToErrorPage() throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().redirect("404.html?e=usernotfound");
+    }
     public Collection<Tweet> getTweetcol() {
         return tweetcol;
     }
 
+    public String latestTweet(){
+
+        return  latestTweet;
+    }
+
     public void init(Long id){
-           user = kwetterService.find(id);
+        if(id == null){
+            try {
+                gotToErrorPage();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else{
+            user = kwetterService.find(id);
+
+        }
+
         //tweetcol = (List<Tweet>) user.getTweets();
         for (Tweet tweets : user.getTweets()) {
             tweetcol.add(tweets);
@@ -106,6 +124,8 @@ public void addTweet(){
                 }
 
             }
+
+
         }
 
 
