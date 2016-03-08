@@ -12,7 +12,6 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -25,14 +24,10 @@ public class UserBean {
     KService kwetterService;
 
     HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        private User user;
-
-
-
-
+    private User user;
     private ArrayList<User> followers = new ArrayList<>();
-
     private ArrayList<User> following = new ArrayList<>();
+
 
     public ArrayList<User> getFollowing() {
         return following;
@@ -53,24 +48,15 @@ public class UserBean {
 
         }
     }
-
-
-
     public User getUser() {
         return user;
     }
 
-
-
-
- void gotToErrorPage() throws IOException {
-        FacesContext.getCurrentInstance().getExternalContext().redirect("login.xhtml");
- return;}
     private boolean isNullOrBlank(final String s) {
         return s == null || s.trim().length() == 0;
     }
-    public void init(){
 
+    public void init(){
         if(!isNullOrBlank(request.getParameter("id"))){
             Long id = Long.parseLong(request.getParameter("id"));
             user = kwetterService.find(id);

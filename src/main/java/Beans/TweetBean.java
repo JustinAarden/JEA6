@@ -33,10 +33,8 @@ public class TweetBean implements Serializable {
 
 
 
-    private  String result;
     private ArrayList<Tweet> allTweets = new ArrayList<>();
     private ArrayList<Tweet> tweetsBySingleUser = new ArrayList<>();
-    private Long userId;
     private  String tweetText;
     private String latestTweet;
     private Date latestTweetDAte;
@@ -50,18 +48,6 @@ public class TweetBean implements Serializable {
     }
     public void setTweetText(String tweetText) {
         this.tweetText = tweetText;
-    }
-    public String getResult() {
-        return result;
-    }
-    public void setResult(String result) {
-        this.result = result;
-    }
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-    public Long getUserId() {
-        return userId;
     }
     public User getUser() {
         return user;
@@ -96,8 +82,6 @@ public class TweetBean implements Serializable {
 
     }
 
-
-
     public Collection<Tweet> getAllTweets() {
         Collections.sort(allTweets);
         Collections.reverse(allTweets);
@@ -119,19 +103,14 @@ public class TweetBean implements Serializable {
                     User found = kwetterService.find(forid);
                     allTweets.addAll(found.getTweets());
                 }
-
-
-        }
-
+            }
     }
+
 
     private boolean isNullOrBlank(final String s) {
         return s == null || s.trim().length() == 0;
     }
 
-    private boolean getFollwingTweets(final String s) {
-        return s == null || s.trim().length() == 0;
-    }
     public void init(){
 
         if(!isNullOrBlank(request.getParameter("id"))){
