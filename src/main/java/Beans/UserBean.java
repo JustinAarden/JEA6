@@ -9,7 +9,10 @@ import service.KService;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -21,7 +24,8 @@ public class UserBean {
     @Inject
     KService kwetterService;
 
-    private User user;
+    HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        private User user;
 
 
 
@@ -51,9 +55,30 @@ public class UserBean {
     }
 
 
-    public void init(Long id){
-        user = new User();
-        user = kwetterService.find(id);
+
+    public User getUser() {
+        return user;
+    }
+
+
+
+
+ void gotToErrorPage() throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().redirect("login.xhtml");
+ return;}
+    private boolean isNullOrBlank(final String s) {
+        return s == null || s.trim().length() == 0;
+    }
+    public void init(){
+
+        if(!isNullOrBlank(request.getParameter("id"))){
+            Long id = Long.parseLong(request.getParameter("id"));
+            user = kwetterService.find(id);
+        }else{
+        }
+
+
+
         if(!user.getFollowing().isEmpty()){
             setFollowing();
 
@@ -62,6 +87,8 @@ public class UserBean {
             setFollowers();
         }
     }
+
+
 
 
 }

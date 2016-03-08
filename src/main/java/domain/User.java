@@ -38,6 +38,11 @@ public class User implements Serializable {
     private String bio;
     private String location = "Nederland";
 
+    private String password;
+    @ManyToMany
+    @JoinTable(name = "USER_ROLE", joinColumns = @JoinColumn(name = "name", referencedColumnName = "name"), inverseJoinColumns = @JoinColumn(name = "roleID", referencedColumnName = "roleID"))
+    private List<Role> roles = new ArrayList();
+
     @SuppressWarnings("JpaAttributeTypeInspection")
     private List<Long> following = new ArrayList();
     @SuppressWarnings("JpaAttributeTypeInspection")
@@ -69,6 +74,17 @@ public class User implements Serializable {
     *
     *====================USER===================
     * */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    public void addGroup(Role role) {
+        this.roles.add(role);
+    }
+
+    @XmlElement(required = true)
+    public List<Role> getGroup() {
+        return this.roles;
+    }
 
     @XmlElement(required = true)
     public Long getId() {

@@ -8,8 +8,58 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    #{TweetBean.init()}
+    #{UserBean.init()}
+</h:head>
+<h:body>
 <f:view>
-    <h:outputLabel value="Hello, world"/>
+
+    <div class="ui-grid ui-grid-responsive">
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-6">
+              <h1>S0</h1>
+                <h2>Name: <h:outputText value="#{UserBean.user.name}" /><br/></h2>
+            </div>
+            <div class="ui-grid-col-6">
+                <h1>S2 Details</h1>
+
+                <strong>Name:  </strong> <h:outputText value="#{UserBean.user.name}" /><br/>
+                <strong>Location:  </strong> <h:outputText value="#{UserBean.user.location}" /><br/>
+                <strong>Web:  </strong> <h:outputText value="#{UserBean.user.web}" /><br/>
+                <strong>Bio:  </strong> <h:outputText value="#{UserBean.user.bio}" /><br/>
+
+            </div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-6">
+                <h1>S1 Tweets</h1>
+                <h:outputText value="A total of #{TweetBean.allTweets.size()} tweets is showed here" />
+                <p:dataTable var="t" value="#{TweetBean.allTweets}" styleClass="table table-hover">
+
+                    <p:column headerText="Datum" width="50px;">
+                        <h:outputText value="#{t.datum}" />
+                    </p:column>
+
+                    <p:column headerText="Tweet" width="250px;">
+                        <h:outputText value="#{t.tweetText}" />
+                    </p:column>
+
+                </p:dataTable>
+            </div>
+            <div class="ui-grid-col-6">
+                <h1>S3</h1>
+                <h3>#{UserBean.followers.size()} Followers</h3>
+
+                <h3>#{UserBean.following.size()} Following</h3>
+
+            </div>
+        </div>
+    </div>
+
 </f:view>
+</h:body>
 </html>

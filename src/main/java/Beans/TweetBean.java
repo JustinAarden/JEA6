@@ -12,9 +12,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
 
 /**
  * Created by Justin on 3-3-2016.
@@ -30,19 +34,16 @@ public class TweetBean implements Serializable {
 
 
     private  String result;
-    private ArrayList<Tweet> tweetcol = new ArrayList<>();
+    private ArrayList<Tweet> allTweets = new ArrayList<>();
+    private ArrayList<Tweet> tweetsBySingleUser = new ArrayList<>();
     private Long userId;
     private  String tweetText;
     private String latestTweet;
-
-
- /*   private String get = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get( "id" ).replaceAll("\\s+","");
-    private Long  id = new Long(get);*/
-
-    private static Long testid;
-
-
+    private Date latestTweetDAte;
     private User user = new User();
+    HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+
+
 
     public String getTweetText() {
         return tweetText;
@@ -68,10 +69,17 @@ public class TweetBean implements Serializable {
     public void setUser(User user) {
         this.user = user;
     }
+    public ArrayList<Tweet> getTweetsBySingleUser() {
+        return tweetsBySingleUser;
+    }
+    public Date getLatestTweetDAte() {
+        return latestTweetDAte;
+    }
+    public String getLatestTweet() {
+        return latestTweet;
+    }
 
-
-
-public void addTweet(){
+    public void addTweet(){
             user.addTweet(new Tweet(tweetText, new Date(),"JSF Tweet"));
             kwetterService.edit(user);
         try {
@@ -79,7 +87,7 @@ public void addTweet(){
         } catch (IOException e) {
             e.printStackTrace();
         }
- }
+    }
 
 
 
@@ -88,45 +96,65 @@ public void addTweet(){
 
     }
 
+
+
+    public Collection<Tweet> getAllTweets() {
+        Collections.sort(allTweets);
+        Collections.reverse(allTweets);
+        return allTweets;
+    }
+
+    public void setlatestTweet(){
+        int latest =  tweetsBySingleUser.size() -1;
+        latestTweet = tweetsBySingleUser.get(latest).getTweetText();
+        latestTweetDAte = tweetsBySingleUser.get(latest).getDatum();
+    }
     public void gotToErrorPage() throws IOException {
-        FacesContext.getCurrentInstance().getExternalContext().redirect("404.html?e=usernotfound");
-    }
-    public Collection<Tweet> getTweetcol() {
-        return tweetcol;
+        FacesContext.getCurrentInstance().getExternalContext().redirect("login.xhtml?error=nouser");}
+
+
+    public void tweetsByFollowing(){
+            if(!user.getFollowing().isEmpty()){
+                for (Long forid :user.getFollowing()) {
+                    User found = kwetterService.find(forid);
+                    allTweets.addAll(found.getTweets());
+                }
+
+
+        }
+
     }
 
-    public String latestTweet(){
-
-        return  latestTweet;
+    private boolean isNullOrBlank(final String s) {
+        return s == null || s.trim().length() == 0;
     }
 
-    public void init(Long id){
-        if(id == null){
+    private boolean getFollwingTweets(final String s) {
+        return s == null || s.trim().length() == 0;
+    }
+    public void init(){
+
+        if(!isNullOrBlank(request.getParameter("id"))){
+                Long id = Long.parseLong(request.getParameter("id"));
+            user = kwetterService.find(id);
+            for (Tweet tweets : user.getTweets()) {
+                tweetsBySingleUser.add(tweets);
+                allTweets.add(tweets);
+                setlatestTweet();
+            }
+            if(isNullOrBlank(request.getParameter("tweets"))){
+                tweetsByFollowing();
+            }
+
+        }else{
             try {
                 gotToErrorPage();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else{
-            user = kwetterService.find(id);
-
         }
 
-        //tweetcol = (List<Tweet>) user.getTweets();
-        for (Tweet tweets : user.getTweets()) {
-            tweetcol.add(tweets);
-
-        }
-        if(!user.getFollowing().isEmpty()){
-            for (Long forid :user.getFollowing()) {
-                User found = kwetterService.find(forid);
-                tweetcol.addAll(found.getTweets());
-                }
-
-            }
-
-
-        }
+    }
 
 
 

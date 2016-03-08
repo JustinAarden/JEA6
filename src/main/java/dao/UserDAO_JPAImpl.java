@@ -5,6 +5,7 @@
 package dao;
 
 
+import domain.Role;
 import domain.Tweet;
 import domain.User;
 
@@ -23,7 +24,8 @@ import java.util.List;
 //@ApplicationScoped
 @Stateless
 public class UserDAO_JPAImpl implements UserDao {
-
+    private Role user = new Role("user_role");
+    private Role admin = new Role("admin_role");
 
     @PersistenceContext
     private EntityManager em;
@@ -50,12 +52,22 @@ public class UserDAO_JPAImpl implements UserDao {
         u1.addTweet(t2);
         Tweet t3 = new Tweet("This is a tweet created by user 3", new Date(), "PC");
         u3.addTweet(t3);
+        em.persist(user);
+        em.persist(admin);
+
+        u1.addGroup(user);
+        u1.addGroup(admin);
+        u2.addGroup(user);
+        u3.addGroup(user);
+        u4.addGroup(user);
 
 
         this.edit(u1);
         this.edit(u2);
         this.edit(u3);
         this.edit(u4);
+
+
     }
 
     @Override

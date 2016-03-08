@@ -9,10 +9,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 @XmlRootElement
 @Entity
-public class Tweet implements Serializable {
+public class Tweet implements Serializable, Comparable<Tweet> {
     private static final long serialVersionUID = 1L;
     private static long nextID = 0L;
 
@@ -29,16 +30,12 @@ public class Tweet implements Serializable {
 
     public Tweet(String tweet) {
         this.tweetText = tweet;
-        //this.id = User.nextID++;
-        //only used for UserDAOCollectionImpl JPA uses @GeneratedValue
     }
 
     public Tweet(String tweetText, Date datum, String vanaf) {
         this.tweetText = tweetText;
         this.date = datum;
         this.postedFrom = vanaf;
-        //this.id = Tweet.nextID++;
-        //only used for UserDAOCollectionImpl, JPA uses @GeneratedValue
     }
 
     @XmlElement(required = true)
@@ -80,6 +77,7 @@ public class Tweet implements Serializable {
         return hash;
     }
 
+
     @Override
     public boolean equals(Object object) {
         if (!(object instanceof Tweet)) {
@@ -92,5 +90,10 @@ public class Tweet implements Serializable {
     @Override
     public String toString() {
         return "kwetter.domain.Tweet[id=" + date.toString() + "]";
+    }
+
+    @Override
+    public int compareTo(Tweet t) {
+        return getDatum().compareTo(t.getDatum());
     }
 }

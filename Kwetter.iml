@@ -32,7 +32,7 @@
         <setting name="provider-name" value="TopLink" />
         <datasource-mapping>
           <factory-entry name="default" />
-          <factory-entry name="kwetter" />
+          <factory-entry name="kwetter" value="60827ce0-a5a9-440e-8823-071ca5ef5b6c" />
           <factory-entry name="org.hibernate.tutorial.jpa" />
           <factory-entry name="pu1" />
         </datasource-mapping>
