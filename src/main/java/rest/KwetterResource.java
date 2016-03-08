@@ -144,13 +144,13 @@ public class KwetterResource {
     public Response isLoggedIn(@PathParam("id") Long id, @Context HttpServletRequest request) {
         String username = request.getRemoteUser();
         if (username == null) {
-            return Response.serverError().entity("{\"message\":\"No user is logged in\"}").build();
+            return Response.serverError().entity("{\"jms\":\"No user is logged in\"}").build();
         }
         User user = kwetterService.find(username);
         if (Objects.equals(user.getId(), id)) {
-            return Response.ok("{\"message\":\"Ok\"}").build();
+            return Response.ok("{\"jms\":\"Ok\"}").build();
         } else {
-            return Response.serverError().entity("{\"message\":\"Other user is logged in\",\"id\":\"" + user.getId() + "\"}").build();
+            return Response.serverError().entity("{\"jms\":\"Other user is logged in\",\"id\":\"" + user.getId() + "\"}").build();
         }
     }
 
@@ -168,7 +168,7 @@ public class KwetterResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("addtweet/{user1}/{message}")
-    public User testMethod(@PathParam("user1") Long id, @PathParam("message") String message)  {
+    public User testMethod(@PathParam("user1") Long id, @PathParam("jms") String message)  {
         User user = kwetterService.find(id);
         user.addTweet(new Tweet(message, new Date(),"REST-API"));
         return kwetterService.find(id);

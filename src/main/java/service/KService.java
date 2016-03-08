@@ -52,7 +52,7 @@ public class KService {
     } //TODO not implemented correctly, no priority atm
 
     /**
-     *
+     *This method returns all users
      * @return
      */
     public List<User> findAll() {

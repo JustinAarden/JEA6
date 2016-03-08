@@ -124,7 +124,7 @@ public class UserDAO_JPAImpl implements UserDao {
             }
         }
         if (user != null) {
-           //user.removeTweet(tweetToRemove);
+           user.removeTweet(tweetToRemove);
         }
         em.remove(em.find(Tweet.class, tweetToRemove.getId()));
     }

@@ -65,22 +65,20 @@ public class KServiceTest {
 
     @Test
     public void testFindAll() throws Exception {
-
-
-
-
+        kwetterService.findAll();
+        Mockito.verify(userDao, Mockito.times(1)).findAll();
     }
 
     @Test
-    public void testFind() throws Exception { // find on id
+    public void testFindOnId() throws Exception {
         kwetterService.find(1L);
-        // h
         Mockito.verify(userDao, Mockito.times(1)).find(1L);
     }
 
     @Test
-    public void testFind1() throws Exception { //find on username
-
+    public void testFindOnUsername() throws Exception {
+        kwetterService.find("user1");
+        Mockito.verify(userDao, Mockito.times(1)).find("user1");
     }
 
     @Test
@@ -93,8 +91,5 @@ public class KServiceTest {
         Mockito.verify(userDao, Mockito.never()).count();
     }
 
-    @Test
-    public void testNextTweetID() throws Exception {
 
-    }
 }
