@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Justin Aarden. info@justinaarden.nl.
+ */
+
 package dao;
 
 import domain.User;
@@ -23,6 +27,10 @@ public interface UserDao {
 
     Long nextTweetID();
 
-    void addFollower(User userToFollow, User follower);
+    List<User>  findFollowing(Long id);
+
+    List<User> findFollower(Long id);
+
+    // void addFollower(User userToFollow, User follower);
 
 }

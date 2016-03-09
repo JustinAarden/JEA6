@@ -83,6 +83,17 @@ public class KService {
      * This method counts the total users
      * @return
      */
+
+
+    public List<User>  findFollowing(Object id) {
+        return userdao.findFollowing((Long)id);
+    }
+
+    public List<User>  findFollower(Object id) {
+        return userdao.findFollower((Long)id);
+    }
+
+
     public int count() {
         return userdao.count();
     }

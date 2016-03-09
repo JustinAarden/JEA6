@@ -7,12 +7,14 @@ package rest;
 
 import domain.Tweet;
 import domain.User;
+import interceptors.Tweetinterceptor;
 import service.KService;
 
 import javax.batch.operations.JobOperator;
 import javax.batch.runtime.BatchRuntime;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
@@ -76,34 +78,29 @@ public class KwetterResource {
     public String addFollower(@PathParam("user1") Long id, @PathParam("user2") Long id2)  {
         User user = kwetterService.find(id);
         User user2 = kwetterService.find(id2);
+
+        User test;
         String followers = "";
         String following ="";
         if(user.getName() !=null || user2.getName() != null){
-            if(user.getFollowing().contains(user2.getId())){
-                return "Already following that user!";
-            }else if(user.getId().equals(user2.getId())){
-                return "You can't follow yourself :-)";
-            }else{
-                user.addFollowing(id2);
-                user2.addFollower(id);
-            }
+                user2.addFollower(user);
+
         }else{
             return "Either User 1 or User 2 doesn't exist!";
         }
-
-        for (Long forId : user.getFollowers())
-        {
-            followers += kwetterService.find(forId).getName();
+        for (User follower: kwetterService.findFollower(user.getId())
+             ) { followers += follower.getName();
 
         }
-        for (Long forId : user.getFollowing())
-        {
-            following += kwetterService.find(forId).getName();
+        for (User followinguser: kwetterService.findFollowing(user.getId())
+                ) { following += followinguser.getName();
 
         }
 
 
-        return user.getName() + " ==>   Followed:   ==>   " + user2.getName() +     System.lineSeparator() + " And is already Following  " +  following +  System.lineSeparator() + " And is followed by  " +  followers;
+
+
+        return user.getName() + " ==>   Followed:   ==>   " + user2.getName() +     System.lineSeparator() + " And is already Following  "  + following +  System.lineSeparator() + " And is followed by  " +  followers;
     }
 
 
@@ -168,9 +165,11 @@ public class KwetterResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("addtweet/{user1}/{message}")
-    public User testMethod(@PathParam("user1") Long id, @PathParam("jms") String message)  {
+    @Interceptors(Tweetinterceptor.class)
+    public User testMethod(@PathParam("user1") Long id, @PathParam("message") String message)  {
         User user = kwetterService.find(id);
         user.addTweet(new Tweet(message, new Date(),"REST-API"));
+
         return kwetterService.find(id);
     }
 

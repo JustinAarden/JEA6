@@ -110,6 +110,27 @@ public class UserDAO_JPAImpl implements UserDao {
         }
     }
 
+    @Override
+    public List<User> findFollowing(Long id) {
+        Query q = em.createNamedQuery("User.findByFollowing");
+        q.setParameter("id", id);
+        try {
+           return q.getResultList();
+        } catch (NoResultException ex) {
+            return null;
+        }
+    }
+    @Override
+    public List<User> findFollower(Long id) {
+        Query q = em.createNamedQuery("User.findFollower");
+        q.setParameter("id", id);
+        try {
+            return q.getResultList();
+        } catch (NoResultException ex) {
+            return null;
+        }
+    }
+
 
     //TODO FIX REMOVE TWEET!!!
     public void remove(Tweet tweetToRemove) {
@@ -134,11 +155,6 @@ public class UserDAO_JPAImpl implements UserDao {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public void addFollower(User userToFollow, User follower) {
-        userToFollow.addFollower(follower.getId());
-        follower.addFollowing(userToFollow.getId());
-    }
 
     @Override
     public Long nextTweetID() {

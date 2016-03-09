@@ -42,6 +42,7 @@ public class kwetterJsonWriter implements ItemWriter {
             User user = kwetterService.find(name);
             if (user == null) {
                 user = new User(name, "http://inputofbatch/no-website", "Batchtesting - No bio"); //Create a user if user doesn't exit
+                //^should create the user frank, because it doesn't exist yet
                 kwetterService.create(user);
             }
             user.addTweet(tweet);

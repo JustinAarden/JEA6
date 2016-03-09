@@ -23,7 +23,11 @@ import java.util.List;
         @NamedQuery(name = "User.findID",
                 query = "select User from User user where user.id =:id"),
         @NamedQuery(name = "User.findName",
-                query = "select User from User user where user.name =:name")
+                query = "select User from User user where user.name =:name"),
+        @NamedQuery(name = "User.findByFollowing",
+                query = "select User from User user join user.followers f where f.id=:id"),
+        @NamedQuery(name = "User.findFollower",
+                query = "select User from User user join user.followers f where user.id=:id")
 })
 public class User implements Serializable {
 
@@ -44,9 +48,8 @@ public class User implements Serializable {
     private List<Role> roles = new ArrayList();
 
     @SuppressWarnings("JpaAttributeTypeInspection")
-    private List<Long> following = new ArrayList();
-    @SuppressWarnings("JpaAttributeTypeInspection")
-    private List<Long> followers = new ArrayList();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<User> followers = new ArrayList();
 
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -166,33 +169,30 @@ public class User implements Serializable {
     *==================FOLLOWERS================
     *
     * */
-    public void setFollowing(List<Long> following) {
-        this.following = following;
-    }
-
-    public Boolean addFollowing(Long following) {
-        return this.following.add(following);
-    }
-
-    public Boolean addFollower(Long follower) {
-        return this.followers.add(follower);
-    }
-
     @XmlElement(required = true)
-    public Collection<Long> getFollowing() {
-        return Collections.unmodifiableCollection(following);
-    }
+    public Collection<User> getFollowers() {
 
-    @XmlElement(required = true)
-    public Collection<Long> getFollowers() {
         return Collections.unmodifiableCollection(followers);
+
+
     }
+    @XmlElement(required = true)
+    public Collection<User> getFollowing() {
+
+        return Collections.unmodifiableCollection(followers);
+
+
+    }
+
+
 
     public Boolean addTweet(Tweet tweet) {
         return this.tweets.add(tweet);
     }
 
-
+    public Boolean addFollower(User follower){
+        return  this.followers.add(follower);
+    }
 
     /*=====================================================================================================
     * =====================================================================================================*/
