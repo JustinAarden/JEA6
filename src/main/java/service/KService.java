@@ -23,8 +23,7 @@ import java.util.regex.Pattern;
 @Stateless
 @Named
 public class KService {
-    public static final Pattern REGEX_USERNAME = Pattern.compile("[A-Za-z][A-Za-z0-9_-]*");
-    public static final Pattern REGEX_MENTION = Pattern.compile("@(?<username>" + REGEX_USERNAME + ")");
+    public static final Pattern REGEX_MENTION = Pattern.compile("@(?<username>[A-Za-z][A-Za-z0-9_-]*)");
     /**
      * This is a Injection of the userDao
      * which is a interface of UserDAO_JPAImpl
@@ -105,13 +104,19 @@ public class KService {
     }
 */
 
-
-    public Tweet addTweet(User user, String content) {
-        Tweet tweet = user.addTweet(content, "TESTlocation");
+    /**
+     *
+     *
+     * @param user
+     * @param tweetText
+     * @return
+     */
+    public Tweet addTweet(User user, String tweetText) {
+        Tweet tweet = user.addTweet(tweetText, "TESTlocation");
 
         //Checks for mentions in the tweet @
         List<User> mentioned = new ArrayList<>();
-        Matcher mentionMatcher = REGEX_MENTION.matcher(content);
+        Matcher mentionMatcher = REGEX_MENTION.matcher(tweetText);
         while (mentionMatcher.find()) {
             User mention = userdao.find(mentionMatcher.group("username"));
             if (mention == null) continue;

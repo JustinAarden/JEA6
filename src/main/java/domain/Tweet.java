@@ -26,8 +26,6 @@ public class Tweet implements Serializable, Comparable<Tweet> {
     private Date date;
     private String postedFrom;
 
-    @JoinColumn(name = "user_id")
-    private User user;
 
     @ManyToMany
     @JoinTable(
@@ -52,20 +50,6 @@ public class Tweet implements Serializable, Comparable<Tweet> {
         this.postedFrom = vanaf;
     }
 
-    public Tweet(User user, String tweetText, String vanaf, Date datum) {
-        this.user = user;
-        this.tweetText = tweetText;
-        this.postedFrom = vanaf;
-        this.date = datum;
-    }
-
-    @XmlElement(required = true)
-    public User getUser() {
-        return user;
-    }
-    public void setUser(User user) {
-        this.user = user;
-    }
     @XmlElement(required = true)
     public Long getId() {
         return id;
