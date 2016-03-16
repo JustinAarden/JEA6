@@ -122,10 +122,13 @@ public class UserDAO_JPAImpl implements UserDao {
     }
     @Override
     public List<User> findFollower(Long id) {
-        Query q = em.createNamedQuery("User.findFollower");
+       // Query q = em.createQuery("SELECT u from User u where u.id=(Select f.id from u.followers f where f.id=:id)");
+        Query q = em.createQuery("SELECT u from User u inner join u.followers f where u.id=:id");
+        //Query q = em.createNamedQuery("User.findFollower");
         q.setParameter("id", id);
+        List<User> userlist = q.getResultList();
         try {
-            return q.getResultList();
+            return userlist;
         } catch (NoResultException ex) {
             return null;
         }

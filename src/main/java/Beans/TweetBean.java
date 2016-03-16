@@ -15,10 +15,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
+import java.util.*;
 
 /**
  * Created by Justin on 3-3-2016.
@@ -66,6 +63,8 @@ public class TweetBean implements Serializable {
     }
 
     public void addTweet(){
+
+
             user.addTweet(new Tweet(tweetText, new Date(),"JSF Tweet"));
             kwetterService.edit(user);
         try {
@@ -97,16 +96,30 @@ public class TweetBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().redirect("login.xhtml?error=nouser");}
 
 
-    public void tweetsByFollowing(){
-            if(!user.getFollowing().isEmpty()){
-                for (Long forid :user.getFollowing()) {
-                    User found = kwetterService.find(forid);
-                    allTweets.addAll(found.getTweets());
+    public void tweetsByFollowing(){/*
+            if(!kwetterService.findFollowing().isEmpty()){
+                for (User forid :user.getFollowing()) {
+                    allTweets.addAll(user.getTweets());
                 }
-            }
+            }*/
     }
 
+    public void containsMention(){
 
+
+    }
+
+    public void containsTrend(){
+        HashSet noDupSet = new HashSet();
+        for (Tweet tweet: allTweets
+             ) {
+            if (tweet.getTweetText().contains("#")){
+
+            }
+
+        }
+
+    }
     private boolean isNullOrBlank(final String s) {
         return s == null || s.trim().length() == 0;
     }
@@ -122,7 +135,7 @@ public class TweetBean implements Serializable {
                 setlatestTweet();
             }
             if(isNullOrBlank(request.getParameter("tweets"))){
-                tweetsByFollowing();
+               // tweetsByFollowing();
             }
 
         }else{

@@ -36,17 +36,12 @@ public class UserBean {
         return followers;
     }
     public void setFollowers() {
-        for (Long forId : user.getFollowers()) {
-            followers.add(kwetterService.find(forId));
-        }
+            followers.addAll(user.getFollowers());
 
     }
     public void setFollowing() {
-        for (Long forId : user.getFollowing())
-        {
-            following.add(kwetterService.find(forId));
+            following.addAll(kwetterService.findFollowing(user.getId()));
 
-        }
     }
     public User getUser() {
         return user;
@@ -65,10 +60,10 @@ public class UserBean {
 
 
 
-        if(!user.getFollowing().isEmpty()){
+/*        if(!user.getFollowing().isEmpty()){
             setFollowing();
 
-        }
+        }*/
         if(!user.getFollowers().isEmpty()){
             setFollowers();
         }

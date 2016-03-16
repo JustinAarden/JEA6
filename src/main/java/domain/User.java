@@ -27,7 +27,7 @@ import java.util.List;
         @NamedQuery(name = "User.findByFollowing",
                 query = "select User from User user join user.followers f where f.id=:id"),
         @NamedQuery(name = "User.findFollower",
-                query = "select User from User user join user.followers f where user.id=:id")
+                query = "select User, f from User user join user.followers f where user.id=:id")
 })
 public class User implements Serializable {
 
@@ -176,22 +176,18 @@ public class User implements Serializable {
 
 
     }
-    @XmlElement(required = true)
-    public Collection<User> getFollowing() {
 
-        return Collections.unmodifiableCollection(followers);
-
-
-    }
 
 
 
     public Boolean addTweet(Tweet tweet) {
+
         return this.tweets.add(tweet);
+
     }
 
     public Boolean addFollower(User follower){
-        return  this.followers.add(follower);
+        return followers.add(follower);
     }
 
     /*=====================================================================================================

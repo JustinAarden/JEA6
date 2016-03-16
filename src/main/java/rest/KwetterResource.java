@@ -78,22 +78,24 @@ public class KwetterResource {
     public String addFollower(@PathParam("user1") Long id, @PathParam("user2") Long id2)  {
         User user = kwetterService.find(id);
         User user2 = kwetterService.find(id2);
-
-        User test;
         String followers = "";
         String following ="";
         if(user.getName() !=null || user2.getName() != null){
+            if(!user2.getFollowers().contains(user)){
                 user2.addFollower(user);
-
+            }else{
+                return "already following this user";
+            }
         }else{
             return "Either User 1 or User 2 doesn't exist!";
         }
-        for (User follower: kwetterService.findFollower(user.getId())
-             ) { followers += follower.getName();
 
-        }
         for (User followinguser: kwetterService.findFollowing(user.getId())
                 ) { following += followinguser.getName();
+
+        }
+        for (User followinguser: user.getFollowers()
+                ) { followers += followinguser.getName();
 
         }
 

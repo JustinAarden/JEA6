@@ -8,8 +8,9 @@ import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Objects;
+import java.util.List;
 
 @XmlRootElement
 @Entity
@@ -24,6 +25,21 @@ public class Tweet implements Serializable, Comparable<Tweet> {
     @Column(name = "dateField")
     private Date date;
     private String postedFrom;
+
+
+    @ManyToMany
+    @JoinTable(
+            name = "mentions",
+            joinColumns = @JoinColumn(name = "tweet_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
+    )
+
+
+
+
+    private List<User> mentioned = new ArrayList<>();
+
+
 
     public Tweet() {
     }
@@ -68,6 +84,15 @@ public class Tweet implements Serializable, Comparable<Tweet> {
 
     public void setVanaf(String vanaf) {
         this.postedFrom = vanaf;
+    }
+
+
+    public List<User> getMentioned() {
+        return mentioned;
+    }
+
+    public void setMentioned(List<User> mentioned) {
+        this.mentioned = mentioned;
     }
 
     @Override

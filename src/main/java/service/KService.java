@@ -36,7 +36,12 @@ public class KService {
     }
 
     /**
-     *  and merge it in a database
+     * This method edits a user and merge it in a database
+     * With this method you can update the properties
+     * add a tweet
+     * add a follower
+     * After this you merge te user with the existing one
+     *
      * @param user
      */
     public void edit(User user) {
@@ -89,9 +94,10 @@ public class KService {
         return userdao.findFollowing((Long)id);
     }
 
-    public List<User>  findFollower(Object id) {
-        return userdao.findFollower((Long)id);
+/*
+    public List<User>  findFollower(Object id) { return userdao.findFollower((Long)id);
     }
+*/
 
 
     public int count() {
