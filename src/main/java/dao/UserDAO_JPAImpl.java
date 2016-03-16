@@ -16,7 +16,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.util.Date;
 import java.util.List;
 
 
@@ -45,13 +44,6 @@ public class UserDAO_JPAImpl implements UserDao {
         User u4 = new User("Tom", "no-website", "4-4-4444");
         this.create(u4);
 
-
-        Tweet t1 = new Tweet("first tweet of user 1", new Date(), "PC");
-        u1.addTweet(t1);
-        Tweet t2 = new Tweet("second tweet of user 1", new Date(), "PC");
-        u1.addTweet(t2);
-        Tweet t3 = new Tweet("This is a tweet created by user 3", new Date(), "PC");
-        u3.addTweet(t3);
         em.persist(user);
         em.persist(admin);
 

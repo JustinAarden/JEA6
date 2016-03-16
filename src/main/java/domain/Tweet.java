@@ -26,6 +26,8 @@ public class Tweet implements Serializable, Comparable<Tweet> {
     private Date date;
     private String postedFrom;
 
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToMany
     @JoinTable(
@@ -33,10 +35,6 @@ public class Tweet implements Serializable, Comparable<Tweet> {
             joinColumns = @JoinColumn(name = "tweet_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
     )
-
-
-
-
     private List<User> mentioned = new ArrayList<>();
 
 
@@ -54,29 +52,38 @@ public class Tweet implements Serializable, Comparable<Tweet> {
         this.postedFrom = vanaf;
     }
 
+    public Tweet(User user, String tweetText, String vanaf, Date datum) {
+        this.user = user;
+        this.tweetText = tweetText;
+        this.postedFrom = vanaf;
+        this.date = datum;
+    }
+
+    @XmlElement(required = true)
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
     @XmlElement(required = true)
     public Long getId() {
         return id;
     }
-
     @XmlElement(required = true)
     public String getTweetText() {
         return tweetText;
     }
-
     public void setTweetText(String tweetText) {
         this.tweetText = tweetText;
     }
-
     @XmlElement(required = true)
     public Date getDatum() {
         return date;
     }
-
     public void setDatum(Date datum) {
         this.date = datum;
     }
-
     @XmlElement(required = true)
     public String getVanaf() {
         return postedFrom;

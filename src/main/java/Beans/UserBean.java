@@ -60,10 +60,10 @@ public class UserBean {
 
 
 
-/*        if(!user.getFollowing().isEmpty()){
+        if(!kwetterService.findFollowing(user.getId()).isEmpty()){
             setFollowing();
 
-        }*/
+        }
         if(!user.getFollowers().isEmpty()){
             setFollowers();
         }

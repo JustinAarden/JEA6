@@ -21,20 +21,20 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 
 @Path("/rest")
 //@RequestScoped
 @Stateless
 public class KwetterResource {
-
-
+    public static final Pattern REGEX_USERNAME = Pattern.compile("[A-Za-z][A-Za-z0-9_-]*");
+    public static final Pattern REGEX_MENTION = Pattern.compile("@(?<username>" + REGEX_USERNAME + ")");
 
    @Inject KService kwetterService;
 
@@ -168,12 +168,40 @@ public class KwetterResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("addtweet/{user1}/{message}")
     @Interceptors(Tweetinterceptor.class)
-    public User testMethod(@PathParam("user1") Long id, @PathParam("message") String message)  {
+    public User addTweet(@PathParam("user1") Long id, @PathParam("message") String message)  {
         User user = kwetterService.find(id);
-        user.addTweet(new Tweet(message, new Date(),"REST-API"));
-
+        kwetterService.addTweet(user,message);
         return kwetterService.find(id);
     }
+
+
+  @GET
+    @Path("api/getmention/{username}")
+    @Produces(MediaType.TEXT_PLAIN)
+    //@RolesAllowed("admin_role")
+    public List<Tweet> getMentions(@PathParam("username") String name)  {
+        User user = kwetterService.find(name);
+        return user.getMentions();
+    }
+
+
+    @GET
+    @Path("api/init")
+    @Produces(MediaType.TEXT_PLAIN)
+    //@RolesAllowed("admin_role")
+    public  List<User> getMentions()  {
+        User user1 = kwetterService.find(1L);
+        User user3 = kwetterService.find(3L);
+
+        kwetterService.addTweet(user1,"First tweet of Justin");
+        kwetterService.addTweet(user1,"Second tweet of Justin");
+       // kwetterService.addTweet(user3,"First tweet of Sjaak");
+
+        kwetterService.edit(user1);
+        return kwetterService.findAll();
+    }
+
+
 
 
 

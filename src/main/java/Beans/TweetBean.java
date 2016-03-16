@@ -31,6 +31,10 @@ public class TweetBean implements Serializable {
 
 
     private ArrayList<Tweet> allTweets = new ArrayList<>();
+
+
+
+    private ArrayList<Tweet> mentions = new ArrayList<>();
     private ArrayList<Tweet> tweetsBySingleUser = new ArrayList<>();
     private  String tweetText;
     private String latestTweet;
@@ -61,11 +65,11 @@ public class TweetBean implements Serializable {
     public String getLatestTweet() {
         return latestTweet;
     }
-
+    public ArrayList<Tweet> getMentions() {
+        return mentions;
+    }
     public void addTweet(){
-
-
-            user.addTweet(new Tweet(tweetText, new Date(),"JSF Tweet"));
+            kwetterService.addTweet(user,tweetText);
             kwetterService.edit(user);
         try {
             goToMainPageByUserID(user.getId());
@@ -96,30 +100,15 @@ public class TweetBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().redirect("login.xhtml?error=nouser");}
 
 
-    public void tweetsByFollowing(){/*
-            if(!kwetterService.findFollowing().isEmpty()){
-                for (User forid :user.getFollowing()) {
-                    allTweets.addAll(user.getTweets());
+    public void tweetsByFollowing(){
+            if(!kwetterService.findFollowing(user.getId()).isEmpty()){
+                for (User followinguser: kwetterService.findFollowing(user.getId())){
+                    allTweets.addAll(followinguser.getTweets());
                 }
-            }*/
-    }
-
-    public void containsMention(){
-
-
-    }
-
-    public void containsTrend(){
-        HashSet noDupSet = new HashSet();
-        for (Tweet tweet: allTweets
-             ) {
-            if (tweet.getTweetText().contains("#")){
-
             }
-
-        }
-
     }
+
+
     private boolean isNullOrBlank(final String s) {
         return s == null || s.trim().length() == 0;
     }
@@ -129,13 +118,14 @@ public class TweetBean implements Serializable {
         if(!isNullOrBlank(request.getParameter("id"))){
                 Long id = Long.parseLong(request.getParameter("id"));
             user = kwetterService.find(id);
+            mentions.addAll(user.getMentions());
             for (Tweet tweets : user.getTweets()) {
                 tweetsBySingleUser.add(tweets);
                 allTweets.add(tweets);
                 setlatestTweet();
             }
             if(isNullOrBlank(request.getParameter("tweets"))){
-               // tweetsByFollowing();
+               tweetsByFollowing();
             }
 
         }else{

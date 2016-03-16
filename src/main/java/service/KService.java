@@ -7,18 +7,24 @@
 package service;
 
 import dao.UserDao;
+import domain.Tweet;
 import domain.User;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 //@ApplicationScoped
 @Stateless
 @Named
 public class KService {
+    public static final Pattern REGEX_USERNAME = Pattern.compile("[A-Za-z][A-Za-z0-9_-]*");
+    public static final Pattern REGEX_MENTION = Pattern.compile("@(?<username>" + REGEX_USERNAME + ")");
     /**
      * This is a Injection of the userDao
      * which is a interface of UserDAO_JPAImpl
@@ -98,6 +104,24 @@ public class KService {
     public List<User>  findFollower(Object id) { return userdao.findFollower((Long)id);
     }
 */
+
+
+    public Tweet addTweet(User user, String content) {
+        Tweet tweet = user.addTweet(content, "TESTlocation");
+
+        //Checks for mentions in the tweet @
+        List<User> mentioned = new ArrayList<>();
+        Matcher mentionMatcher = REGEX_MENTION.matcher(content);
+        while (mentionMatcher.find()) {
+            User mention = userdao.find(mentionMatcher.group("username"));
+            if (mention == null) continue;
+            mentioned.add(mention);
+        }
+        tweet.setMentioned(mentioned);
+        return tweet;
+    }
+
+
 
 
     public int count() {

@@ -8,10 +8,7 @@ import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @XmlRootElement
 @Entity
@@ -51,6 +48,8 @@ public class User implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User> followers = new ArrayList();
 
+    @ManyToMany(mappedBy = "mentioned")
+    private List<Tweet> mentions = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Tweet> tweets = new ArrayList();
@@ -132,6 +131,13 @@ public class User implements Serializable {
 
 
 
+    public List<Tweet> getMentions() {
+        return mentions;
+    }
+
+    public void setMentions(List<Tweet> mentions) {
+        this.mentions = mentions;
+    }
 
 
         /*
@@ -156,10 +162,6 @@ public class User implements Serializable {
         this.location = location;
     }
 
-    public void setTweets(List<Tweet> tweets) {
-        this.tweets = tweets;
-    }
-
 
 
 
@@ -177,14 +179,17 @@ public class User implements Serializable {
 
     }
 
-
-
-
-    public Boolean addTweet(Tweet tweet) {
-
-        return this.tweets.add(tweet);
-
+    public void addTweet(Tweet tweet) {
+        this.tweets.add(tweet);
     }
+
+
+    public Tweet addTweet(String content, String location) {
+        Tweet tweet = new Tweet(this, content, location, new Date());
+        addTweet(tweet);
+        return tweet;
+    }
+
 
     public Boolean addFollower(User follower){
         return followers.add(follower);
