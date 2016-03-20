@@ -14,6 +14,7 @@ import java.util.List;
 
 @XmlRootElement
 @Entity
+
 public class Tweet implements Serializable, Comparable<Tweet> {
     private static final long serialVersionUID = 1L;
     private static long nextID = 0L;
@@ -31,7 +32,8 @@ public class Tweet implements Serializable, Comparable<Tweet> {
     @JoinTable(
             name = "mentions",
             joinColumns = @JoinColumn(name = "tweet_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"
+            )
     )
     private List<User> mentioned = new ArrayList<>();
 
@@ -82,8 +84,8 @@ public class Tweet implements Serializable, Comparable<Tweet> {
         return mentioned;
     }
 
-    public void setMentioned(List<User> mentioned) {
-        this.mentioned = mentioned;
+    public void setMentioned(User mentioned) {
+        this.mentioned.add(mentioned);
     }
 
     @Override

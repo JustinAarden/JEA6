@@ -4,8 +4,14 @@
 
 package dao;
 
+import domain.Tweet;
+
+import java.util.List;
+
 /**
  * Created by Justin on 16-3-2016.
  */
-public class TweetDao {
+public interface TweetDao {
+
+    List<Tweet> getMentionedTweets(Long id);
 }

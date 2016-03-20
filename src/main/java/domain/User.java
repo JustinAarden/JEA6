@@ -130,13 +130,13 @@ public class User implements Serializable {
     }
 
 
-
+    @XmlElement(required = true)
     public List<Tweet> getMentions() {
         return mentions;
     }
 
-    public void setMentions(List<Tweet> mentions) {
-        this.mentions = mentions;
+    public void setMentions(Tweet mentions) {
+        this.mentions.add(mentions);
     }
 
 
