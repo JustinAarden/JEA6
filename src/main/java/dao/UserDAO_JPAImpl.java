@@ -86,6 +86,7 @@ public class UserDAO_JPAImpl implements UserDao {
 
     @Override
     public User find(Long id) {
+      //  em.clear();
         Query q = em.createNamedQuery("User.findID");
         q.setParameter("id", id);
         return (User) q.getSingleResult();
@@ -93,6 +94,7 @@ public class UserDAO_JPAImpl implements UserDao {
 
    @Override
     public User find(String name) {
+       em.clear();
         Query q = em.createNamedQuery("User.findName");
         q.setParameter("name", name);
         try {

@@ -31,8 +31,8 @@ public class Tweet implements Serializable, Comparable<Tweet> {
     @ManyToMany
     @JoinTable(
             name = "mentions",
-            joinColumns = @JoinColumn(name = "tweet_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"
+            joinColumns = @JoinColumn(name = "tweet_id", referencedColumnName = "id"), //rename mentioned_id to tweet_id
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id" //rename mentions_id to user_id
             )
     )
     private List<User> mentioned = new ArrayList<>();

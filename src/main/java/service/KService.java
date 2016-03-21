@@ -45,7 +45,6 @@ public class KService {
     /**
      * This method edits a user and merge it in a database
      * With this method you can update the properties
-     * add a tweet
      * add a follower
      * After this you merge te user with the existing one
      *
@@ -116,8 +115,6 @@ public class KService {
     }
 
     /**
-     @(?<username>[A-Za-z][A-Za-z0-9_-]*)/
-
          @ matches the character @ literally
             (?<username>[A-Za-z][A-Za-z0-9_-]*) Named capturing group username
             [A-Za-z] match a single character present in the list below
@@ -130,25 +127,27 @@ public class KService {
                 0-9 a single character in the range between 0 and 9
                 _- a single character in the list _- literally
      */
-    public static final Pattern REGEXGROUP = Pattern.compile("@(?<username>[A-Za-z][A-Za-z0-9_-]*)");
+    public final static Pattern REGEXGROUP = Pattern.compile("@(?<user>[A-Za-z0-9_-]*)");
 
     /**
      *
-     *
-     * @param user
-     * @param tweetText
+     *THis method is to add a tweet
+     * When adding a tweet it checks if it can finds a username
+     * the username always starts with a "@"
+     * @param user this is the user that sends the tweet
+     * @param tweetText this is the text to be tweeted
      * @return
      */
     public void addTweet(User user, String tweetText) {
-        Tweet tweet = user.addTweet(tweetText, "TESTlocation");
+        Tweet tweet = user.addTweet(tweetText, "TESTlocation"); //TODO SET LOCATION AS VARIABLE
 
         //Checks for mentions in the tweet
         Matcher regexmatcher = REGEXGROUP.matcher(tweetText);
         while (regexmatcher.find()) {
-            User mentionedUser = userdao.find(regexmatcher.group("username"));
+            User mentionedUser = userdao.find(regexmatcher.group("user"));
 
             if (mentionedUser == null){ continue; }
-            //mentionedUser.setMentions(tweet);
+            //mentionedUser.addMention(tweetText, "TEST");
             tweet.setMentioned(mentionedUser);
         }
     }

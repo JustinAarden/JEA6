@@ -139,6 +139,14 @@ public class User implements Serializable {
         this.mentions.add(mentions);
     }
 
+    public Tweet addMention(String content, String location) {
+        Tweet tweet = new Tweet(content, new Date(), location);
+        this.mentions.add(tweet);
+        return tweet;
+    }
+
+
+
 
         /*
     *
@@ -173,10 +181,7 @@ public class User implements Serializable {
     * */
     @XmlElement(required = true)
     public Collection<User> getFollowers() {
-
         return Collections.unmodifiableCollection(followers);
-
-
     }
 
     public void addTweet(Tweet tweet) {
