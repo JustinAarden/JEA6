@@ -79,7 +79,7 @@ public class Tweet implements Serializable, Comparable<Tweet> {
         this.postedFrom = vanaf;
     }
 
-
+    @XmlElement(required = false)
     public List<User> getMentioned() {
         return mentioned;
     }

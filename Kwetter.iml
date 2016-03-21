@@ -33,6 +33,7 @@
         <datasource-mapping>
           <factory-entry name="default" />
           <factory-entry name="kwetter" value="60827ce0-a5a9-440e-8823-071ca5ef5b6c" />
+          <factory-entry name="kwettertest_pu" />
           <factory-entry name="org.hibernate.tutorial.jpa" />
           <factory-entry name="pu1" />
         </datasource-mapping>
@@ -68,26 +69,9 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax:javaee-api:7.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.sun.mail:javax.mail:1.5.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.activation:activation:1.1" level="project" />
-    <orderEntry type="library" name="Maven: org.projectlombok:lombok:1.16.6" level="project" />
     <orderEntry type="library" name="Maven: javax.ejb:ejb-api:3.0" level="project" />
     <orderEntry type="library" name="Maven: javax.inject:javax.inject:1" level="project" />
     <orderEntry type="library" name="Maven: javax.batch:javax.batch-api:1.0.1" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.openjpa:openjpa:2.4.0" level="project" />
-    <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.4" level="project" />
-    <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />
-    <orderEntry type="library" name="Maven: net.sourceforge.serp:serp:1.15.1" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.geronimo.specs:geronimo-jta_1.1_spec:1.1.1" level="project" />
-    <orderEntry type="library" name="Maven: commons-pool:commons-pool:1.5.4" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.xbean:xbean-asm5-shaded:3.17" level="project" />
-    <orderEntry type="library" name="Maven: javax.xml.stream:stax-api:1.0-2" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.geronimo.specs:geronimo-jpa_2.0_spec:1.1" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.openjpa:openjpa-jest:2.4.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.openjpa:openjpa-kernel:2.4.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.openjpa:openjpa-lib:2.4.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.openjpa:openjpa-persistence:2.4.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.openjpa:openjpa-persistence-jdbc:2.4.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.openjpa:openjpa-jdbc:2.4.0" level="project" />
     <orderEntry type="library" name="Maven: javax.enterprise:cdi-api:2.0-EDR1" level="project" />
     <orderEntry type="library" name="Maven: javax.el:javax.el-api:3.0.0" level="project" />
     <orderEntry type="library" name="Maven: javax.interceptor:javax.interceptor-api:1.2" level="project" />
@@ -95,12 +79,26 @@
     <orderEntry type="library" name="Maven: com.google.inject:guice:4.0" level="project" />
     <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:16.0.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: mysql:mysql-connector-java:5.1.38" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.persistence:org.eclipse.persistence.jpa:2.6.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.persistence:org.eclipse.persistence.asm:2.6.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.persistence:org.eclipse.persistence.antlr:2.6.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.glassfish:javax.json:1.0.4" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.persistence:org.eclipse.persistence.jpa.jpql:2.6.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.persistence:org.eclipse.persistence.core:2.6.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.persistence:javax.persistence:2.1.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.1" level="project" />
     <orderEntry type="library" name="Maven: org.mockito:mockito-core:1.10.19" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.hamcrest:hamcrest-core:1.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.objenesis:objenesis:2.1" level="project" />
     <orderEntry type="library" name="Maven: org.primefaces:primefaces:5.3" level="project" />
-    <orderEntry type="library" name="Maven: org.primefaces.themes:bootstrap:1.0.10" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1" level="project" />
+    <orderEntry type="library" name="Maven: com.owlike:genson:1.3" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="GlassFish 4.1.0 - Bean Validation" level="application_server_libraries" />
+    <orderEntry type="library" scope="PROVIDED" name="GlassFish 4.1.0 - RESTful Web Service" level="application_server_libraries" />
+    <orderEntry type="library" scope="PROVIDED" name="GlassFish 4.1.0 - JSON Processing (JSR 353)" level="application_server_libraries" />
+    <orderEntry type="library" scope="PROVIDED" name="GlassFish 4.1.0 - CDI: Contexts and Dependency Injection" level="application_server_libraries" />
+    <orderEntry type="library" scope="PROVIDED" name="GlassFish 4.1.0 - Batch Applications" level="application_server_libraries" />
+    <orderEntry type="library" scope="PROVIDED" name="GlassFish 4.1.0 - Transaction API (JSR 907)" level="application_server_libraries" />
+    <orderEntry type="library" scope="PROVIDED" name="GlassFish 4.1.0 - WebSocket" level="application_server_libraries" />
   </component>
 </module>

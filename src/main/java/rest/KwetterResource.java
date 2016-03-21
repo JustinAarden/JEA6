@@ -5,7 +5,6 @@
 
 package rest;
 
-import domain.Tweet;
 import domain.User;
 import interceptors.Tweetinterceptor;
 import service.KService;
@@ -26,15 +25,13 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
 
 
 @Path("/rest")
 //@RequestScoped
 @Stateless
 public class KwetterResource {
-    public static final Pattern REGEX_USERNAME = Pattern.compile("[A-Za-z][A-Za-z0-9_-]*");
-    public static final Pattern REGEX_MENTION = Pattern.compile("@(?<username>" + REGEX_USERNAME + ")");
+
 
    @Inject KService kwetterService;
 
@@ -173,35 +170,6 @@ public class KwetterResource {
         kwetterService.addTweet(user,message);
         return kwetterService.find(id);
     }
-
-
-  @GET
-    @Path("api/getmention/{username}")
-    @Produces(MediaType.TEXT_PLAIN)
-    //@RolesAllowed("admin_role")
-    public List<Tweet> getMentions(@PathParam("username") String name)  {
-        User user = kwetterService.find(name);
-        return user.getMentions();
-    }
-
-
-    @GET
-    @Path("api/init")
-    @Produces(MediaType.TEXT_PLAIN)
-    //@RolesAllowed("admin_role")
-    public  List<User> getMentions()  {
-        User user1 = kwetterService.find(1L);
-        User user3 = kwetterService.find(3L);
-
-        kwetterService.addTweet(user1,"First tweet of Justin");
-        kwetterService.addTweet(user1,"Second tweet of Justin");
-       // kwetterService.addTweet(user3,"First tweet of Sjaak");
-
-        kwetterService.edit(user1);
-        return kwetterService.findAll();
-    }
-
-
 
 
 

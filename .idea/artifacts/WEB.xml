@@ -12,6 +12,7 @@
           <element id="library" level="project" name="Maven: org.primefaces:primefaces:5.3" />
           <element id="library" level="project" name="Maven: org.primefaces.themes:bootstrap:1.0.10" />
           <element id="library" level="project" name="Maven: org.projectlombok:lombok:1.16.6" />
+          <element id="library" level="project" name="Maven: com.owlike:genson:1.3" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="Kwetter/web/Web" />

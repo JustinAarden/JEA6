@@ -5,6 +5,7 @@
 import dao.UserDao;
 import domain.Tweet;
 import domain.User;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +18,7 @@ import service.KService;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.sql.SQLException;
 import java.util.Date;
 
 /**
@@ -43,15 +45,22 @@ public class KServiceTest {
 
     @Before
     public void setup(){
+        try {
+            new CleanDB();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         entityManager = emf.createEntityManager();
 
-
+        entityManager.getTransaction().begin();
         user1 = new User("user1", "http://justinaarden.nl", "1-1-1111");
-        //entityManager.persist(user1);
+        entityManager.persist(user1);
         user2 = new User("user2", "http://justinaarden.nl", "2-2-2222");
+        entityManager.persist(user2);
 
         tweet1 = new Tweet("tweet 1", new Date(), "PC");
         tweet2 = new Tweet("tweet 2", new Date(), "PC");
+        entityManager.getTransaction().commit();
     }
 
     @Test
@@ -99,7 +108,17 @@ public class KServiceTest {
         Mockito.verify(userDao, Mockito.never()).count();
     }
 
+    @Test
+    public void addTweetToUser() throws  Exception{
+        entityManager.getTransaction().begin();
+        Assert.assertEquals(user1.getTweets().size(),0);
+        kwetterService.addTweet(user1,"Persittweet, doet @user2 het?");
+        entityManager.getTransaction().commit();
+        Assert.assertEquals(user1.getTweets().size(),1);
 
-
-
+        entityManager.getTransaction().begin();
+        kwetterService.addTweet(user2,"@Hans test");
+        entityManager.getTransaction().commit();
+        Assert.assertEquals(user2.getTweets().size(),1);
+    }
 }

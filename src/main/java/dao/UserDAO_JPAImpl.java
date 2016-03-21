@@ -94,7 +94,7 @@ public class UserDAO_JPAImpl implements UserDao {
 
    @Override
     public User find(String name) {
-       em.clear();
+    //   em.clear();
         Query q = em.createNamedQuery("User.findName");
         q.setParameter("name", name);
         try {
