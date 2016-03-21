@@ -14,6 +14,9 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import service.KService;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.util.Date;
 
 /**
@@ -26,6 +29,8 @@ public class KServiceTest {
     @InjectMocks
     KService kwetterService;
 
+    private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("kwettertest_pu");
+    EntityManager entityManager;
     @Mock
     UserDao userDao;
 
@@ -33,13 +38,16 @@ public class KServiceTest {
     User user2;
 
 
-
     Tweet tweet1;
     Tweet tweet2;
 
     @Before
     public void setup(){
+        entityManager = emf.createEntityManager();
+
+
         user1 = new User("user1", "http://justinaarden.nl", "1-1-1111");
+        //entityManager.persist(user1);
         user2 = new User("user2", "http://justinaarden.nl", "2-2-2222");
 
         tweet1 = new Tweet("tweet 1", new Date(), "PC");
@@ -90,6 +98,8 @@ public class KServiceTest {
         kwetterService.edit(user1);
         Mockito.verify(userDao, Mockito.never()).count();
     }
+
+
 
 
 }
