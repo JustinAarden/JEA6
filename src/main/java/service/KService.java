@@ -117,10 +117,6 @@ public class KService {
     /**
          @ matches the character @ literally
             (?<username>[A-Za-z][A-Za-z0-9_-]*) Named capturing group username
-            [A-Za-z] match a single character present in the list below
-                 A-Z a single character in the range between A and Z (case sensitive)
-                 a-z a single character in the range between a and z (case sensitive)
-     OR
             [A-Za-z0-9_-]* match a single character present in the list below
                 A-Z a single character in the range between A and Z (case sensitive)
                 a-z a single character in the range between a and z (case sensitive)
@@ -139,7 +135,7 @@ public class KService {
      * @return
      */
     public void addTweet(User user, String tweetText) {
-        Tweet tweet = user.addTweet(tweetText, "TESTlocation"); //TODO SET LOCATION AS VARIABLE
+        Tweet tweet = user.addTweet(tweetText, "TESTlocation",user); //TODO SET LOCATION AS VARIABLE
 
         //Checks for mentions in the tweet
         Matcher regexmatcher = REGEXGROUP.matcher(tweetText);

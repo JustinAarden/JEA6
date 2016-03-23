@@ -93,7 +93,7 @@
                 <p:dataTable var="m" value="#{TweetBean.mentions}" styleClass="table table-hover">
 
                     <p:column headerText="Sender" width="50px;">
-                        <h:outputText value="#{m.user}" />
+                        <h:outputText value="#{m.user.name}" />
                     </p:column>
 
                     <p:column headerText="Tweet" width="250px;">

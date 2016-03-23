@@ -12,10 +12,7 @@ import domain.User;
 import javax.annotation.PostConstruct;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.persistence.*;
 import java.util.List;
 
 
@@ -29,7 +26,10 @@ public class UserDAO_JPAImpl implements UserDao {
     @PersistenceContext
     private EntityManager em;
 
+
+
     public UserDAO_JPAImpl() {
+
     }
 
     @PostConstruct
@@ -86,9 +86,12 @@ public class UserDAO_JPAImpl implements UserDao {
 
     @Override
     public User find(Long id) {
+        Cache cache = em.getEntityManagerFactory().getCache();
+        cache.evictAll();
       //  em.clear();
         Query q = em.createNamedQuery("User.findID");
         q.setParameter("id", id);
+        q.setHint("javax.persistence.cache.retrieveMode", CacheRetrieveMode.BYPASS);
         return (User) q.getSingleResult();
     }
 

@@ -183,8 +183,8 @@ public class User implements Serializable {
     }
 
 
-    public Tweet addTweet(String content, String location) {
-        Tweet tweet = new Tweet(content, new Date(), location);
+    public Tweet addTweet(String content, String location, User user) {
+        Tweet tweet = new Tweet(content, new Date(), location, user);
         addTweet(tweet);
         return tweet;
     }
