@@ -127,6 +127,15 @@ public class Tweet implements Serializable, Comparable<Tweet> {
         return "kwetter.domain.Tweet[id=" + date.toString() + "]";
     }
 
+    public String toJSON() {
+        return "{"
+                + "\"id\":\"" + id + "\", "
+                + "\"tweetText\":\"" + tweetText + "\", "
+                + "\"datum\":\"" + date + "\", "
+                + "\"location\":\"" + postedFrom + "\", "
+                + "}";
+    }
+
     @Override
     public int compareTo(Tweet t) {
         return getDatum().compareTo(t.getDatum());

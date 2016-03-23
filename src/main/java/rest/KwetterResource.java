@@ -5,6 +5,7 @@
 
 package rest;
 
+import domain.Tweet;
 import domain.User;
 import interceptors.Tweetinterceptor;
 import service.KService;
@@ -20,6 +21,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
@@ -62,7 +64,60 @@ public class KwetterResource {
         return kwetterService.find(id);
     }
 
- @GET
+    @GET
+    @Produces("text/plain")
+    @Path("getuser/{userID}")
+    public String getUser(@PathParam("userID") Long id) {
+        User user = kwetterService.find(id);
+        return user.toJSON();
+
+    }
+
+    @GET
+    @Produces("text/plain")
+    @Path("getallusers")
+    public String getAllUsers() {
+       int totalusers = kwetterService.count();
+        int counter = 1;
+        Long userid = 1L;
+        String userlist = "";
+        while (counter < totalusers+1){
+            userlist += kwetterService.find(userid).toJSON();
+            userid++;
+            counter++;
+        }
+        return userlist;
+
+    }
+
+
+    @GET
+    @Produces("text/plain")
+    @Path("gettweetsofuser/{userID}")
+    public String getTweetsofUser(@PathParam("userID") Long id) {
+        User user = kwetterService.find(id);
+        Collection<Tweet> tweets = user.getTweets();
+        String jsontweets = "";
+        for (Tweet tweet: tweets
+             ) {
+            jsontweets += tweet.toJSON();
+
+        }
+        return jsontweets;
+
+    }
+
+    @GET
+    @Produces("text/plain")
+    @Path("user/{userID}")
+    public String getEverythingOfUser(@PathParam("userID") Long id) {
+        User user = kwetterService.find(id);
+        return user.JSONEverything();
+
+    }
+
+
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("getuseronname/{username}")
     public User findOnName(@PathParam("username") String name){return kwetterService.find(name);}

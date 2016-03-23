@@ -219,6 +219,32 @@ public class User implements Serializable {
         return "kwetter.domain.User[naam=" + name + "]";
     }
 
+    public String toJSON() {
+        return "{"
+                + "\"id\":\"" + id + "\", "
+                + "\"name\":\"" + name + "\", "
+                + "\"web\":\"" + web + "\", "
+                + "\"image\":\"" + image + "\", "
+                + "\"bio\":\"" + bio + "\", "
+                + "\"location\":\"" + location + "\""
+                + "}";
+    }
+
+    public String JSONEverything() {
+        String tweet = "";
+        for(Tweet tweets : this.getTweets()){
+            tweet += tweets.toJSON();
+        }
+        return "{"
+                + "\"id\":\"" + id + "\", "
+                + "\"name\":\"" + name + "\", "
+                + "\"web\":\"" + web + "\", "
+                + "\"image\":\"" + image + "\", "
+                + "\"bio\":\"" + bio + "\", "
+                + "\"location\":\"" + location + "\", "
+                + "\"tweets\":[" + tweet + ""
+                + "]}";
+    }
     public void removeTweet(Tweet tweet) {
         tweets.remove(tweet);
     }

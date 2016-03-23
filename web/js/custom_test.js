@@ -40,7 +40,7 @@
     app.factory("userFactory", ['$http', function ($http) {
         var dataFactory = {};
         dataFactory.getUsers = function () {
-            return $http.get("http://localhost:8080/resources/rest/api");
+            return $http.get("http://localhost:8080/resources/rest/getallusers");
         };
         dataFactory.addTweet = function (tweet) {
             return $http({
