@@ -81,13 +81,12 @@ public class KwetterResource {
         int counter = 1;
         Long userid = 1L;
         String userlist = "[";
-        while (counter < totalusers+1){
+        while (counter <= totalusers){
             if(counter == totalusers){
                 userlist += this.JsonIfy(kwetterService.find(userid));
             }else{
                 userlist += this.JsonIfy(kwetterService.find(userid))+ ",";
             }
-
             userid++;
             counter++;
         }
@@ -245,9 +244,7 @@ public class KwetterResource {
             }else{
                 tweet += tweets.toJSON()+",";
             }
-
             counter++;
-
         }
         counter = 1;
         for(User follower : user.getFollowers()){
@@ -258,9 +255,7 @@ public class KwetterResource {
                 followers += follower.getId()+",";
             }
             counter++;
-
         }
-
         counter = 1;
         for (User followinguser: kwetterService.findFollowing(user.getId())
              ) {
