@@ -80,12 +80,18 @@ public class KwetterResource {
        int totalusers = kwetterService.count();
         int counter = 1;
         Long userid = 1L;
-        String userlist = "";
+        String userlist = "[";
         while (counter < totalusers+1){
-            userlist += kwetterService.find(userid).toJSON();
+            if(counter == totalusers){
+                userlist += this.JsonIfy(kwetterService.find(userid));
+            }else{
+                userlist += this.JsonIfy(kwetterService.find(userid))+ ",";
+            }
+
             userid++;
             counter++;
         }
+        userlist +="]";
         return userlist;
 
     }
@@ -112,7 +118,7 @@ public class KwetterResource {
     @Path("user/{userID}")
     public String getEverythingOfUser(@PathParam("userID") Long id) {
         User user = kwetterService.find(id);
-        return user.JSONEverything();
+        return this.JsonIfy(user);
 
     }
 
@@ -220,12 +226,64 @@ public class KwetterResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("addtweet/{user1}/{message}")
     @Interceptors(Tweetinterceptor.class)
-    public User addTweet(@PathParam("user1") Long id, @PathParam("message") String message)  {
+    public void addTweet(@PathParam("user1") Long id, @PathParam("message") String message)  {
         User user = kwetterService.find(id);
         kwetterService.addTweet(user,message);
-        return kwetterService.find(id);
+
     }
 
+    public  String JsonIfy(User user) {
+        int counter = 1;
+        String tweet = "";
+        String followers = "";
+        String following = "";
+
+        for(Tweet tweets : user.getTweets()){
+            if(user.getTweets().size() == counter){
+                tweet += tweets.toJSON();
+                counter = 1;
+            }else{
+                tweet += tweets.toJSON()+",";
+            }
+
+            counter++;
+
+        }
+        counter = 1;
+        for(User follower : user.getFollowers()){
+            if(user.getFollowers().size() == counter){
+                followers += follower.getId();
+                counter = 1;
+            }else{
+                followers += follower.getId()+",";
+            }
+            counter++;
+
+        }
+
+        counter = 1;
+        for (User followinguser: kwetterService.findFollowing(user.getId())
+             ) {
+            if(kwetterService.findFollowing(user.getId()).size() == counter){
+                following += followinguser.getId();
+                counter=1;
+            }else{
+                following += followinguser.getId()+",";
+            }
+            counter++;
+        }
+        return   "{"
+                + "\"id\":\"" + user.getId() + "\", "
+                + "\"name\":\"" + user.getName() + "\", "
+                + "\"web\":\"" + user.getWeb() + "\", "
+                + "\"image\":\"" + user.getImage() + "\", "
+                + "\"bio\":\"" + user.getBio() + "\", "
+                + "\"location\":\"" + user.getLocation() + "\", "
+                + "\"tweets\":[" + tweet + "],"
+                + "\"followers\":[" + followers + "],"
+                + "\"following\":[" + following + "]"
+                + "}";
+    }
 
 
 }

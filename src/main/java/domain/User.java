@@ -51,7 +51,7 @@ public class User implements Serializable {
     @ManyToMany(mappedBy = "mentioned")
     private List<Tweet> mentions = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Tweet> tweets = new ArrayList();
 
     public User() {
@@ -230,21 +230,6 @@ public class User implements Serializable {
                 + "}";
     }
 
-    public String JSONEverything() {
-        String tweet = "";
-        for(Tweet tweets : this.getTweets()){
-            tweet += tweets.toJSON();
-        }
-        return "{"
-                + "\"id\":\"" + id + "\", "
-                + "\"name\":\"" + name + "\", "
-                + "\"web\":\"" + web + "\", "
-                + "\"image\":\"" + image + "\", "
-                + "\"bio\":\"" + bio + "\", "
-                + "\"location\":\"" + location + "\", "
-                + "\"tweets\":[" + tweet + ""
-                + "]}";
-    }
     public void removeTweet(Tweet tweet) {
         tweets.remove(tweet);
     }

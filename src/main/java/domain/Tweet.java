@@ -27,7 +27,8 @@ public class Tweet implements Serializable, Comparable<Tweet> {
     private Date date;
     private String postedFrom;
 
-
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToMany
@@ -132,7 +133,7 @@ public class Tweet implements Serializable, Comparable<Tweet> {
                 + "\"id\":\"" + id + "\", "
                 + "\"tweetText\":\"" + tweetText + "\", "
                 + "\"datum\":\"" + date + "\", "
-                + "\"location\":\"" + postedFrom + "\", "
+                + "\"location\":\"" + postedFrom + "\""
                 + "}";
     }
 
