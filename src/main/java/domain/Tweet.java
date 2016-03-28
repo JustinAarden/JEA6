@@ -61,15 +61,14 @@ public class Tweet implements Serializable, Comparable<Tweet> {
         this.user=user;
     }
 
+    //<editor-fold defaultstate="collapsed" desc="Getters en Setters voor properties (Vouw uit voor de code)">
     @XmlElement(required = true)
     public User getUser() {
         return user;
     }
-
     public void setUser(User user) {
         this.user = user;
     }
-
     @XmlElement(required = true)
     public Long getId() {
         return id;
@@ -92,19 +91,19 @@ public class Tweet implements Serializable, Comparable<Tweet> {
     public String getVanaf() {
         return postedFrom;
     }
-
     public void setVanaf(String vanaf) {
         this.postedFrom = vanaf;
     }
-
     @XmlElement(required = false)
     public List<User> getMentioned() {
         return mentioned;
     }
-
     public void setMentioned(User mentioned) {
         this.mentioned.add(mentioned);
     }
+    //</editor-fold>
+
+
 
     @Override
     public int hashCode() {
@@ -129,11 +128,11 @@ public class Tweet implements Serializable, Comparable<Tweet> {
     }
 
     public String toJSON() {
-        return "{"
-                + "\"id\":\"" + id + "\", "
-                + "\"tweetText\":\"" + tweetText + "\", "
-                + "\"datum\":\"" + date + "\", "
-                + "\"location\":\"" + postedFrom + "\""
+        return "\n{"
+                + "\t\"id\":\"" + id + "\",\n "
+                + "\t\"tweetText\":\"" + tweetText + "\", \n"
+                + "\t\"datum\":\"" + date + "\",\n "
+                + "\t\"location\":\"" + postedFrom + "\""
                 + "}";
     }
 

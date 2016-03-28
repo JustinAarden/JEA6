@@ -112,14 +112,14 @@ public class KServiceTest {
     public void addTweetToUser() throws  Exception{
         entityManager.getTransaction().begin();
         Assert.assertEquals(user1.getTweets().size(),0);
-        kwetterService.addTweet(user1,"Persittweet, doet @user2 het?");
+        kwetterService.addTweet(user1,"Persittweet, doet @user2 het?", "UNITTEST");
         kwetterService.edit(user1);
         entityManager.getTransaction().commit();
 
         Assert.assertEquals(user1.getTweets().size(),1);
 
         entityManager.getTransaction().begin();
-        kwetterService.addTweet(user2,"@user1 test");
+        kwetterService.addTweet(user2,"@user1 test", "UNITTEST");
         entityManager.getTransaction().commit();
         Assert.assertEquals(user2.getTweets().size(),1);
     }

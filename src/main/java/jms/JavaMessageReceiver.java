@@ -9,7 +9,6 @@
  */
 package jms;
 
-import domain.Tweet;
 import domain.User;
 import service.KService;
 
@@ -19,7 +18,6 @@ import javax.inject.Inject;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,14 +27,14 @@ import java.util.logging.Logger;
     @ActivationConfigProperty(propertyName = "subscriptionDurability", propertyValue = "Durable"), //Durable not durable (Case sensitive)
     @ActivationConfigProperty(propertyName = "subscriptionName", propertyValue = "jms/KwetterGo/topic")
 })
-public class NewMessageBean implements MessageListener {
+public class JavaMessageReceiver implements MessageListener {
 
-    private static final Logger LOG = Logger.getLogger(NewMessageBean.class.getName());
+    private static final Logger LOG = Logger.getLogger(JavaMessageReceiver.class.getName());
 
     @Inject
     KService kwetterService;
 
-    public NewMessageBean() {
+    public JavaMessageReceiver() {
     }
 
     @Override
@@ -46,16 +44,15 @@ public class NewMessageBean implements MessageListener {
             System.out.println("Got a message:");
             System.out.println(messageString);
 
-            String messageText = messageString.split(" --- ")[0];
-            String messageUsername = messageString.split(" --- ")[1];
+            String username = messageString.split(" : ")[0];
+            String tweettext = messageString.split(" : ")[1];
 
-            User user = kwetterService.find(messageUsername);
+            User user = kwetterService.find(username);
             if (user == null) {
-                System.out.println("Can't find user with name " + messageUsername);
+                System.out.println("Can't find user with name " + username);
                 return;
             }
-            user.addTweet(new Tweet(messageText, new Date(), "Message Bean"));
-            kwetterService.edit(user);
+            kwetterService.addTweet(user,tweettext,"KwetterGo");
 
               } catch (JMSException ex) {
             LOG.log(Level.SEVERE, "Error in message: " + ex.getLocalizedMessage());

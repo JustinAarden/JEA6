@@ -134,20 +134,27 @@ public class KService {
      * @param tweetText this is the text to be tweeted
      * @return
      */
-    public void addTweet(User user, String tweetText) {
-        Tweet tweet = user.addTweet(tweetText, "TESTlocation",user); //TODO SET LOCATION AS VARIABLE
-
-        //Checks for mentions in the tweet
-        Matcher regexmatcher = REGEXGROUP.matcher(tweetText);
-        while (regexmatcher.find()) {
-            User mentionedUser = userdao.find(regexmatcher.group("user"));
-
-            if (mentionedUser == null){ continue; }
-            //mentionedUser.addMention(tweetText, "TEST");
-            tweet.setMentioned(mentionedUser);
+    public void addTweet(User user, String tweetText, String location) {
+        Tweet tweet;
+        if(location.isEmpty()){
+            tweet = user.addTweet(tweetText, "TESTlocation",user); //TODO SET LOCATION AS VARIABLE
+        }else {
+            tweet = user.addTweet(tweetText, location, user); //TODO SET LOCATION AS VARIABLE
         }
-    }
 
+            //Checks for mentions in the tweet
+            Matcher regexmatcher = REGEXGROUP.matcher(tweetText);
+            while (regexmatcher.find()) {
+                User mentionedUser = userdao.find(regexmatcher.group("user"));
+
+                if (mentionedUser == null) {
+                    continue;
+                }
+                //mentionedUser.addMention(tweetText, "TEST");
+                tweet.setMentioned(mentionedUser);
+            }
+
+    }
 
 
 

@@ -38,8 +38,10 @@ public class User implements Serializable {
     private String image = "http://www.dravenstales.ch/wp-content/uploads/2011/02/fb_storm.jpg";
     private String bio;
     private String location = "Nederland";
-
     private String password;
+
+
+
     @ManyToMany
     @JoinTable(name = "USER_ROLE", joinColumns = @JoinColumn(name = "name", referencedColumnName = "name"), inverseJoinColumns = @JoinColumn(name = "roleID", referencedColumnName = "roleID"))
     private List<Role> roles = new ArrayList();
@@ -53,6 +55,10 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Tweet> tweets = new ArrayList();
+
+
+
+
 
     public User() {
     }
@@ -68,14 +74,7 @@ public class User implements Serializable {
 
 
 
-    /*
-    *
-    * Getters and setters
-    *
-    *===================SECTION=================
-    *
-    *====================USER===================
-    * */
+    //<editor-fold defaultstate="collapsed" desc="Getters en Setters voor properties (Vouw uit voor de code)">
     public void setPassword(String password) {
         this.password = password;
     }
@@ -128,8 +127,26 @@ public class User implements Serializable {
     public void setImage(String image) {
         this.image = image;
     }
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    @XmlElement(required = true)
+    public Collection<User> getFollowers() {
+        return Collections.unmodifiableCollection(followers);
+    }
+    public Boolean addFollower(User follower){
+        return followers.add(follower);
+    }
 
 
+    //</editor-fold>
+
+    //<h1><editor-fold defaultstate="collapsed" desc="Everything about tweets (Vouw uit voor de code)"></h1>
     @XmlElement(required = false)
     public List<Tweet> getMentions() {
         return mentions;
@@ -139,44 +156,6 @@ public class User implements Serializable {
         this.mentions.add(mentions);
     }
 
-
-
-
-        /*
-    *
-    * Getters and setters
-    *
-    *===================SECTION=================
-    *
-    *====================Tweets===================
-    * */
-
-    @XmlElement(required = true)
-    public Collection<Tweet> getTweets() {
-        return Collections.unmodifiableCollection(tweets);
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-
-
-
-    /*
-    *===================SECTION=================
-    *
-    *==================FOLLOWERS================
-    *
-    * */
-    @XmlElement(required = true)
-    public Collection<User> getFollowers() {
-        return Collections.unmodifiableCollection(followers);
-    }
 
     public void addTweet(Tweet tweet) {
         this.tweets.add(tweet);
@@ -188,14 +167,14 @@ public class User implements Serializable {
         addTweet(tweet);
         return tweet;
     }
-
-
-    public Boolean addFollower(User follower){
-        return followers.add(follower);
+    @XmlElement(required = true)
+    public Collection<Tweet> getTweets() {
+        return Collections.unmodifiableCollection(tweets);
     }
+    //</editor-fold>
 
-    /*=====================================================================================================
-    * =====================================================================================================*/
+
+
 
     @Override
     public int hashCode() {
@@ -221,12 +200,12 @@ public class User implements Serializable {
 
     public String toJSON() {
         return "{"
-                + "\"id\":\"" + id + "\", "
-                + "\"name\":\"" + name + "\", "
-                + "\"web\":\"" + web + "\", "
-                + "\"image\":\"" + image + "\", "
-                + "\"bio\":\"" + bio + "\", "
-                + "\"location\":\"" + location + "\""
+                + "\"id\":\"" + id + "\",\n "
+                + "\"name\":\"" + name + "\",\n "
+                + "\"web\":\"" + web + "\",\n "
+                + "\"image\":\"" + image + "\",\n "
+                + "\"bio\":\"" + bio + "\",\n "
+                + "\"location\":\"" + location + "\"\n"
                 + "}";
     }
 

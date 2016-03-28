@@ -68,8 +68,9 @@ public class TweetBean implements Serializable {
     public ArrayList<Tweet> getMentions() {
         return mentions;
     }
+
     public void addTweet(){
-            kwetterService.addTweet(user,tweetText);
+            kwetterService.addTweet(user,tweetText,"JSF");
             kwetterService.edit(user);
         try {
             goToMainPageByUserID(user.getId());
@@ -108,10 +109,15 @@ public class TweetBean implements Serializable {
             }
     }
 
-
+    /**
+     *
+     * @param s
+     * @return
+     */
     private boolean isNullOrBlank(final String s) {
         return s == null || s.trim().length() == 0;
     }
+
 
     public void init(){
 

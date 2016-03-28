@@ -69,7 +69,7 @@ public class KwetterResource {
     @Path("getuser/{userID}")
     public String getUser(@PathParam("userID") Long id) {
         User user = kwetterService.find(id);
-        return user.toJSON();
+        return this.JsonIfy(user);
 
     }
 
@@ -102,12 +102,13 @@ public class KwetterResource {
     public String getTweetsofUser(@PathParam("userID") Long id) {
         User user = kwetterService.find(id);
         Collection<Tweet> tweets = user.getTweets();
-        String jsontweets = "";
+        String jsontweets = "[";
         for (Tweet tweet: tweets
              ) {
-            jsontweets += tweet.toJSON();
+                  jsontweets += tweet.toJSON();
 
         }
+        jsontweets+="]";
         return jsontweets;
 
     }
@@ -155,10 +156,6 @@ public class KwetterResource {
                 ) { followers += followinguser.getName();
 
         }
-
-
-
-
         return user.getName() + " ==>   Followed:   ==>   " + user2.getName() +     System.lineSeparator() + " And is already Following  "  + following +  System.lineSeparator() + " And is followed by  " +  followers;
     }
 
@@ -227,7 +224,7 @@ public class KwetterResource {
     @Interceptors(Tweetinterceptor.class)
     public void addTweet(@PathParam("user1") Long id, @PathParam("message") String message)  {
         User user = kwetterService.find(id);
-        kwetterService.addTweet(user,message);
+        kwetterService.addTweet(user,message,"REST");
 
     }
 
@@ -268,16 +265,16 @@ public class KwetterResource {
             counter++;
         }
         return   "{"
-                + "\"id\":\"" + user.getId() + "\", "
-                + "\"name\":\"" + user.getName() + "\", "
-                + "\"web\":\"" + user.getWeb() + "\", "
-                + "\"image\":\"" + user.getImage() + "\", "
+                + "\"id\":\"" + user.getId() + "\",\n "
+                + "\"name\":\"" + user.getName() + "\",\n "
+                + "\"web\":\"" + user.getWeb() + "\",\n "
+                + "\"image\":\"" + user.getImage() + "\",\n "
                 + "\"bio\":\"" + user.getBio() + "\", "
-                + "\"location\":\"" + user.getLocation() + "\", "
-                + "\"tweets\":[" + tweet + "],"
-                + "\"followers\":[" + followers + "],"
-                + "\"following\":[" + following + "]"
-                + "}";
+                + "\"location\":\"" + user.getLocation() + "\",\n "
+                + "\"tweets\":[" + tweet + "],\n"
+                + "\"followers\":[" + followers + "],\n"
+                + "\"following\":[" + following + "]\n"
+                + "}\n\n";
     }
 
 

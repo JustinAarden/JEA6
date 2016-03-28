@@ -67,6 +67,7 @@ public class LoginBean {
         this.userName = userName;
     }
 
+
     public void CheckValidUser(){
         User user = kwetterService.find(userName);
 
@@ -90,7 +91,10 @@ public class LoginBean {
 
     }
 
-
+    /**
+     *
+     * @return
+     */
     public String getAllUsers(){
         List<User> userlist;
         userlist = kwetterService.findAll();

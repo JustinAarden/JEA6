@@ -30,7 +30,7 @@ import java.util.logging.Logger;
 @Named//("kwetterJsonProcessor")
 public class kwetterJsonProcessor implements ItemProcessor {
 
-    @Override
+@Override
     public Object[] processItem(Object t) {
         //http://stackoverflow.com/questions/199718/can-you-instantiate-an-object-instance-from-json-in-net
         //^ This tutorial is based on a .net application, but it's very similar to java.

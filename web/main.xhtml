@@ -67,7 +67,7 @@
                                 <p:graphicImage value="#{follower.image}" width="25%" height="25%"/>
                             </f:facet>
                             <h:outputText value="Name:" />
-                            <a href="user.xhtml?id=#{follower.id}&amp;tweets=useronly">#{follower.name}</a>
+                            <a href="user.xhtml?id=#{follower.id}&amp;ref=#{UserBean.id}&amp;tweets=useronly">#{follower.name}</a>
                         </p:panelGrid>
 
 
@@ -82,7 +82,7 @@
                         </f:facet>
 
                         <h:outputText value="Name:" />
-                        <a href="user.xhtml?id=#{following.id}&amp;tweets=useronly">#{following.name}</a>
+                        <a href="user.xhtml?id=#{following.id}&amp;ref=#{UserBean.id}&amp;tweets=useronly">#{following.name}</a>
                     </p:panelGrid>
                     </ui:repeat>
                 </div>
