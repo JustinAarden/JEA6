@@ -53,6 +53,10 @@ public class UserDAO_JPAImpl implements UserDao {
         u3.addGroup(user);
         u4.addGroup(user);
 
+        u1.setPassword("password");
+        u2.setPassword("password");
+        u3.setPassword("password");
+        u4.setPassword("password");
 
         this.edit(u1);
         this.edit(u2);

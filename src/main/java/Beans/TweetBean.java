@@ -82,7 +82,7 @@ public class TweetBean implements Serializable {
 
 
     public void goToMainPageByUserID(Long id) throws IOException {
-        FacesContext.getCurrentInstance().getExternalContext().redirect("main.xhtml?id=" + id +"&success=1");
+        FacesContext.getCurrentInstance().getExternalContext().redirect("user.xhtml?id=" + id +"&success=1");
 
     }
 

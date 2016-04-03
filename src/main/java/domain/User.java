@@ -38,6 +38,9 @@ public class User implements Serializable {
     private String image = "http://www.dravenstales.ch/wp-content/uploads/2011/02/fb_storm.jpg";
     private String bio;
     private String location = "Nederland";
+
+
+
     private String password;
 
 
@@ -75,6 +78,12 @@ public class User implements Serializable {
 
 
     //<editor-fold defaultstate="collapsed" desc="Getters en Setters voor properties (Vouw uit voor de code)">
+    public List<Role> getRoles() {
+        return roles;
+    }
+    public String getPassword() {
+        return password;
+    }
     public void setPassword(String password) {
         this.password = password;
     }

@@ -254,6 +254,7 @@ public class KwetterResource {
             counter++;
         }
         counter = 1;
+
         for (User followinguser: kwetterService.findFollowing(user.getId())
              ) {
             if(kwetterService.findFollowing(user.getId()).size() == counter){

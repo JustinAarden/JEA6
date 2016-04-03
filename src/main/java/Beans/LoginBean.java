@@ -20,6 +20,9 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -32,6 +35,14 @@ public class LoginBean {
     private User user;
     private String userName;
 
+
+    FacesContext context = FacesContext.getCurrentInstance();
+    @Inject
+    HttpServletRequest request;
+    @Inject
+    HttpSession session;
+
+    private  String password;
     private String allUsers = "";
 
 
@@ -49,6 +60,12 @@ public class LoginBean {
     }
     public void setUser(User user) {
         this.user = user;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    public String getPassword() {
+        return password;
     }
 
 
@@ -68,13 +85,36 @@ public class LoginBean {
     }
 
 
+
+    public boolean isLoggedIn() {
+        return FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal() != null;
+    }
+
     public void CheckValidUser(){
         User user = kwetterService.find(userName);
 
-        if(user != null){
+        try {
+            HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+            request.login(user.getName(), password);
+            if(request.isUserInRole("user_role")){
+                result = "you are a user";
+                goToMainPageByUserID(user.getId());
+            }else{
+                result = "you are a nothing";
+                goToMainPageByUserID(user.getId());
+            }
+
+
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+/*        if(user != null){
 
             try {
-                goToMainPageByUserID(user.getId());
+               // goToMainPageByUserID(user.getId());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -82,15 +122,19 @@ public class LoginBean {
         }
         else{
             result = "This user doesn't exist";
-        }
+        }*/
 
     }
 
     public void goToMainPageByUserID(Long id) throws IOException {
-        FacesContext.getCurrentInstance().getExternalContext().redirect("main.xhtml?id=" + id);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("user.xhtml?id=" + id);
 
     }
-
+    public static HttpServletRequest getRequest() {
+        Object request = FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        return request instanceof HttpServletRequest
+                ? (HttpServletRequest) request : null;
+    }
     /**
      *
      * @return
@@ -101,12 +145,24 @@ public class LoginBean {
 
         for (User user: userlist
              ) {
-            allUsers +=  user.getName() + "\n";
+            allUsers +=  user.getName() + " : " + user.getPassword() + "\n";
 
         }
         return allUsers;
     }
 
+    public void signOut() {
+        try {
+            request.logout();
+            session.invalidate();
+            System.out.println("Signout invoked");
+            FacesContext.getCurrentInstance().getApplication().getNavigationHandler().handleNavigation
+                    (FacesContext.getCurrentInstance(), null, "/faces/login.xhtml?faces-redirect=true");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println("Error Signout -" +  ex.getMessage());
+        }
+    }
 
 
 

@@ -4,6 +4,7 @@
 
 package Beans;
 
+import domain.Role;
 import domain.User;
 import service.KService;
 
@@ -80,7 +81,7 @@ public class UserBean {
 
 
     public void goToMainPageByUserID(Long id) throws IOException {
-        FacesContext.getCurrentInstance().getExternalContext().redirect("main.xhtml?id=" + id);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("user.xhtml?id=" + id);
 
     }
 
@@ -109,6 +110,20 @@ public class UserBean {
         }
     }
 
+    public boolean hasRole(String role) {
+        return user.getRoles().contains(role);
+    }
+
+    public String getRoles(){
+        String test = "";
+        for (Role role: user.getRoles()
+             ) {
+            test += role.getGroupId();
+
+        }
+        return  test;
+
+    }
 
 
 

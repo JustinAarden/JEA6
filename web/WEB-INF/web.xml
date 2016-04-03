@@ -12,6 +12,53 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>/faces/*</url-pattern>
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
+
+    <security-role>
+        <description>all the users with the role Admin</description>
+        <role-name>admin_role</role-name>
+    </security-role>
+
+    <security-role>
+        <description>all the users that are authenticated</description>
+        <role-name>user_role</role-name>
+    </security-role>
+
+
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Users and admins</web-resource-name>
+            <url-pattern>/faces/private/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin_role</role-name>
+            <role-name>user_role</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+
+    <security-constraint>
+        <display-name>AdminAccess</display-name>
+        <web-resource-collection>
+            <web-resource-name>AllOperations</web-resource-name>
+            <description/>
+            <url-pattern>/faces/admin/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description>Admin Only Access</description>
+            <role-name>admin_role</role-name>
+            </auth-constraint>
+    </security-constraint>
+
+
+     <login-config>
+        <auth-method>FORM</auth-method>
+         <form-login-config>
+             <form-login-page>/login.xhtml</form-login-page>
+             <form-error-page>/loginError.xhtml</form-error-page>
+         </form-login-config>
+    </login-config>
 </web-app>
