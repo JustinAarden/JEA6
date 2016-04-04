@@ -17,6 +17,7 @@ import domain.User;
 import service.KService;
 
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -25,6 +26,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 @Named(value="LoginBean")
@@ -35,8 +38,6 @@ public class LoginBean {
     private User user;
     private String userName;
 
-
-    FacesContext context = FacesContext.getCurrentInstance();
     @Inject
     HttpServletRequest request;
     @Inject
@@ -68,6 +69,10 @@ public class LoginBean {
         return password;
     }
 
+    private NavigationBean navigationBean =new NavigationBean();
+
+
+
 
 
     public String findUserOnID(Long id){
@@ -84,10 +89,27 @@ public class LoginBean {
         this.userName = userName;
     }
 
-
-
     public boolean isLoggedIn() {
         return FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal() != null;
+    }
+
+    public String login() {
+        System.out.println("login()");
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+        session = request.getSession();
+        try {
+            request.login(this.userName, this.password);
+            user = kwetterService.find(userName);
+            session.setAttribute("username", user.getId());
+        } catch (ServletException e) {
+            e.printStackTrace();
+            context.addMessage(null, new FacesMessage("Login failed."));
+
+            return "error";
+        }
+        Logger.getGlobal().log(Level.SEVERE,"USER: " + user.getName() + getPassword());
+        return "/faces/private/index.xhtml";
     }
 
     public void CheckValidUser(){
@@ -130,11 +152,6 @@ public class LoginBean {
         FacesContext.getCurrentInstance().getExternalContext().redirect("user.xhtml?id=" + id);
 
     }
-    public static HttpServletRequest getRequest() {
-        Object request = FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        return request instanceof HttpServletRequest
-                ? (HttpServletRequest) request : null;
-    }
     /**
      *
      * @return
@@ -156,8 +173,9 @@ public class LoginBean {
             request.logout();
             session.invalidate();
             System.out.println("Signout invoked");
-            FacesContext.getCurrentInstance().getApplication().getNavigationHandler().handleNavigation
-                    (FacesContext.getCurrentInstance(), null, "/faces/login.xhtml?faces-redirect=true");
+/*            FacesContext.getCurrentInstance().getApplication().getNavigationHandler().handleNavigation
+                    (FacesContext.getCurrentInstance(), null, "/faces/index.xhtml");*/
+            navigationBean.goToIndex();
         } catch (Exception ex) {
             ex.printStackTrace();
             System.out.println("Error Signout -" +  ex.getMessage());

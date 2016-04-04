@@ -227,6 +227,30 @@ public class KwetterResource {
         kwetterService.addTweet(user,message,"REST");
 
     }
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("init")
+    @Interceptors(Tweetinterceptor.class)
+    public void initUsers(){
+
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("api/getmentions/{user1}" )
+    public String getMentions(@PathParam("user1") Long id){
+        User user = kwetterService.find(id);
+        String mentions = "";
+        if(kwetterService.getMentionedTweets(user.getId()).isEmpty()){
+            mentions += "there are no mentions";
+        }else{
+           mentions +=  user.getMentions().toString();
+        }
+       return  mentions;
+    }
+
 
     public  String JsonIfy(User user) {
         int counter = 1;

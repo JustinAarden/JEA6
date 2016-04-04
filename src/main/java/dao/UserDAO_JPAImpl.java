@@ -14,6 +14,8 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.*;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 @Local(UserDao.class)
@@ -34,6 +36,8 @@ public class UserDAO_JPAImpl implements UserDao {
 
     @PostConstruct
     private void initUsers() {
+
+        Logger.getGlobal().log(Level.SEVERE,"INITUSERS");
 
         User u1 = new User("Justin", "http://justinaarden.nl", "1-1-1111");
         this.create(u1);
@@ -90,12 +94,9 @@ public class UserDAO_JPAImpl implements UserDao {
 
     @Override
     public User find(Long id) {
-        Cache cache = em.getEntityManagerFactory().getCache();
-        cache.evictAll();
       //  em.clear();
         Query q = em.createNamedQuery("User.findID");
         q.setParameter("id", id);
-        q.setHint("javax.persistence.cache.retrieveMode", CacheRetrieveMode.BYPASS);
         return (User) q.getSingleResult();
     }
 

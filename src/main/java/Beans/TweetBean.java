@@ -13,9 +13,16 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.*;
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by Justin on 3-3-2016.
@@ -28,7 +35,10 @@ public class TweetBean implements Serializable {
     @Inject
     KService kwetterService;
 
-
+    @Inject
+    HttpServletRequest request;
+    @Inject
+    HttpSession session;
 
     private ArrayList<Tweet> allTweets = new ArrayList<>();
 
@@ -40,8 +50,7 @@ public class TweetBean implements Serializable {
     private String latestTweet;
     private Date latestTweetDAte;
     private User user = new User();
-    HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-
+    private NavigationBean navigationBean =new NavigationBean();
 
 
     public String getTweetText() {
@@ -69,11 +78,21 @@ public class TweetBean implements Serializable {
         return mentions;
     }
 
+    public String getUserPrincipalName() {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        Principal principal = fc.getExternalContext().getUserPrincipal();
+        if(principal == null) {
+            return null;
+        }
+        return principal.getName();
+    }
+
+
     public void addTweet(){
             kwetterService.addTweet(user,tweetText,"JSF");
             kwetterService.edit(user);
         try {
-            goToMainPageByUserID(user.getId());
+            navigationBean.goToIndex();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -81,9 +100,8 @@ public class TweetBean implements Serializable {
 
 
 
-    public void goToMainPageByUserID(Long id) throws IOException {
-        FacesContext.getCurrentInstance().getExternalContext().redirect("user.xhtml?id=" + id +"&success=1");
-
+    public void addMentions(){
+        mentions.addAll(kwetterService.getMentionedTweets(user.getId()));
     }
 
     public Collection<Tweet> getAllTweets() {
@@ -97,8 +115,6 @@ public class TweetBean implements Serializable {
         latestTweet = tweetsBySingleUser.get(latest).getTweetText();
         latestTweetDAte = tweetsBySingleUser.get(latest).getDatum();
     }
-    public void gotToErrorPage() throws IOException {
-        FacesContext.getCurrentInstance().getExternalContext().redirect("login.xhtml?error=nouser");}
 
 
     public void tweetsByFollowing(){
@@ -121,10 +137,9 @@ public class TweetBean implements Serializable {
 
     public void init(){
 
-        if(!isNullOrBlank(request.getParameter("id"))){
-                Long id = Long.parseLong(request.getParameter("id"));
-            user = kwetterService.find(id);
-            mentions.addAll(user.getMentions());
+        user = kwetterService.find(getUserPrincipalName());
+
+        Logger.getGlobal().log(Level.SEVERE,"tweetbean USER: " + user.getName() + user.getPassword());
             for (Tweet tweets : user.getTweets()) {
                 tweetsBySingleUser.add(tweets);
                 allTweets.add(tweets);
@@ -133,17 +148,20 @@ public class TweetBean implements Serializable {
             if(isNullOrBlank(request.getParameter("tweets"))){
                tweetsByFollowing();
             }
+        addMentions();
+        Logger.getGlobal().log(Level.SEVERE,"mentions: " + user.getMentions().toString());
+/*
+        if(!isNullOrBlank(request.getParameter("id"))){
+            user=kwetterService.find(request.getParameter("id"));
+        }else{}
+*/
 
-        }else{
-            try {
-                gotToErrorPage();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
 
-    }
-
-
-
 }
+
+
+
+
+
+

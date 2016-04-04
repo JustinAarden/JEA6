@@ -13,8 +13,12 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by Justin on 4-3-2016.
@@ -24,8 +28,11 @@ import java.util.ArrayList;
 public class UserBean {
     @Inject
     KService kwetterService;
+    @Inject
+    HttpServletRequest request;
+    @Inject
+    HttpSession session;
 
-    HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
     private User user;
     private ArrayList<User> followers = new ArrayList<>();
     private ArrayList<User> following = new ArrayList<>();
@@ -46,6 +53,16 @@ public class UserBean {
         return user;
     }
 
+    public String getUserPrincipalName() {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        Principal principal = fc.getExternalContext().getUserPrincipal();
+        if(principal == null) {
+            return null;
+        }
+        return principal.getName();
+    }
+
+
     public void setFollowers() {
             followers.addAll(user.getFollowers());
 
@@ -58,11 +75,6 @@ public class UserBean {
         if(!refId.equals(0L)){
             user.addFollower(kwetterService.find(refId));
         }else{
-            try {
-                gotToLogin();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
 
     }
@@ -74,10 +86,6 @@ public class UserBean {
         return s == null || s.trim().length() == 0;
     }
 
-    public void gotToLogin() throws IOException {
-        FacesContext.getCurrentInstance().getExternalContext().redirect("login.xhtml");
-
-    }
 
 
     public void goToMainPageByUserID(Long id) throws IOException {
@@ -86,7 +94,11 @@ public class UserBean {
     }
 
     public void init(){
-        if(!isNullOrBlank(request.getParameter("id"))){
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        session = request.getSession();
+        user = kwetterService.find(getUserPrincipalName());
+        Logger.getGlobal().log(Level.SEVERE,"userbean USER: " + user.getName() + user.getPassword());
+/*        if(!isNullOrBlank(request.getParameter("id"))){
             id = Long.parseLong(request.getParameter("id"));
             user = kwetterService.find(id);
         }else{
@@ -95,7 +107,7 @@ public class UserBean {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
         if(!isNullOrBlank(request.getParameter("ref"))){
             refId = Long.parseLong(request.getParameter("ref"));
         }
@@ -103,8 +115,8 @@ public class UserBean {
 
         if(!kwetterService.findFollowing(user.getId()).isEmpty()){
             setFollowing();
-
         }
+
         if(!user.getFollowers().isEmpty()){
             setFollowers();
         }

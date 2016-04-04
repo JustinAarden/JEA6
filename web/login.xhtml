@@ -10,7 +10,7 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 <f:view>
-    <h1>Login</h1>
+    <h1>Login to access your account</h1>
 
     <h:form id="formLogin" prependId="false"
             onsubmit="document.getElementById('formLogin').action = 'j_security_check';">
@@ -31,8 +31,6 @@
             </f:facet>
         </h:panelGrid>
     </h:form>
-
-
     <h4>see below || username : password</h4>
     <h:outputLabel value="#{LoginBean.result}"/>
 
