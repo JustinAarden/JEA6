@@ -20,15 +20,12 @@
     <h:body>
 
         <f:facet name="last">
-            <h:outputStylesheet name="css/bootstrap.css" />
+            <h:outputStylesheet library="primefaces" name="bootstrap.css" />
         </f:facet>
     <h1><h:outputText value="#{UserBean.user.name}" />  </h1>
         <h:form>
 
-            <h:link value="Back to Index - " outcome="/home/index" />
-            <br /> <br />
-
-            <h:commandLink action="#{LoginBean.signOut()}" value="Logout" title="Logout" />
+           <h2><h:commandLink action="#{LoginBean.signOut()}" value="Logout" title="Logout" /></h2>
 
         </h:form>
 

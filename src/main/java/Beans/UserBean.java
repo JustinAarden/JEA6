@@ -98,7 +98,7 @@ public class UserBean {
         session = request.getSession();
         user = kwetterService.find(getUserPrincipalName());
         Logger.getGlobal().log(Level.SEVERE,"userbean USER: " + user.getName() + user.getPassword());
-/*        if(!isNullOrBlank(request.getParameter("id"))){
+/*      if(!isNullOrBlank(request.getParameter("id"))){
             id = Long.parseLong(request.getParameter("id"));
             user = kwetterService.find(id);
         }else{
