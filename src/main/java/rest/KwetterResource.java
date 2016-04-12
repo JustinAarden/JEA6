@@ -5,11 +5,15 @@
 
 package rest;
 
+import domain.Role;
 import domain.Tweet;
 import domain.User;
 import interceptors.Tweetinterceptor;
 import service.KService;
+import websocket.kwettersocket;
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.batch.operations.JobOperator;
 import javax.batch.runtime.BatchRuntime;
 import javax.ejb.Stateless;
@@ -21,10 +25,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.Properties;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -65,17 +66,16 @@ public class KwetterResource {
     }
 
     @GET
-    @Produces("text/plain")
-    @Path("getuser/{userID}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("users/{userID}")
     public String getUser(@PathParam("userID") Long id) {
         User user = kwetterService.find(id);
         return this.JsonIfy(user);
-
     }
 
     @GET
-    @Produces("text/plain")
-    @Path("getallusers")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("users")
     public String getAllUsers() {
        int totalusers = kwetterService.count();
         int counter = 1;
@@ -95,9 +95,29 @@ public class KwetterResource {
 
     }
 
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("users/{userID}")
+    @RolesAllowed("user_role")
+    public String addTweet(Tweet tweet, @PathParam("userID") Long userID) {
+        //TODO: USER ID CAN BE REPLACED BY request.getRemoteUser() FOR THE USERNAME OF LOGGED IN USER
+        Boolean succes;
+        String message = "";
+
+        User user = kwetterService.find(userID);
+        //We need to use new Tweet() here so the id can be given in the contructor
+        kwetterService.addTweet(user,tweet.getTweetText(),"WEB");
+        kwetterService.edit(user);
+
+
+        kwettersocket.send("new tweet");
+
+        return String.format("{\"succes\":\"%b\",\"message\":\"%s\"}", message);
+    }
 
     @GET
-    @Produces("text/plain")
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("gettweetsofuser/{userID}")
     public String getTweetsofUser(@PathParam("userID") Long id) {
         User user = kwetterService.find(id);
@@ -114,11 +134,20 @@ public class KwetterResource {
     }
 
     @GET
-    @Produces("text/plain")
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("user/{userID}")
     public String getEverythingOfUser(@PathParam("userID") Long id) {
         User user = kwetterService.find(id);
         return this.JsonIfy(user);
+
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("getTweets/{userID}")
+    public Collection<Tweet> getTweets(@PathParam("userID") Long id) {
+        User user = kwetterService.find(id);
+        return user.getTweets();
 
     }
 
@@ -162,7 +191,7 @@ public class KwetterResource {
 
     @POST
     @Path("api/login")
-
+    @PermitAll
     public Response login(
             @FormParam("username") String username,
             @FormParam("password") String password,
@@ -170,6 +199,7 @@ public class KwetterResource {
         try {
             request.getSession(); //make sure a session has started
             request.login(username, password);
+            Logger.getGlobal().log(Level.SEVERE,username + password);
         } catch (Exception ex) {
             Logger.getLogger(KwetterResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.serverError().entity(ex.getLocalizedMessage()).build();
@@ -179,16 +209,18 @@ public class KwetterResource {
 
     @GET
     @Path("api/logout")
-    //@RolesAllowed({"user_role", "admin_role"})
+    @RolesAllowed({"user_role", "admin_role"})
     public Response logout(@Context HttpServletRequest request) {
         try {
             request.logout();
             request.getSession().invalidate();
         } catch (ServletException ex) {
+            Logger.getGlobal().log(Level.SEVERE,"Logout Failed");
             Logger.getLogger(KwetterResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.serverError().entity(ex.getLocalizedMessage()).build();
         }
-        return Response.ok("logged out").build();
+        Logger.getGlobal().log(Level.SEVERE,"Logout correct");
+        return Response.ok("index.html?loggedout=true").build();
     }
 
     @GET
@@ -217,14 +249,17 @@ public class KwetterResource {
         return "Job submitted: " + jid;
     }
 
-    @GET
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("addtweet/{user1}/{message}")
+    @RolesAllowed("user_role")
     @Interceptors(Tweetinterceptor.class)
     public void addTweet(@PathParam("user1") Long id, @PathParam("message") String message)  {
         User user = kwetterService.find(id);
         kwetterService.addTweet(user,message,"REST");
+
+        kwettersocket.send("new tweet");
 
     }
     @GET
@@ -250,6 +285,34 @@ public class KwetterResource {
         }
        return  mentions;
     }
+    @GET
+    @Path("api/currentRole")
+    @PermitAll
+    public String getCurrentRole(@Context HttpServletRequest request) {
+        request.getSession();
+        String[] allRoles = {"user_role", "admin_role"};
+        List userRoles = new ArrayList(allRoles.length);
+        for (String role : allRoles) {
+            if (request.isUserInRole(role)) {
+                userRoles.add(role);
+            }
+        }
+        return Arrays.toString(userRoles.toArray());
+    }
+
+    @GET
+    @Path("api/isAdmin")
+    @RolesAllowed("admin_role")
+    public String isAdmin() {
+        return "Current user is logged in as admin";
+    }
+
+    @GET
+    @Path("api/isUser")
+    @RolesAllowed("user_role")
+    public String isUser() {
+        return "Current user is logged in as user";
+    }
 
 
     public  String JsonIfy(User user) {
@@ -257,6 +320,8 @@ public class KwetterResource {
         String tweet = "";
         String followers = "";
         String following = "";
+        String group = "";
+        String roles = "";
 
         for(Tweet tweets : user.getTweets()){
             if(user.getTweets().size() == counter){
@@ -268,6 +333,7 @@ public class KwetterResource {
             counter++;
         }
         counter = 1;
+
         for(User follower : user.getFollowers()){
             if(user.getFollowers().size() == counter){
                 followers += follower.getId();
@@ -289,16 +355,32 @@ public class KwetterResource {
             }
             counter++;
         }
+        counter = 1;
+        for (Role role: user.getRoles()) {
+            if(user.getRoles().size() == counter){
+                group += role.groupsToJson();
+                roles += role.rolesToJson();
+                counter=1;
+            }else{
+                group += role.groupsToJson()+",";
+                roles += role.rolesToJson()+",";
+            }
+            counter++;
+        }
+
         return   "{"
-                + "\"id\":\"" + user.getId() + "\",\n "
+                + "\"id\":" + user.getId().intValue() + ",\n "
                 + "\"name\":\"" + user.getName() + "\",\n "
+                + "\"password\":\"" + user.getPassword() + "\",\n "
                 + "\"web\":\"" + user.getWeb() + "\",\n "
                 + "\"image\":\"" + user.getImage() + "\",\n "
                 + "\"bio\":\"" + user.getBio() + "\", "
                 + "\"location\":\"" + user.getLocation() + "\",\n "
                 + "\"tweets\":[" + tweet + "],\n"
                 + "\"followers\":[" + followers + "],\n"
-                + "\"following\":[" + following + "]\n"
+                + "\"following\":[" + following + "],\n"
+                + "\"group\":[" + group + "],\n"
+                + "\"roles\":[" + roles + "]\n"
                 + "}\n\n";
     }
 

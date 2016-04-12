@@ -36,7 +36,6 @@ public class UserDAO_JPAImpl implements UserDao {
 
     @PostConstruct
     private void initUsers() {
-
         Logger.getGlobal().log(Level.SEVERE,"INITUSERS");
 
         User u1 = new User("Justin", "http://justinaarden.nl", "1-1-1111");
@@ -66,7 +65,6 @@ public class UserDAO_JPAImpl implements UserDao {
         this.edit(u2);
         this.edit(u3);
         this.edit(u4);
-
 
     }
 

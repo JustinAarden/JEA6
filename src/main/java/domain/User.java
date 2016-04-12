@@ -211,6 +211,7 @@ public class User implements Serializable {
         return "{"
                 + "\"id\":\"" + id + "\",\n "
                 + "\"name\":\"" + name + "\",\n "
+                + "\"password\":\"" + password + "\",\n "
                 + "\"web\":\"" + web + "\",\n "
                 + "\"image\":\"" + image + "\",\n "
                 + "\"bio\":\"" + bio + "\",\n "

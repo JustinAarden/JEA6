@@ -1,14 +1,6 @@
-/*
- * Copyright (c) Justin Aarden. info@justinaarden.nl.
- */
-
-/**
- * Created by Justin on 6-4-2016.
- */
-
-;
+; //All Javascipt logic
 (function () {
-    var wsUrl = "ws://localhost:8080/websocket/api";
+    var wsUrl = "ws://localhost:8080/socket/api";
     function createWebSocket(host) {
         if (!window.WebSocket) {
             alert("window.WebSocket not supported");
@@ -59,8 +51,9 @@
     var app = angular.module('Kwetter', ['ngResource']);
     app.factory("userFactory", ['$resource', '$http', function ($resource, $http) {
         $http.defaults.withCredentials = true;
-        return $resource("http://localhost:8080/resources/rest/getuser/:id", {});
+        return $resource("http://localhost:8080/resources/rest/users/:id", {});
     }]);
+
     app.controller("Kwetter_profile", ['$scope', 'userFactory', function ($scope, userFactory) {
         //override .onmessage()
         socket = createWebSocket(wsUrl);
@@ -110,6 +103,8 @@
                 alert(data.responseText);
             });
         };
+
+
         $scope.getUsernames = function () {
             var usernames = [];
             for (i in $scope.users) {
@@ -118,6 +113,15 @@
             }
             return usernames;
         };
+
+
+
+        $scope.addTweet = function (tweet) {
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:8080/resources/rest/addtweet/" + params.id+"/"+ $scope.tweetText
+            })};
+
     }]);
     app.controller("Kwetter_loggedin", ['$scope', 'userFactory', function ($scope, userFactory) {
         socket = createWebSocket(wsUrl);
@@ -192,16 +196,20 @@
                 alert(data.responseText);
             });
         };
-        $scope.submitTweet = function () {
+/*        $scope.submitTweet = function () {
             var tweet = {
                 tweetText: $scope.tweetText,
-                datum: new Date().toJSON(), //JavaEE understands this format while consuming JSON
-                vanaf: "web"
             };
             userFactory.save({id: params.id}, tweet).$promise.finally(function () {
                 getUsers();
             });
             $scope.tweetText = "";
+        };*/
+        $scope.submitTweet = function () {
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:8080/resources/rest/addtweet/" + params.id+"/"+ $scope.tweetText
+            })
         };
     }]);
 }());

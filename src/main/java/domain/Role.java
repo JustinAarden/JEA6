@@ -31,4 +31,17 @@ public class Role implements Serializable {
     public String getGroupId(){
         return roleID;
     }
+
+    public String rolesToJson(){
+        return "\n{"
+                + "\t\"groupId\":\"" + roleID + "\",\n "
+                + "\t\"roleID\":\"" + roleID + "\" \n"
+                + "}";
+    }
+    public String groupsToJson(){
+        return "\n{"
+                + "\t\"groupId\":\"" + roleID + "\",\n "
+                + "\t\"roleID\":\"" + roleID + "\" \n"
+                + "}";
+    }
 }
