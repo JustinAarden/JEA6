@@ -53,7 +53,7 @@ public class JavaMessageReceiver implements MessageListener {
                 return;
             }
             kwetterService.addTweet(user,tweettext,"KwetterGo");
-
+            kwetterService.socketNewTweet();
               } catch (JMSException ex) {
             LOG.log(Level.SEVERE, "Error in message: " + ex.getLocalizedMessage());
             ex.printStackTrace();

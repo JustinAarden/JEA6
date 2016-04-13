@@ -130,6 +130,7 @@ public class Tweet implements Serializable, Comparable<Tweet> {
     public String toJSON() {
         return "\n{"
                 + "\t\"id\":\"" + id + "\",\n "
+                + "\t\"user\":\"" + user.getName() + "\",\n "
                 + "\t\"tweetText\":\"" + tweetText + "\", \n"
                 + "\t\"datum\":\"" + date + "\",\n "
                 + "\t\"location\":\"" + postedFrom + "\""

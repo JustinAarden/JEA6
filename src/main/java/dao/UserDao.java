@@ -31,5 +31,7 @@ public interface UserDao {
 
     List<User> findFollower(Long id);
 
+    void initUsers();
+
 
 }

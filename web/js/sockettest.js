@@ -57,13 +57,16 @@
     app.controller("Kwetter_profile", ['$scope', 'userFactory', function ($scope, userFactory) {
         //override .onmessage()
         socket = createWebSocket(wsUrl);
+
         socket.onmessage = function (msg) {
             if (msg.data == "new tweet") {
+                alert("New Tweet");
                 loadData();
             } else {
                 console.log(msg);
             }
-        };
+        }
+
         function loadData() {
             userFactory.query(function (data) {
                 console.log("Loaded users");
@@ -114,6 +117,9 @@
             return usernames;
         };
 
+        $scope.getName = function (id) {
+            return  $scope.users[id].name;
+        };
 
 
         $scope.addTweet = function (tweet) {
@@ -127,7 +133,7 @@
         socket = createWebSocket(wsUrl);
         socket.onmessage = function (msg) {
             if (msg.data == "new tweet") {
-                getUsers();
+                reloadTweets();
             } else {
                 console.log(msg);
             }
@@ -152,7 +158,7 @@
                 }
             }
         });
-        function getUsers() {
+        function reloadTweets() {
             userFactory.query(function (data) {
                 console.log("Loaded users");
                 console.log(data);
@@ -169,8 +175,11 @@
                             timeline.push(user.tweets[j]);
                         }
                     }
+
                     timeline.sort(function (a, b) {
-                        return a.id == b.id ? 0 : a.id < b.id ? 1 : -1;
+                        return a.datum == b.datum ? 0 : a.datum < b.datum ? 1 : -1;
+
+
                     });
                     return timeline;
                 };
@@ -180,7 +189,7 @@
                 };
             });
         }
-        getUsers();
+        reloadTweets();
 
         $scope.logout = function () {
             $.ajax({

@@ -10,6 +10,7 @@ import dao.TweetDao;
 import dao.UserDao;
 import domain.Tweet;
 import domain.User;
+import websocket.kwettersocket;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -95,6 +96,9 @@ public class KService {
      * @return
      */
 
+    public void initUsers(){
+        userdao.initUsers();
+    }
 
     public List<User>  findFollowing(Object id) {
         return userdao.findFollowing((Long)id);
@@ -160,6 +164,10 @@ public class KService {
 
     public int count() {
         return userdao.count();
+    }
+
+    public void socketNewTweet(){
+        kwettersocket.send("new tweet");
     }
 
     /**

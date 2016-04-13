@@ -93,11 +93,17 @@ and open the template in the editor.
                 <ul class="list-group">
                     <li class="list-group-item" data-ng-repeat="tweet in getMyTweetsAndFromFollowedAccounts()| filter:searchText">
                         <div style="width:100%">
+                            <strong>
+                            {{tweet.user}}:
+                            </strong>
+                        </div>
+                        <div style="width:100%">
                             {{tweet.tweetText}}
                         </div>
                         <div style="width:100%">
                             {{tweet.datum| date:'yyyy-MM-dd HH:mm:ss'}}
                         </div>
+
                     </li>
                 </ul>
             </div>

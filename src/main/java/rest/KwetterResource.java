@@ -255,20 +255,18 @@ public class KwetterResource {
     @Path("addtweet/{user1}/{message}")
     @RolesAllowed("user_role")
     @Interceptors(Tweetinterceptor.class)
-    public void addTweet(@PathParam("user1") Long id, @PathParam("message") String message)  {
+    public void addTweet(@PathParam("user1") Long id, @PathParam("message") String message,  @Context HttpServletRequest request)  {
         User user = kwetterService.find(id);
         kwetterService.addTweet(user,message,"REST");
-
-        kwettersocket.send("new tweet");
+        kwetterService.socketNewTweet();
 
     }
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("init")
-    @Interceptors(Tweetinterceptor.class)
     public void initUsers(){
-
+        kwetterService.initUsers();
     }
 
     @GET
@@ -323,7 +321,10 @@ public class KwetterResource {
         String group = "";
         String roles = "";
 
-        for(Tweet tweets : user.getTweets()){
+        ArrayList<Tweet> allTweets = new ArrayList<>(user.getTweets());
+        Collections.sort(allTweets);
+        Collections.reverse(allTweets);
+        for(Tweet tweets : allTweets){
             if(user.getTweets().size() == counter){
                 tweet += tweets.toJSON();
                 counter = 1;

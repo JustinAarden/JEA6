@@ -9,21 +9,20 @@ import domain.Role;
 import domain.Tweet;
 import domain.User;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 @Local(UserDao.class)
 //@ApplicationScoped
 @Stateless
 public class UserDAO_JPAImpl implements UserDao {
-    private Role user = new Role("user_role");
-    private Role admin = new Role("admin_role");
+
 
     @PersistenceContext
     private EntityManager em;
@@ -34,39 +33,6 @@ public class UserDAO_JPAImpl implements UserDao {
 
     }
 
-    @PostConstruct
-    private void initUsers() {
-        Logger.getGlobal().log(Level.SEVERE,"INITUSERS");
-
-        User u1 = new User("Justin", "http://justinaarden.nl", "1-1-1111");
-        this.create(u1);
-        User u2 = new User("Hans", "no-website", "2-2-2222");
-        this.create(u2);
-        User u3 = new User("Sjaak", "no-website", "3-3-3333");
-        this.create(u3);
-        User u4 = new User("Tom", "no-website", "4-4-4444");
-        this.create(u4);
-
-        em.persist(user);
-        em.persist(admin);
-
-        u1.addGroup(user);
-        u1.addGroup(admin);
-        u2.addGroup(user);
-        u3.addGroup(user);
-        u4.addGroup(user);
-
-        u1.setPassword("password");
-        u2.setPassword("password");
-        u3.setPassword("password");
-        u4.setPassword("password");
-
-        this.edit(u1);
-        this.edit(u2);
-        this.edit(u3);
-        this.edit(u4);
-
-    }
 
     @Override
     public int count() {
@@ -174,6 +140,41 @@ public class UserDAO_JPAImpl implements UserDao {
         return nextID;
     }
 
+    @Override
+    public  void initUsers(){
+        Role user = new Role("user_role");
+        Role admin = new Role("admin_role");
 
+
+        User u1 = new User("Justin", "http://justinaarden.nl", "1-1-1111");
+        this.create(u1);
+        User u2 = new User("Hans", "no-website", "2-2-2222");
+        this.create(u2);
+        User u3 = new User("Sjaak", "no-website", "3-3-3333");
+        this.create(u3);
+        User u4 = new User("Tom", "no-website", "4-4-4444");
+        this.create(u4);
+
+        em.persist(user);
+        em.persist(admin);
+
+        u1.addGroup(user);
+        u1.addGroup(admin);
+        u2.addGroup(user);
+        u3.addGroup(user);
+        u4.addGroup(user);
+
+
+        u1.setPassword("password");
+        u2.setPassword("password");
+        u3.setPassword("password");
+        u4.setPassword("password");
+
+        this.edit(u1);
+        this.edit(u2);
+        this.edit(u3);
+        this.edit(u4);
+
+    }
 
 }

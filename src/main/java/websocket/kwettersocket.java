@@ -19,6 +19,8 @@ import javax.websocket.server.ServerEndpoint;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 @ServerEndpoint(
@@ -30,6 +32,7 @@ public class kwettersocket {
      * All open WebSocket sessions
      */
     static Map<String, ArrayList<Session>> peers = new HashMap<>();
+
 
     private Session wsSession;
 
@@ -44,6 +47,7 @@ public class kwettersocket {
         addValues(session.getUserPrincipal().getName(), session);
 
         this.wsSession = session;
+
 
         send("New session started "
                 + this.wsSession.getId()
@@ -67,6 +71,25 @@ public class kwettersocket {
 
     public static void send(String msg) {
         for (String key : peers.keySet()) {
+
+            for (Session session : peers.get(key)) {
+
+                if(session.isOpen()){
+                    Logger.getGlobal().log(Level.SEVERE,"Session open");
+                }else{
+                    Logger.getGlobal().log(Level.SEVERE,"Session closed");
+                }
+
+                Logger.getGlobal().log(Level.SEVERE," KEY:"+peers.get(key) + " MSG:" + msg);
+
+                session.getAsyncRemote().sendObject(msg);
+
+            }
+        }
+    }
+
+    public static void sendAll(String msg){
+        for (String key : peers.keySet()) {
             for (Session session : peers.get(key)) {
                 session.getAsyncRemote().sendObject(msg);
             }
@@ -87,4 +110,5 @@ public class kwettersocket {
         }
         peers.put(key, tempList);
     }
+
 }
