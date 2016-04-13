@@ -158,21 +158,29 @@
                 }
             }
         });
+        var latesttweet = "";
+        $scope.getLatestTweet = function () {
+            return latesttweet;
+        };
+
         function reloadTweets() {
             userFactory.query(function (data) {
                 console.log("Loaded users");
                 console.log(data);
                 $scope.users = data;
                 $scope.currentUser = getUserById($scope.users, params.id);
+
                 $scope.getMyTweetsAndFromFollowedAccounts = function () {
                     var timeline = [];
                     for (i in $scope.currentUser.tweets) {
                         timeline.push($scope.currentUser.tweets[i]);
+                        latesttweet=$scope.currentUser.tweets[i];
                     }
                     for (i in $scope.currentUser.following) {
                         var user = getUserById($scope.users, $scope.currentUser.following[i]);
                         for (j in user.tweets) {
                             timeline.push(user.tweets[j]);
+
                         }
                     }
 
@@ -183,6 +191,7 @@
                     });
                     return timeline;
                 };
+
                 //this is needed because we've data-ng-src="{{getUserById(followedUserID).image}}" in line 105 on loggedin.html
                 $scope.getUserById = function (id) {
                     return getUserById($scope.users, id);

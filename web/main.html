@@ -114,7 +114,7 @@ and open the template in the editor.
                     <div style="width:100%">
                        <strong>At {{currentUser.tweets[currentUser.tweets.length - 1].datum| date:'yyyy-MM-dd HH:mm:ss'}}: </strong> </div>
                     <div style="width:100%">
-                        {{currentUser.tweets[currentUser.tweets.length - 1].tweetText}}
+                        {{getLatestTweet()}}
                     </div>
                     <hr>
                     <div style="width:100%">

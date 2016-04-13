@@ -321,10 +321,7 @@ public class KwetterResource {
         String group = "";
         String roles = "";
 
-        ArrayList<Tweet> allTweets = new ArrayList<>(user.getTweets());
-        Collections.sort(allTweets);
-        Collections.reverse(allTweets);
-        for(Tweet tweets : allTweets){
+        for(Tweet tweets : user.getTweets()){
             if(user.getTweets().size() == counter){
                 tweet += tweets.toJSON();
                 counter = 1;

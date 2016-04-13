@@ -100,10 +100,13 @@ and open the template in the editor.
                         <div style="width:100%">
                             {{tweet.tweetText}}
                         </div>
+                        <br>
                         <div style="width:100%">
-                            {{tweet.datum| date:'yyyy-MM-dd HH:mm:ss'}}
+                            Date: {{tweet.datum| date:'yyyy-MM-dd HH:mm:ss'}}
                         </div>
-
+                        <div style="width:100%">
+                            Location: {{tweet.location}}
+                        </div>
                     </li>
                 </ul>
             </div>
