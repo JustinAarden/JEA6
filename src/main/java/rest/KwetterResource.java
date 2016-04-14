@@ -162,7 +162,7 @@ public class KwetterResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("addfollower/{user1}/{user2}")
-    public String addFollower(@PathParam("user1") Long id, @PathParam("user2") Long id2)  {
+    public void addFollower(@PathParam("user1") Long id, @PathParam("user2") Long id2)  {
         User user = kwetterService.find(id);
         User user2 = kwetterService.find(id2);
         String followers = "";
@@ -171,10 +171,10 @@ public class KwetterResource {
             if(!user2.getFollowers().contains(user)){
                 user2.addFollower(user);
             }else{
-                return "already following this user";
+               /// return "already following this user";
             }
         }else{
-            return "Either User 1 or User 2 doesn't exist!";
+           // return "Either User 1 or User 2 doesn't exist!";
         }
 
         for (User followinguser: kwetterService.findFollowing(user.getId())
@@ -185,8 +185,8 @@ public class KwetterResource {
                 ) { followers += followinguser.getName();
 
         }
-      //  kwetterService.socketNewFollower();
-        return user.getName() + " ==>   Followed:   ==>   " + user2.getName() +     System.lineSeparator() + " And is already Following  "  + following +  System.lineSeparator() + " And is followed by  " +  followers;
+        kwetterService.socketNewFollower();
+        //return user.getName() + " ==>   Followed:   ==>   " + user2.getName() +     System.lineSeparator() + " And is already Following  "  + following +  System.lineSeparator() + " And is followed by  " +  followers;
     }
 
 

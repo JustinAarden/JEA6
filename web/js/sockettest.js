@@ -144,12 +144,23 @@
                 $scope.getUsersByFollower = function () {
                     var followerlist = [];
                     for( i in $scope.currentUser.followers){
-                        var user = getUserById($scope.users, $scope.currentUser.following[i]);
+                        var user = getUserById($scope.users, $scope.currentUser.followers[i]);
                         followerlist.push(user);
                     }
 
                    return followerlist;
                 };
+
+                $scope.getUsersByFollowing = function () {
+                    var followerlist = [];
+                    for( i in $scope.currentUser.following){
+                        var user = getUserById($scope.users, $scope.currentUser.following[i]);
+                        followerlist.push(user);
+                    }
+
+                    return followerlist;
+                };
+
 
                 //this is needed because we've data-ng-src="{{getUserById(followedUserID).image}}" in line 105 on loggedin.html
                 $scope.getUserById = function (id) {
