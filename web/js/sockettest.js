@@ -48,6 +48,9 @@
         alert("location.search isn't supported in your webbrowser, this will result in errors");
     }
 
+
+
+
     var app = angular.module('Kwetter', ['ngResource']);
     app.factory("userFactory", ['$resource', '$http', function ($resource, $http) {
         $http.defaults.withCredentials = true;
@@ -83,6 +86,94 @@
         ;
         loadData();
     }]);
+
+
+
+
+
+    app.controller("Kwetter_follow", ['$scope', 'userFactory', function ($scope, userFactory) {
+        socket = createWebSocket(wsUrl);
+        socket.onmessage = function (msg) {
+            if (msg.data == "newfollower") {
+                reloadFollowers();
+            } else {
+                console.log(msg);
+            }
+        };
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8080/resources/rest/api/isLoggedIn/" + params.id,
+            xhrFields: {
+                withCredentials: true
+            }
+        }).success(function (data) {
+            console.log("logged in success");
+            console.log(data);
+        }).error(function (data) {
+            console.log("logged in error");
+            if (data.responseJSON) {
+                alert(data.responseJSON.message);
+                if (data.responseJSON.id) {
+                    location.href = "?id=" + data.responseJSON.id;
+                } else {
+                    location.href = "index.html";
+                }
+            }
+        });
+
+        $scope.getUsernames = function () {
+            var usernames = [];
+            for (i in $scope.users) {
+                if ($scope.users[i].name)
+                    usernames.push($scope.users[i].name);
+            }
+            return usernames;
+        };
+
+        $scope.getName = function (id) {
+            return  $scope.users[id].name;
+        };
+
+
+        function reloadFollowers() {
+            userFactory.query(function (data) {
+                console.log("Loaded followers");
+                console.log(data);
+                $scope.users = data;
+                $scope.currentUser = getUserById($scope.users, params.id);
+                $scope.getUsersByFollower = function () {
+                    var followerlist = [];
+                    for( i in $scope.currentUser.followers){
+                        var user = getUserById($scope.users, $scope.currentUser.following[i]);
+                        followerlist.push(user);
+                    }
+
+                   return followerlist;
+                };
+
+                //this is needed because we've data-ng-src="{{getUserById(followedUserID).image}}" in line 105 on loggedin.html
+                $scope.getUserById = function (id) {
+                    return getUserById($scope.users, id);
+                };
+            });
+        }
+    reloadFollowers();
+
+        $scope.addFollower = function () {
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:8080/resources/rest/addfollower/" + params.id+"/"+ $scope.tweetText
+            })};
+
+    }]);
+
+
+    /*
+    *
+    *  LOGIN PAGE
+    *
+    * */
+
     app.controller("Kwetter_home", ['$scope', 'userFactory', function ($scope, userFactory) {
         userFactory.query(function (data) {
             console.log("Loaded users");
@@ -129,6 +220,13 @@
             })};
 
     }]);
+
+    /*
+    *
+    * MAIN PAGE
+    *
+    *
+    * */
     app.controller("Kwetter_loggedin", ['$scope', 'userFactory', function ($scope, userFactory) {
         socket = createWebSocket(wsUrl);
         socket.onmessage = function (msg) {

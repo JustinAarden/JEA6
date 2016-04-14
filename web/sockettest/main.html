@@ -48,6 +48,7 @@ and open the template in the editor.
                 <li class="dropdown">
                     <a id="themes" href="#" data-toggle="dropdown" class="dropdown-toggle">{{currentUser.name}}<span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                        <li role="presentation"><a role="menuitem" tabindex="-1" ng-href="http://localhost:8080/sockettest/followers.html?id={{currentUser.id}}">Followerlist</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-ng-click="logout()">Logout</a></li>
                     </ul>
                 </li>
@@ -162,7 +163,7 @@ and open the template in the editor.
                                         <a href='user.html?id={{followedUserID}}'>
                                             <p>{{getUserById(followedUserID).name}}</p>
                                         </a>
-                                    </span>
+                      </span>
                     </div>
                 </div>
 

@@ -185,6 +185,7 @@ public class KwetterResource {
                 ) { followers += followinguser.getName();
 
         }
+      //  kwetterService.socketNewFollower();
         return user.getName() + " ==>   Followed:   ==>   " + user2.getName() +     System.lineSeparator() + " And is already Following  "  + following +  System.lineSeparator() + " And is followed by  " +  followers;
     }
 

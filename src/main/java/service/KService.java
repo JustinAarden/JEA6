@@ -169,6 +169,9 @@ public class KService {
     public void socketNewTweet(){
         kwettersocket.send("new tweet");
     }
+    public void socketNewFollower(){
+        kwettersocket.send("newfollower");
+    }
 
     /**
      *
