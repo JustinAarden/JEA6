@@ -17,6 +17,8 @@ import javax.inject.Named;
 import javax.json.Json;
 import javax.json.stream.JsonParser;
 import javax.json.stream.JsonParserFactory;
+
+
 import java.io.StringReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -28,7 +30,7 @@ import java.util.logging.Logger;
 
 @Dependent//http://docs.oracle.com/javaee/6/api/javax/enterprise/context/Dependent.html
 @Named//("kwetterJsonProcessor")
-public class kwetterJsonProcessor implements ItemProcessor {
+public class KwetterJsonProcessor implements ItemProcessor {
 
 @Override
     public Object[] processItem(Object t) {
@@ -75,7 +77,7 @@ public class kwetterJsonProcessor implements ItemProcessor {
         try {
             date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(map.get("postDate"));
         } catch (ParseException ex) {
-            Logger.getLogger(kwetterJsonProcessor.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(KwetterJsonProcessor.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         Object[] result = new Object[]{new Tweet(tweetText, date, postedFrom), username};

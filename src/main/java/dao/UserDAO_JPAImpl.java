@@ -164,6 +164,9 @@ public class UserDAO_JPAImpl implements UserDao {
         u3.addGroup(user);
         u4.addGroup(user);
 
+        u1.addFollower(u2);
+        u1.addFollower(u3);
+        u2.addFollower(u3);
 
         u1.setPassword("password");
         u2.setPassword("password");

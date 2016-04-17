@@ -141,24 +141,34 @@
                 console.log(data);
                 $scope.users = data;
                 $scope.currentUser = getUserById($scope.users, params.id);
+                var followerlist = [];
+                var followinglist = [];
+                
                 $scope.getUsersByFollower = function () {
-                    var followerlist = [];
-                    for( i in $scope.currentUser.followers){
+                    console.log("Following: "+$scope.currentUser.following);
+                    console.log("Followers: "+$scope.currentUser.followers);
+                    
+                   $scope.currentUser.followers.forEach(id => {
                         var user = getUserById($scope.users, $scope.currentUser.followers[i]);
+                       
+                        if (_.includes($scope.currentUser.following, id)) {
+                            console.log("trying to hide: " + id);
+                            $('.followlink[userid='+id+']').hide();
+                        }
+
                         followerlist.push(user);
-                    }
+                    });
 
                    return followerlist;
                 };
 
                 $scope.getUsersByFollowing = function () {
-                    var followerlist = [];
                     for( i in $scope.currentUser.following){
                         var user = getUserById($scope.users, $scope.currentUser.following[i]);
-                        followerlist.push(user);
+                        followinglist.push(user);
                     }
 
-                    return followerlist;
+                    return followinglist;
                 };
 
 
