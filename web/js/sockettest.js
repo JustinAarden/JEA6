@@ -92,6 +92,7 @@
 
 
     app.controller("Kwetter_follow", ['$scope', 'userFactory', function ($scope, userFactory) {
+
         socket = createWebSocket(wsUrl);
         socket.onmessage = function (msg) {
             if (msg.data == "newfollower") {
@@ -121,61 +122,77 @@
             }
         });
 
-        $scope.getUsernames = function () {
-            var usernames = [];
-            for (i in $scope.users) {
-                if ($scope.users[i].name)
-                    usernames.push($scope.users[i].name);
-            }
-            return usernames;
-        };
-
-        $scope.getName = function (id) {
-            return  $scope.users[id].name;
-        };
-
-
         function reloadFollowers() {
-            userFactory.query(function (data) {
-                console.log("Loaded followers");
-                console.log(data);
-                $scope.users = data;
-                $scope.currentUser = getUserById($scope.users, params.id);
-                var followerlist = [];
-                var followinglist = [];
-                
-                $scope.getUsersByFollower = function () {
-                    console.log("Following: "+$scope.currentUser.following);
-                    console.log("Followers: "+$scope.currentUser.followers);
-                    
+                   userFactory.query(function (data) {
+                   $scope.followerlist = [];
+                   $scope.followinglist = [];
+
+                   $scope.users = data;
+                   $scope.currentUser = getUserById($scope.users, params.id);
+
+
+
+
                    $scope.currentUser.followers.forEach(id => {
-                        var user = getUserById($scope.users, $scope.currentUser.followers[i]);
+                       console.log("Loaded followers");
+                       var user1 = getUserById($scope.users, $scope.currentUser.followers[i]);
+    /*                   if (_.includes($scope.currentUser.following, id)) {
+                           console.log("trying to hide: " + id);
+                           $('.followlink[userid='+id+']').hide();
+                           console.log("Is now hidden: " + id);
+                           $scope.followlink = true;
+                       }*/
+
+                       $scope.followerlist.push(user1);
+                   });
+
+                   
+                   for( i in $scope.currentUser.following){
+                       console.log("Loaded following");
+                       var user2= getUserById($scope.users, $scope.currentUser.following[i]);
+                       $scope.followinglist.push(user2);
+                   }
+
+                       $scope.checkFollowing = function () {
+                           $scope.currentUser.followers.forEach(id => {
+                               if (_.includes($scope.currentUser.following, id)) {
+                                return true;
+                                   
+                               }else{
+                                   return false;
+                               }
+                           })
+
+                       };
+
+
+/*                   $scope.getUsersByFollower = function () {
+                    $scope.currentUser.followers.forEach(id => {
+                        var user1 = getUserById($scope.users, $scope.currentUser.followers[i]);
                        
                         if (_.includes($scope.currentUser.following, id)) {
                             console.log("trying to hide: " + id);
                             $('.followlink[userid='+id+']').hide();
                         }
 
-                        followerlist.push(user);
+                        followerlist.push(user1);
                     });
 
                    return followerlist;
                 };
 
+                   
+                   
                 $scope.getUsersByFollowing = function () {
+
                     for( i in $scope.currentUser.following){
                         var user = getUserById($scope.users, $scope.currentUser.following[i]);
                         followinglist.push(user);
                     }
 
                     return followinglist;
-                };
 
-
-                //this is needed because we've data-ng-src="{{getUserById(followedUserID).image}}" in line 105 on loggedin.html
-                $scope.getUserById = function (id) {
-                    return getUserById($scope.users, id);
-                };
+                };*/
             });
         }
     reloadFollowers();

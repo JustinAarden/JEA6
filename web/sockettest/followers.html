@@ -65,7 +65,7 @@ and open the template in the editor.
         </div>
         <div class="panel-body">
             <ul class="list-group">
-                <li class="list-group-item" data-ng-repeat="user in getUsersByFollower()">
+                <li class="list-group-item" data-ng-repeat="user in followerlist">
                     <div style="width:100%">
                         <strong>
                             {{user.name}}:
@@ -78,8 +78,8 @@ and open the template in the editor.
                     <div style="width:100%">
                         Bio:  {{user.bio}}
                     </div>
-                    <div  style="width:100%" ng-show="followlink{{user.id}}">
-                        <strong><a class="followlink" userid="{{user.id}}" class="visible" ng-href="http://localhost:8080/resources/rest/addfollower/{{currentUser.id}}/{{user.id}}#">Follow this user</a></strong>
+                    <div  style="width:100%" ng-hide="checkFollowing()">
+                        <strong><a class="followlink" userid="{{user.id}}"  ng-href="http://localhost:8080/resources/rest/addfollower/{{currentUser.id}}/{{user.id}}#">Follow this user</a></strong>
                     </div>
                 </li>
             </ul>
@@ -91,7 +91,7 @@ and open the template in the editor.
         </div>
         <div class="panel-body">
             <ul class="list-group">
-                <li class="list-group-item" data-ng-repeat="user in getUsersByFollowing()">
+                <li class="list-group-item" data-ng-repeat="user in followinglist">
                     <div style="width:100%">
                         <strong>
                             {{user.name}}:

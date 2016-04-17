@@ -370,7 +370,6 @@ public class KwetterResource {
         return   "{"
                 + "\"id\":" + user.getId().intValue() + ",\n "
                 + "\"name\":\"" + user.getName() + "\",\n "
-                + "\"password\":\"" + user.getPassword() + "\",\n "
                 + "\"web\":\"" + user.getWeb() + "\",\n "
                 + "\"image\":\"" + user.getImage() + "\",\n "
                 + "\"bio\":\"" + user.getBio() + "\", "
