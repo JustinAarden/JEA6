@@ -131,28 +131,25 @@
             $('.followlink[userid='+id+']').hide();
         }
 
-
         function reloadFollowers() {
                    userFactory.query(function (data) {
                    $scope.users = data;
                    $scope.currentUser = getUserById($scope.users, params.id);
                    $scope.followerlist = [];
                    $scope.followinglist = [];
+/*
+                        $scope.currentUser.followers.forEach(i => {
+                        console.log("Loaded followers");
+                        var user1 = getUserById($scope.users, $scope.currentUser.followers[i]);
+                        $scope.followerlist.push(user1);
+                        });
+                        */
 
-
-
-                   $scope.currentUser.followers.forEach(id => {
-                       console.log("Loaded followers");
-                       var user1 = getUserById($scope.users, $scope.currentUser.followers[i]);
-                    if (_.includes($scope.currentUser.following, id)) {
-                           console.log("trying to hide: " + id);
-                      //  $('.followlink[userid='+id+']').hide();
-                           console.log("Is now hidden: " + id);
+                       for( i in $scope.currentUser.followers){
+                           console.log("Loaded following");
+                           var user1= getUserById($scope.users, $scope.currentUser.followers[i]);
+                           $scope.followerlist.push(user1);
                        }
-
-                       $scope.followerlist.push(user1);
-                   });
-
                    
                    for( i in $scope.currentUser.following){
                        console.log("Loaded following");
@@ -167,6 +164,10 @@
                                     return 0
                                }
                        };
+
+                       $scope.returnFollowers = function () {
+                           return $scope.followerlist;
+                       }
                        
             });
         }

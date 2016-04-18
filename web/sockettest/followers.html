@@ -67,7 +67,7 @@ and open the template in the editor.
         <div class="panel-body">
             <ul class="list-group">
 
-                <li class="list-group-item" data-ng-repeat="user in followerlist  track by $index">
+                <li class="list-group-item" data-ng-repeat="user in returnFollowers()">
                     <div style="width:100%">
                         <strong>
                             {{user.name}}:
@@ -76,14 +76,13 @@ and open the template in the editor.
                     <div style="width:100%">
                         Location:   {{user.location}}
                     </div>
-                    <br>
                     <div style="width:100%">
                         Bio:  {{user.bio}}
                     </div>
 
 
                     <div style="width:100%" ng-hide="checkFollowing({{user.id}}) == 1">
-                        <strong><a  ng-href="http://localhost:8080/resources/rest/addfollower/{{currentUser.id}}/{{user.id}}#">Follow this user</a></strong>
+                        <strong><a class="btn-success btn-sm" ng-href="http://localhost:8080/resources/rest/addfollower/{{currentUser.id}}/{{user.id}}#">Follow this user</a></strong>
                     </div>
 
                 </li>
@@ -105,12 +104,11 @@ and open the template in the editor.
                     <div style="width:100%">
                         Location:   {{user.location}}
                     </div>
-                    <br>
                     <div style="width:100%">
                         Bio:  {{user.bio}}
                     </div>
                     <div style="width:100%">
-                        <strong><a onclick="alert('you are already following this user')">Follow this user</a></strong>
+                        <strong><a  class="btn-danger btn-sm"  ng-href="http://localhost:8080/resources/rest/removeFollower/{{currentUser.id}}/{{user.id}}#">Un-Follow this user</a></strong>
                     </div>
                 </li>
             </ul>

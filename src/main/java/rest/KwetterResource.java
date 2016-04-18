@@ -32,7 +32,6 @@ import java.util.logging.Logger;
 
 
 @Path("/rest")
-@RequestScoped
 @Stateless
 public class KwetterResource {
 
@@ -193,19 +192,19 @@ public class KwetterResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("removeFollower/{user1}/{user2}")
-    public String removeFollower(@PathParam("user1") Long id, @PathParam("user2") Long id2)  {
+    public void removeFollower(@PathParam("user1") Long id, @PathParam("user2") Long id2)  {
         User user = kwetterService.find(id);
         User user2 = kwetterService.find(id2);
         String returnstring = "";
         String following ="";
         if(user.getName() !=null || user2.getName() != null){
             if(user.getFollowers().contains(user2)){
-                kwetterService.removeFollower(user,user2);
+                kwetterService.removeFollower(user2,user);
             }
      }
 
         kwetterService.socketNewFollower();
-        return JsonIfy(user);
+        //return JsonIfy(user);
         //return user.getName() + " ==>   Followed:   ==>   " + user2.getName() +     System.lineSeparator() + " And is already Following  "  + following +  System.lineSeparator() + " And is followed by  " +  followers;
     }
 
