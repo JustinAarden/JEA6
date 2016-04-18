@@ -122,26 +122,33 @@
             }
         });
 
+        $scope.childOnLoad = function() {
+            alert("Loaded!");
+        };
+
+        function hideFollowing(id)  {
+            console.log("i am in hide following : " + id);
+            $('.followlink[userid='+id+']').hide();
+        }
+
+
         function reloadFollowers() {
                    userFactory.query(function (data) {
-                   $scope.followerlist = [];
-                   $scope.followinglist = [];
-
                    $scope.users = data;
                    $scope.currentUser = getUserById($scope.users, params.id);
-
+                   $scope.followerlist = [];
+                   $scope.followinglist = [];
 
 
 
                    $scope.currentUser.followers.forEach(id => {
                        console.log("Loaded followers");
                        var user1 = getUserById($scope.users, $scope.currentUser.followers[i]);
-    /*                   if (_.includes($scope.currentUser.following, id)) {
+                    if (_.includes($scope.currentUser.following, id)) {
                            console.log("trying to hide: " + id);
-                           $('.followlink[userid='+id+']').hide();
+                      //  $('.followlink[userid='+id+']').hide();
                            console.log("Is now hidden: " + id);
-                           $scope.followlink = true;
-                       }*/
+                       }
 
                        $scope.followerlist.push(user1);
                    });
@@ -153,17 +160,15 @@
                        $scope.followinglist.push(user2);
                    }
 
-                       $scope.checkFollowing = function () {
-                           $scope.currentUser.followers.forEach(id => {
-                               if (_.includes($scope.currentUser.following, id)) {
-                                return true;
-                                   
+                       $scope.checkFollowing = function (id) {
+                                if (_.includes($scope.currentUser.following, id)) {
+                                    return 1;
                                }else{
-                                   return false;
+                                    return 0
                                }
-                           })
-
                        };
+
+
 
 
 /*                   $scope.getUsersByFollower = function () {
@@ -195,7 +200,7 @@
                 };*/
             });
         }
-    reloadFollowers();
+        reloadFollowers();
 
         $scope.addFollower = function () {
             $.ajax({
