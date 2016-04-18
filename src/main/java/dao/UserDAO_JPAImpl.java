@@ -21,7 +21,6 @@ import java.util.List;
 
 
 @Local(UserDao.class)
-@ApplicationScoped
 @Stateless
 public class UserDAO_JPAImpl implements UserDao {
 

@@ -145,11 +145,11 @@
                         });
                         */
 
-                       for( i in $scope.currentUser.followers){
-                           console.log("Loaded following");
-                           var user1= getUserById($scope.users, $scope.currentUser.followers[i]);
-                           $scope.followerlist.push(user1);
-                       }
+                   for( i in $scope.currentUser.followers){
+                       console.log("Loaded followers");
+                       var user1= getUserById($scope.users, $scope.currentUser.followers[i]);
+                       $scope.followerlist.push(user1);
+                   }
                    
                    for( i in $scope.currentUser.following){
                        console.log("Loaded following");
