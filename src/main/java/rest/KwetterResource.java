@@ -199,11 +199,12 @@ public class KwetterResource {
         if(user.getName() !=null || user2.getName() != null){
             if(user.getFollowers().contains(user2)){
                 kwetterService.removeFollower(user,user2);
+                kwetterService.socketNewFollower();
                 returnstring = "OK!";
             }
      }
 
-        kwetterService.socketNewFollower();
+
 
         //return JsonIfy(user);
         //return user.getName() + " ==>   Followed:   ==>   " + user2.getName() +     System.lineSeparator() + " And is already Following  "  + following +  System.lineSeparator() + " And is followed by  " +  followers;
