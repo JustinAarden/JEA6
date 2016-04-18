@@ -43,6 +43,9 @@ public class KService {
         userdao.create(user);
     }
 
+
+
+    public void removeFollower(User user, User userToRemove){userdao.removeFollower(user,userToRemove);}
     /**
      * This method edits a user and merge it in a database
      * With this method you can update the properties

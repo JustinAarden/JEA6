@@ -33,5 +33,6 @@ public interface UserDao {
 
     void initUsers();
 
+    void removeFollower(User user, User userToRemove);
 
 }

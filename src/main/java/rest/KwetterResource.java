@@ -17,6 +17,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.batch.operations.JobOperator;
 import javax.batch.runtime.BatchRuntime;
 import javax.ejb.Stateless;
+import javax.faces.bean.RequestScoped;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.servlet.ServletException;
@@ -31,7 +32,7 @@ import java.util.logging.Logger;
 
 
 @Path("/rest")
-//@RequestScoped
+@RequestScoped
 @Stateless
 public class KwetterResource {
 
@@ -188,6 +189,28 @@ public class KwetterResource {
         kwetterService.socketNewFollower();
         //return user.getName() + " ==>   Followed:   ==>   " + user2.getName() +     System.lineSeparator() + " And is already Following  "  + following +  System.lineSeparator() + " And is followed by  " +  followers;
     }
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("removeFollower/{user1}/{user2}")
+    public String removeFollower(@PathParam("user1") Long id, @PathParam("user2") Long id2)  {
+        User user = kwetterService.find(id);
+        User user2 = kwetterService.find(id2);
+        String returnstring = "";
+        String following ="";
+        if(user.getName() !=null || user2.getName() != null){
+            if(user.getFollowers().contains(user2)){
+                kwetterService.removeFollower(user,user2);
+            }
+     }
+
+        kwetterService.socketNewFollower();
+        return JsonIfy(user);
+        //return user.getName() + " ==>   Followed:   ==>   " + user2.getName() +     System.lineSeparator() + " And is already Following  "  + following +  System.lineSeparator() + " And is followed by  " +  followers;
+    }
+
+
+
 
 
     @POST
@@ -312,6 +335,7 @@ public class KwetterResource {
     public String isUser() {
         return "Current user is logged in as user";
     }
+
 
 
     public  String JsonIfy(User user) {

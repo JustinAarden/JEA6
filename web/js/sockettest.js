@@ -167,37 +167,7 @@
                                     return 0
                                }
                        };
-
-
-
-
-/*                   $scope.getUsersByFollower = function () {
-                    $scope.currentUser.followers.forEach(id => {
-                        var user1 = getUserById($scope.users, $scope.currentUser.followers[i]);
                        
-                        if (_.includes($scope.currentUser.following, id)) {
-                            console.log("trying to hide: " + id);
-                            $('.followlink[userid='+id+']').hide();
-                        }
-
-                        followerlist.push(user1);
-                    });
-
-                   return followerlist;
-                };
-
-                   
-                   
-                $scope.getUsersByFollowing = function () {
-
-                    for( i in $scope.currentUser.following){
-                        var user = getUserById($scope.users, $scope.currentUser.following[i]);
-                        followinglist.push(user);
-                    }
-
-                    return followinglist;
-
-                };*/
             });
         }
         reloadFollowers();

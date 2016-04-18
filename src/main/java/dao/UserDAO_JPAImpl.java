@@ -50,6 +50,7 @@ public class UserDAO_JPAImpl implements UserDao {
         em.merge(user);
     }
 
+
     @Override
     public List<User> findAll() {
         Query q = em.createNamedQuery("User.findAll");
@@ -78,6 +79,7 @@ public class UserDAO_JPAImpl implements UserDao {
 
     @Override
     public List<User> findFollowing(Long id) {
+        em.getEntityManagerFactory().getCache().evictAll();
         Query q = em.createNamedQuery("User.findByFollowing");
         q.setParameter("id", id);
         try {
@@ -88,6 +90,7 @@ public class UserDAO_JPAImpl implements UserDao {
     }
     @Override
     public List<User> findFollower(Long id) {
+        em.getEntityManagerFactory().getCache().evictAll();
        // Query q = em.createQuery("SELECT u from User u where u.id=(Select f.id from u.followers f where f.id=:id)");
         Query q = em.createQuery("SELECT u from User u inner join u.followers f where u.id=:id");
         //Query q = em.createNamedQuery("User.findFollower");
@@ -101,20 +104,28 @@ public class UserDAO_JPAImpl implements UserDao {
     }
 
 
+    public void removeFollower(User user, User usertoremove) {
+        Query query = em.createNativeQuery("DELETE FROM user_user where User_ID=? AND followers_ID=?");
+        query.setParameter(1, user.getId());
+        query.setParameter(2, usertoremove.getId());
+        query.executeUpdate();
+    }
+
+
     //TODO FIX REMOVE TWEET!!!
     public void remove(Tweet tweetToRemove) {
         User user = null;
         for (User u : findAll()) {
-            for (Tweet t : u.getTweets()) {
-                if (t.getId() == tweetToRemove.getId()) {
-                    user = u;
-                    tweetToRemove = t;
-                    break;
+                for (Tweet t : u.getTweets()) {
+                    if (t.getId() == tweetToRemove.getId()) {
+                        user = u;
+                        tweetToRemove = t;
+                        break;
+                    }
                 }
             }
-        }
-        if (user != null) {
-           user.removeTweet(tweetToRemove);
+            if (user != null) {
+                user.removeTweet(tweetToRemove);
         }
         em.remove(em.find(Tweet.class, tweetToRemove.getId()));
     }

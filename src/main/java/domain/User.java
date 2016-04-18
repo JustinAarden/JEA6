@@ -50,7 +50,7 @@ public class User implements Serializable {
     private List<Role> roles = new ArrayList();
 
     @SuppressWarnings("JpaAttributeTypeInspection")
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade={CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, orphanRemoval = true)
     private List<User> followers = new ArrayList();
 
     @ManyToMany(mappedBy = "mentioned")
@@ -150,6 +150,8 @@ public class User implements Serializable {
     }
     public Boolean addFollower(User follower){
         return followers.add(follower);
+    }
+    public void removeFollower(User follower){followers.remove(follower);
     }
 
 
