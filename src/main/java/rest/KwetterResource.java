@@ -171,24 +171,27 @@ public class KwetterResource {
         if(user.getName() !=null || user2.getName() != null){
             if(!user2.getFollowers().contains(user)){
                 user2.addFollower(user);
-            }else{
-               /// return "already following this user";
             }
-        }else{
-           // return "Either User 1 or User 2 doesn't exist!";
         }
 
-        for (User followinguser: kwetterService.findFollowing(user.getId())
-                ) { following += followinguser.getName();
-
-        }
-        for (User followinguser: user.getFollowers()
-                ) { followers += followinguser.getName();
-
-        }
         kwetterService.socketNewFollower();
         //return user.getName() + " ==>   Followed:   ==>   " + user2.getName() +     System.lineSeparator() + " And is already Following  "  + following +  System.lineSeparator() + " And is followed by  " +  followers;
     }
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("createuser/{name}/{location}/{bio}")
+    public String createUser(Tweet tweet, @PathParam("name") String name,  @PathParam("location") String location,  @PathParam("bio") String bio) {
+        Role role = new Role("user_role");
+        User user = new User(name,location,bio);
+        kwetterService.create(user);
+        user.addGroup(role);
+        kwetterService.edit(user);
+
+        return JsonIfy(user);
+    }
+
     @GET
     @Path("removeFollower/{user1}/{user2}")
     public void removeFollower(@PathParam("user1") Long id, @PathParam("user2") Long id2)  {
@@ -401,9 +404,9 @@ public class KwetterResource {
                 + "\"location\":\"" + user.getLocation() + "\",\n "
                 + "\"tweets\":[" + tweet + "],\n"
                 + "\"followers\":[" + followers + "],\n"
-                + "\"following\":[" + following + "],\n"
-                + "\"group\":[" + group + "],\n"
-                + "\"roles\":[" + roles + "]\n"
+                + "\"following\":[" + following + "]\n"
+               // + "\"group\":[" + group + "],\n"
+                //+ "\"roles\":[" + roles + "]\n"
                 + "}\n\n";
     }
 
